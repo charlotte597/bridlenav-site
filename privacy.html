@@ -2,83 +2,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
-<style>
-  :root{
-    --ground:#F7F4EC; --raised:#FFFFFF; --ink:#17241B; --ink-soft:#4C5A4C;
-    --rule:#DCD6C6; --green:#4A6741; --gold:#C9A96E; --gold-ink:#7E5F22;
-    --deep:#16211A; --deep-ink:#E9E5D9;
-    --verified:#4E8A32; --documented:#C07A10; --plotted:#8E8C84;
-    --display:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    --body:'Source Serif 4',Georgia,'Times New Roman',serif;
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --ground:#121A14; --raised:#1B261D; --ink:#EBE7DB; --ink-soft:#A8B3A4;
-      --rule:#2C3A2E; --green:#8FAE84; --gold:#C9A96E; --gold-ink:#D8BC85;
-      --deep:#0D140F; --deep-ink:#EBE7DB;
-      --verified:#7CC15A; --documented:#E8A73C; --plotted:#9A988F;
-    }
-  }
-  :root[data-theme="dark"]{
-    --ground:#121A14; --raised:#1B261D; --ink:#EBE7DB; --ink-soft:#A8B3A4;
-    --rule:#2C3A2E; --green:#8FAE84; --gold:#C9A96E; --gold-ink:#D8BC85;
-    --deep:#0D140F; --deep-ink:#EBE7DB;
-    --verified:#7CC15A; --documented:#E8A73C; --plotted:#9A988F;
-  }
-  *{box-sizing:border-box}
-  body{background:var(--ground);color:var(--ink);font-family:var(--body);
-    font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1080px;margin:0 auto;padding-inline:20px}
-  .measure{max-width:34rem}
-  h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;
-    letter-spacing:-.022em;text-wrap:balance;margin:0}
-  h1{font-size:clamp(2.3rem,6.2vw,4.1rem)}
-  h2{font-size:clamp(1.7rem,3.6vw,2.5rem)}
-  h3{font-size:1.06rem;font-weight:700;letter-spacing:-.01em}
-  p{margin:0}
-  a{color:inherit}
-  .eyebrow{font-family:var(--display);font-size:.7rem;font-weight:700;
-    letter-spacing:.17em;text-transform:uppercase;color:var(--gold-ink)}
-  .masthead{border-bottom:1px solid var(--rule)}
-  .masthead .wrap{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-block:18px}
-  .mark{font-family:var(--display);font-weight:800;font-size:1.32rem;letter-spacing:-.03em;text-decoration:none}
-  .mark span{color:var(--gold-ink)}
-  .mast-note{font-family:var(--display);font-size:.72rem;font-weight:600;
-    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
-  section{padding-block:clamp(50px,7vw,84px)}
-  .section-head{display:flex;flex-direction:column;gap:12px;margin-bottom:34px}
-  .band{background:var(--raised);border-block:1px solid var(--rule)}
-  footer{background:var(--deep);color:var(--deep-ink);padding-block:44px;font-size:.92rem}
-  footer .wrap{display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between}
-  footer a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,.35)}
-  footer a:hover{border-bottom-color:var(--gold)}
-  .legal{color:#9FAC9C;font-size:.82rem;line-height:1.55;max-width:24rem}
-  .flinks{display:flex;flex-direction:column;gap:8px}
-  a:focus-visible,.store:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-
-  .doc{padding-block:clamp(38px,6vw,64px)}
-  .doc .wrap{max-width:46rem}
-  .doc h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:10px}
-  .doc .updated{font-family:var(--display);font-size:.74rem;font-weight:600;
-    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
-  .doc .intro{margin-top:26px;font-size:1.06rem;color:var(--ink-soft)}
-  .doc h2{font-size:1.32rem;margin-top:42px;margin-bottom:12px;
-    padding-top:20px;border-top:1px solid var(--rule)}
-  .doc p{margin-top:12px}
-  .doc ul{margin:12px 0 0;padding-left:1.1rem;color:var(--ink-soft)}
-  .doc li{margin-top:7px}
-  .doc .addr{font-family:var(--display);font-size:.95rem;line-height:1.72;
-    margin-top:14px;color:var(--ink-soft)}
-  .doc a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
-</style>
+<link rel="stylesheet" href="css/site.css">
 <header class="masthead">
   <div class="wrap">
     <a class="mark" href="index.html">Bridle<span>Nav</span></a>
-    <div class="mast-note">Voice navigation for horse riders</div>
+    <nav class="nav">
+      <a href="how-it-works.html">How it works</a>
+      <a href="routes.html">Routes</a>
+      <a href="safety.html">Safety</a>
+      <a href="faq.html">FAQ</a>
+      <a href="about.html">About</a>
+    </nav>
   </div>
 </header>
 <article class="doc">
-  <div class="wrap">
+  <div class="wrap legal-doc">
     <p class="eyebrow">BridleNav</p>
     <h1>Privacy Policy</h1>
     <p class="updated">Last updated 16 September 2026</p>

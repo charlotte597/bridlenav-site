@@ -1,10 +1,15 @@
-<title>BridleNav</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BridleNav — voice navigation for horse riders</title>
 <meta name="description" content="Voice-guided navigation for horse riders. BridleNav speaks UK bridleway routes turn by turn, works with no phone signal, and shares your location in an emergency.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://bridlenav.com/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="BridleNav — voice navigation for horse riders">
-<meta property="og:description" content="Spoken turn-by-turn directions along UK bridleways, so your phone stays in your pocket and your hands stay on the reins.">
+<meta property="og:description" content="Voice-guided navigation for horse riders. BridleNav speaks UK bridleway routes turn by turn, works with no phone signal, and shares your location in an emergency.">
 <meta property="og:url" content="https://bridlenav.com/">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
@@ -52,67 +57,6 @@
         "postalCode": "NG18 1EX",
         "addressCountry": "GB"
       }
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Is there a sat nav for horse riders?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. BridleNav is a GPS navigation app built for horseback rather than for a car or for walking. It speaks turn-by-turn directions out loud so you can keep both hands on the reins and your phone in your pocket."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does BridleNav work without a phone signal?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Download the map before you box up and the app keeps navigating with no signal at all. Riders have completed whole loops on BridleNav with no reception. The SOS feature uses GPS to find you, though sending the message needs a signal."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How is it different from a walking or cycling app?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Walking and cycling apps send you down footpaths and canal towpaths where horses are not allowed, and they expect you to look at a screen. BridleNav routes are bridleways and byways, and everything is spoken aloud."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Which parts of the UK does BridleNav cover?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The routes we have ridden and written up ourselves are in the Peak District, Derbyshire, Cheshire, Lancashire, Staffordshire and the Lake District. Riders anywhere in the UK can record and share their own routes, so the map grows wherever riders are."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I add my own routes?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Record a ride on your phone, then at home write the turn-by-turn directions in your own words and mark the gates, water crossings and livestock. Every submission is read before it is published, and you choose whether your name appears."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What does BridleNav cost?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Your first complete ride is free with everything switched on. After that it is £10.99 a month or £69.99 a year, with a seven-day free trial. Subscriptions are handled by the App Store and Google Play and you can cancel there at any time."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is it safe to use a phone while riding?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "BridleNav is designed so you do not have to. The screen can be off and the phone in your pocket; the app talks to you. If you have to look at it, it has not worked."
-          }
-        }
-      ]
     }
   ]
 }
@@ -120,168 +64,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
-<style>
-  :root{
-    --ground:#F7F4EC; --raised:#FFFFFF; --ink:#17241B; --ink-soft:#4C5A4C;
-    --rule:#DCD6C6; --green:#4A6741; --gold:#C9A96E; --gold-ink:#7E5F22;
-    --deep:#16211A; --deep-ink:#E9E5D9;
-    --verified:#4E8A32; --documented:#C07A10; --plotted:#8E8C84;
-    --display:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    --body:'Source Serif 4',Georgia,'Times New Roman',serif;
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --ground:#121A14; --raised:#1B261D; --ink:#EBE7DB; --ink-soft:#A8B3A4;
-      --rule:#2C3A2E; --green:#8FAE84; --gold:#C9A96E; --gold-ink:#D8BC85;
-      --deep:#0D140F; --deep-ink:#EBE7DB;
-      --verified:#7CC15A; --documented:#E8A73C; --plotted:#9A988F;
-    }
-  }
-  :root[data-theme="dark"]{
-    --ground:#121A14; --raised:#1B261D; --ink:#EBE7DB; --ink-soft:#A8B3A4;
-    --rule:#2C3A2E; --green:#8FAE84; --gold:#C9A96E; --gold-ink:#D8BC85;
-    --deep:#0D140F; --deep-ink:#EBE7DB;
-    --verified:#7CC15A; --documented:#E8A73C; --plotted:#9A988F;
-  }
-  *{box-sizing:border-box}
-  body{background:var(--ground);color:var(--ink);font-family:var(--body);
-    font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1080px;margin:0 auto;padding-inline:20px}
-  .measure{max-width:34rem}
-  h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;
-    letter-spacing:-.022em;text-wrap:balance;margin:0}
-  h1{font-size:clamp(2.3rem,6.2vw,4.1rem)}
-  h2{font-size:clamp(1.7rem,3.6vw,2.5rem)}
-  h3{font-size:1.06rem;font-weight:700;letter-spacing:-.01em}
-  p{margin:0}
-  a{color:inherit}
-  .eyebrow{font-family:var(--display);font-size:.7rem;font-weight:700;
-    letter-spacing:.17em;text-transform:uppercase;color:var(--gold-ink)}
-  .masthead{border-bottom:1px solid var(--rule)}
-  .masthead .wrap{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-block:18px}
-  .mark{font-family:var(--display);font-weight:800;font-size:1.32rem;letter-spacing:-.03em;text-decoration:none}
-  .mark span{color:var(--gold-ink)}
-  .mast-note{font-family:var(--display);font-size:.72rem;font-weight:600;
-    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
-  section{padding-block:clamp(50px,7vw,84px)}
-  .section-head{display:flex;flex-direction:column;gap:12px;margin-bottom:34px}
-  .band{background:var(--raised);border-block:1px solid var(--rule)}
-  footer{background:var(--deep);color:var(--deep-ink);padding-block:44px;font-size:.92rem}
-  footer .wrap{display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between}
-  footer a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,.35)}
-  footer a:hover{border-bottom-color:var(--gold)}
-  .legal{color:#9FAC9C;font-size:.82rem;line-height:1.55;max-width:24rem}
-  .flinks{display:flex;flex-direction:column;gap:8px}
-  a:focus-visible,.store:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-
-  /* hero */
-  .hero{position:relative;background:var(--deep);color:var(--deep-ink);overflow:hidden}
-  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.42;filter:saturate(.85)}
-  .hero::after{content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(13,20,15,.62) 0%,rgba(13,20,15,.42) 45%,rgba(13,20,15,.9) 100%)}
-  .hero .wrap{position:relative;z-index:2;padding-block:clamp(56px,11vw,104px)}
-  .hero h1{color:#F6F2E6;margin-block:16px 20px}
-  .hero .lede{color:#D6DDD2;font-size:1.14rem;max-width:32rem}
-  .hero .eyebrow{color:var(--gold)}
-  .utterance{display:flex;align-items:center;gap:14px;margin-top:34px;
-    background:rgba(246,242,230,.08);border:1px solid rgba(201,169,110,.4);
-    border-radius:3px;padding:14px 18px;max-width:32rem;backdrop-filter:blur(2px)}
-  .bars{display:flex;align-items:center;gap:3px;height:26px;flex:none}
-  .bars i{display:block;width:3px;height:100%;background:var(--gold);transform-origin:center;transform:scaleY(.25)}
-  .bars i:nth-child(1){animation:vb 1.25s ease-in-out infinite 0s}
-  .bars i:nth-child(2){animation:vb 1.25s ease-in-out infinite .12s}
-  .bars i:nth-child(3){animation:vb 1.25s ease-in-out infinite .24s}
-  .bars i:nth-child(4){animation:vb 1.25s ease-in-out infinite .36s}
-  .bars i:nth-child(5){animation:vb 1.25s ease-in-out infinite .48s}
-  @keyframes vb{0%,100%{transform:scaleY(.22)}50%{transform:scaleY(1)}}
-  @media (prefers-reduced-motion: reduce){.bars i{animation:none;transform:scaleY(.6)}}
-  .utterance p{font-size:1.02rem;color:#F6F2E6;font-style:italic}
-  .cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:30px}
-  .store{font-family:var(--display);font-weight:700;font-size:.92rem;
-    background:var(--gold);color:#16211A;border:1px solid var(--gold);
-    padding:13px 22px;border-radius:3px;text-decoration:none;display:inline-block}
-  .store.alt{background:transparent;color:#F6F2E6}
-  .cta-note{font-family:var(--display);font-size:.74rem;font-weight:600;
-    letter-spacing:.09em;text-transform:uppercase;color:var(--gold)}
-  .why p + p{margin-top:16px}
-  .why .pull{font-family:var(--display);font-weight:700;font-size:1.22rem;line-height:1.32;
-    letter-spacing:-.015em;color:var(--green);margin-top:26px;max-width:28rem}
-  .feat{display:grid;gap:0;margin-top:6px;border-top:1px solid var(--rule)}
-  .feat > div{display:grid;grid-template-columns:11rem 1fr;gap:6px 28px;
-    padding-block:20px;border-bottom:1px solid var(--rule);align-items:start}
-  .feat h3{font-family:var(--display);color:var(--ink)}
-  .feat p{color:var(--ink-soft);font-size:.98rem}
-  @media (max-width:640px){.feat > div{grid-template-columns:1fr}}
-  @media (max-width:640px){
-    .wrap{padding-inline:26px}
-    section{padding-block:66px}
-    .section-head{margin-bottom:28px}
-    .feat > div{padding-block:26px;gap:8px}
-    .faq details{padding-block:22px}
-    .hero .wrap{padding-block:64px}
-  }
-  .tier{display:flex;gap:16px;align-items:flex-start;padding:18px 0 18px 16px;
-    border-left:4px solid;border-bottom:1px solid var(--rule)}
-  .tier:first-of-type{border-top:1px solid var(--rule)}
-  .tier .count{font-family:var(--display);font-weight:800;font-size:1.5rem;
-    font-variant-numeric:tabular-nums;min-width:2.6rem;line-height:1.25}
-  .tier h3{margin-bottom:3px}
-  .tier p{color:var(--ink-soft);font-size:.97rem}
-  .t-ver{border-color:var(--verified)} .t-ver .count{color:var(--verified)}
-  .t-doc{border-color:var(--documented)} .t-doc .count{color:var(--documented)}
-  .t-plo{border-color:var(--plotted)} .t-plo .count{color:var(--plotted)}
-  .t-com{border-color:var(--gold)} .t-com .count{color:var(--gold-ink)}
-  .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
-  .strip img{width:100%;height:clamp(150px,22vw,260px);object-fit:cover;display:block}
-  @media (max-width:640px){.strip{grid-template-columns:1fr 1fr}.strip img:last-child{display:none}}
-  .places{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-  .places span{font-family:var(--display);font-size:.85rem;font-weight:600;
-    border:1px solid var(--rule);border-radius:2px;padding:7px 12px;color:var(--ink-soft)}
-  .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:28px;max-width:44rem}
-  .price{border:1px solid var(--rule);border-radius:3px;padding:22px;background:var(--ground)}
-  .price.best{border-color:var(--gold);border-width:2px}
-  .price .amt{font-family:var(--display);font-weight:800;font-size:2.05rem;
-    letter-spacing:-.03em;display:block;margin-bottom:2px}
-  .price .per{font-family:var(--display);font-size:.72rem;font-weight:600;
-    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
-  .price .desc{font-size:.95rem;color:var(--ink-soft);margin-top:12px}
-  .price .tag{font-family:var(--display);font-size:.68rem;font-weight:700;
-    letter-spacing:.13em;text-transform:uppercase;color:var(--gold-ink);display:block;margin-bottom:10px}
-  .trial{margin-top:22px;font-size:.97rem;color:var(--ink-soft)}
-  .sos-band{background:var(--deep);color:var(--deep-ink)}
-  .sos-band .eyebrow{color:var(--gold)}
-  .sos-band h2{color:#F6F2E6}
-  .sos{max-width:34rem}
-  .sos p{color:#CBD4C7}
-  .sos p + p{margin-top:14px}
-  .built{border:1px solid var(--gold);border-radius:3px;padding:clamp(24px,4vw,38px);background:var(--raised)}
-  .ladder{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2px;margin-top:26px;border:1px solid var(--rule)}
-  .ladder div{padding:16px;border:1px solid var(--rule);margin:-1px}
-  .ladder .step{font-family:var(--display);font-size:.68rem;font-weight:700;
-    letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);display:block}
-  .ladder .reward{font-family:var(--display);font-weight:700;font-size:1.02rem;
-    margin-top:6px;display:block;color:var(--gold-ink)}
-  .ladder .sub{font-size:.88rem;color:var(--ink-soft);margin-top:4px;display:block}
-  .maker{display:grid;grid-template-columns:1fr;gap:26px;align-items:center}
-  @media (min-width:760px){.maker{grid-template-columns:1.1fr .9fr;gap:44px}}
-  .maker img{width:100%;height:100%;max-height:340px;object-fit:cover;border-radius:3px;display:block}
-  .maker p + p{margin-top:14px}
-
-  .faq{border-top:1px solid var(--rule)}
-  .faq details{border-bottom:1px solid var(--rule);padding-block:18px}
-  .faq summary{font-family:var(--display);font-weight:700;font-size:1.04rem;
-    cursor:pointer;list-style:none;display:flex;justify-content:space-between;
-    align-items:baseline;gap:16px;letter-spacing:-.01em}
-  .faq summary::-webkit-details-marker{display:none}
-  .faq summary::after{content:"+";font-weight:600;color:var(--gold-ink);flex:none}
-  .faq details[open] summary::after{content:"\2013"}
-  .faq p{margin-top:12px;color:var(--ink-soft);font-size:.99rem;max-width:44rem}
-</style>
-
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
 <header class="masthead">
   <div class="wrap">
     <a class="mark" href="index.html">Bridle<span>Nav</span></a>
-    <div class="mast-note">Voice navigation for horse riders</div>
+    <nav class="nav">
+      <a href="how-it-works.html">How it works</a>
+      <a href="routes.html">Routes</a>
+      <a href="safety.html">Safety</a>
+      <a href="faq.html">FAQ</a>
+      <a href="about.html">About</a>
+    </nav>
   </div>
 </header>
 
@@ -310,10 +105,7 @@
     <p>Reins in both hands. Gloves on. A horse who won&rsquo;t stand still, on a track where stopping isn&rsquo;t sensible anyway. Every other navigation app quietly assumes you can look at a screen.</p>
     <p>So BridleNav doesn&rsquo;t ask you to. It tells you what&rsquo;s coming while there&rsquo;s still time to do something about it, says &ldquo;now&rdquo; at the turn itself, and keeps talking with the screen off and the phone in your pocket.</p>
     <p class="pull">If you have to look at it, it hasn&rsquo;t worked.</p>
-    <p style="margin-top:22px;color:var(--ink-soft);font-size:.98rem">In short: a sat nav for horse
-      riders. A hands-free horse riding navigation app for UK bridleways and byways, on iPhone and
-      Android, that works with the screen off and no phone signal.</p>
-  </div>
+    </div>
 </section>
 
 <div class="strip" aria-hidden="true">
@@ -338,14 +130,6 @@
         <p>Download the map before you box up. Riders have completed whole loops on BridleNav with no phone signal at all.</p>
       </div>
       <div>
-        <h3>Every route on one map</h3>
-        <p>Colour-coded by how well we know it. Filter to what&rsquo;s within ten miles of you, or search by name.</p>
-      </div>
-      <div>
-        <h3>See it before you box up</h3>
-        <p>A 3D fly-through of the whole route over real terrain, so you know what you&rsquo;re asking of your horse before the trailer is hitched.</p>
-      </div>
-      <div>
         <h3>Horsebox parking</h3>
         <p>Where to park, with a postcode and a what3words square &mdash; plus height and length restrictions before you tow somewhere you can&rsquo;t turn round.</p>
       </div>
@@ -353,100 +137,8 @@
         <h3>Hazards called out</h3>
         <p>Road crossings, gates, boggy stretches, and the two houses where the dogs come at the fence. The things a local would tell you.</p>
       </div>
-      <div>
-        <h3>Warnings that arrive the same week</h3>
-        <p>If a gate is padlocked or the bracken has swallowed a path, the warning reaches your app straight away. You don&rsquo;t wait for an update.</p>
-      </div>
-      <div>
-        <h3>Tell us what&rsquo;s wrong</h3>
-        <p>Found a locked gate or a turn we got wrong? Report it from the route in about ten seconds. It comes straight to us, and if it stands up it becomes a warning every other rider sees.</p>
-      </div>
     </div>
-  </div>
-</section>
-
-<section class="sos-band">
-  <div class="wrap sos">
-    <div>
-      <p class="eyebrow">If it goes wrong</p>
-      <h2 style="margin-block:12px 18px">Somebody knows where you are.</h2>
-      <p>Most of us ride out alone more often than we admit, and &ldquo;the top field, past the second gate&rdquo; isn&rsquo;t much use to an ambulance.</p>
-      <p>One tap on SOS sends your exact what3words square to your emergency contact, and offers to call 999. It asks you to hold it down first &mdash; a phone rattling about in a saddlebag shouldn&rsquo;t be able to call out on your behalf.</p>
-      <p>It works on GPS, so it doesn&rsquo;t need a phone signal to know where you are.</p>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="section-head measure">
-      <p class="eyebrow">The part most apps skip</p>
-      <h2>We tell you which routes have actually been ridden.</h2>
-      <p style="color:var(--ink-soft)">A route drawn from a map and a route someone has ridden on a horse are not the same thing, and you deserve to know which one you&rsquo;re about to load a horse for. Every route in BridleNav carries a badge.</p>
-    </div>
-    <div class="tier t-ver">
-      <div class="count">12</div>
-      <div>
-        <h3>Verified</h3>
-        <p>Personally ridden and checked by BridleNav or a trusted local guide.</p>
-      </div>
-    </div>
-    <div class="tier t-doc">
-      <div class="count">2</div>
-      <div>
-        <h3>Documented</h3>
-        <p>Based on a local rider&rsquo;s detailed guide, but not yet personally ridden by the BridleNav team.</p>
-      </div>
-    </div>
-    <div class="tier t-plo">
-      <div class="count">27</div>
-      <div>
-        <h3>Map-plotted</h3>
-        <p>Drawn from maps, not yet ridden. Full written guide, parking and notes &mdash; but no spoken turn-by-turn yet.</p>
-      </div>
-    </div>
-    <div class="tier t-com">
-      <div class="count">&mdash;</div>
-      <div>
-        <h3>Shared by a rider</h3>
-        <p>Recorded and written up by another rider, and read by us before it went live. Not ridden by the BridleNav team, and we say so on the route.</p>
-      </div>
-    </div>
-    <p style="margin-top:24px;color:var(--ink-soft);max-width:34rem">Forty-one routes to begin with, every one badged honestly. If nobody has ridden it yet, we say so.</p>
-  </div>
-</section>
-
-<section class="band">
-  <div class="wrap">
-    <div class="section-head measure">
-      <p class="eyebrow">Where you can ride</p>
-      <h2>Starting where the riding is.</h2>
-      <p style="color:var(--ink-soft)">The routes we have ridden and written up ourselves are here, and BridleNav began in Derbyshire. But riders anywhere in the UK can record and share their own, so the map grows wherever riders are &mdash; not only where we&rsquo;ve been.</p>
-    </div>
-    <div class="places">
-      <span>Peak District</span><span>Derbyshire</span><span>Cheshire</span>
-      <span>Lancashire</span><span>Staffordshire</span><span>Lake District</span>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="built">
-      <div class="measure">
-        <p class="eyebrow">The community map</p>
-        <h2 style="margin-block:12px 20px">The map riders build themselves.</h2>
-        <p style="color:var(--ink-soft)">Forty-one routes will never cover the country. The bridleways you ride most are known by you and a handful of others, and they aren&rsquo;t written down anywhere.</p>
-        <p style="color:var(--ink-soft);margin-top:14px">So BridleNav lets you record a ride and send it in. No files to wrestle with &mdash; you ride it, then at home you write the turn-by-turn directions in your own words and mark the gates, the water and the livestock. Those words are what the app reads aloud to the next rider.</p>
-        <p style="color:var(--ink-soft);margin-top:14px">Every submission is read before it goes live. Put your name to it or don&rsquo;t &mdash; that&rsquo;s your choice, and you can trim the start and finish so a route never begins at your own yard.</p>
-      </div>
-      <div class="ladder">
-        <div><span class="step">1st route approved</span><span class="reward">Your name on the route</span><span class="sub">Or stay anonymous, your choice</span></div>
-        <div><span class="step">3 routes</span><span class="reward">Trailblazer badge</span><span class="sub">On your Ride Passport</span></div>
-        <div><span class="step">5 routes</span><span class="reward">Local Expert</span><span class="sub">Riders can see the routes you know</span></div>
-        <div><span class="step">10 routes</span><span class="reward">Founding Contributor</span><span class="sub">The riders who built the map</span></div>
-      </div>
-    </div>
+    <a class="more" href="how-it-works.html">Everything it does &rarr;</a>
   </div>
 </section>
 
@@ -474,57 +166,18 @@
   </div>
 </section>
 
-
 <section class="band">
   <div class="wrap">
     <div class="section-head measure">
-      <p class="eyebrow">Questions riders ask</p>
-      <h2>The things people want to know first.</h2>
+      <p class="eyebrow">More about BridleNav</p>
+      <h2>Have a look round.</h2>
     </div>
-    <div class="faq">
-      <details open>
-        <summary>Is there a sat nav for horse riders?</summary>
-        <p>Yes. BridleNav is a GPS navigation app built for horseback rather than for a car or for walking. It speaks turn-by-turn directions out loud so you can keep both hands on the reins and your phone in your pocket.</p>
-      </details>
-      <details>
-        <summary>Does BridleNav work without a phone signal?</summary>
-        <p>Yes. Download the map before you box up and the app keeps navigating with no signal at all. Riders have completed whole loops on BridleNav with no reception. The SOS feature uses GPS to find you, though sending the message needs a signal.</p>
-      </details>
-      <details>
-        <summary>How is it different from a walking or cycling app?</summary>
-        <p>Walking and cycling apps send you down footpaths and canal towpaths where horses are not allowed, and they expect you to look at a screen. BridleNav routes are bridleways and byways, and everything is spoken aloud.</p>
-      </details>
-      <details>
-        <summary>Which parts of the UK does BridleNav cover?</summary>
-        <p>The routes we have ridden and written up ourselves are in the Peak District, Derbyshire, Cheshire, Lancashire, Staffordshire and the Lake District. Riders anywhere in the UK can record and share their own routes, so the map grows wherever riders are.</p>
-      </details>
-      <details>
-        <summary>Can I add my own routes?</summary>
-        <p>Yes. Record a ride on your phone, then at home write the turn-by-turn directions in your own words and mark the gates, water crossings and livestock. Every submission is read before it is published, and you choose whether your name appears.</p>
-      </details>
-      <details>
-        <summary>What does BridleNav cost?</summary>
-        <p>Your first complete ride is free with everything switched on. After that it is &pound;10.99 a month or &pound;69.99 a year, with a seven-day free trial. Subscriptions are handled by the App Store and Google Play and you can cancel there at any time.</p>
-      </details>
-      <details>
-        <summary>Is it safe to use a phone while riding?</summary>
-        <p>BridleNav is designed so you do not have to. The screen can be off and the phone in your pocket; the app talks to you. If you have to look at it, it has not worked.</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="maker">
-      <div>
-        <p class="eyebrow">Who&rsquo;s behind it</p>
-        <h2 style="margin-block:12px 20px">Built at a farm, not in an office.</h2>
-        <p>BridleNav is made by Charlotte Lowe at Unthank Hall Farm in Holmesfield, on the edge of the Peak District, where she farms and runs guided rides through Leading Ladies Equestrian.</p>
-        <p>It started because riders kept getting lost on bridleways she knew by heart &mdash; and because there was no way to hand that knowledge over without riding alongside them.</p>
-        <p>Every route carries the sort of detail you only get from someone who has actually stood at that gate.</p>
-      </div>
-      <img src="photos/linacre.jpg" alt="Riding two abreast down a hedged lane near Holmesfield">
+    <div class="onward">
+      <a href="how-it-works.html"><h3>How it works</h3><p>Voice directions, offline maps, horsebox parking, hazards called out.</p></a>
+      <a href="routes.html"><h3>Routes</h3><p>Forty-one to begin with, each badged by how well we know it.</p></a>
+      <a href="safety.html"><h3>Safety</h3><p>SOS sends your what3words square to your emergency contact.</p></a>
+      <a href="faq.html"><h3>Questions</h3><p>The things riders ask before they download it.</p></a>
+      <a href="about.html"><h3>About</h3><p>Built at a farm in Holmesfield, not in an office.</p></a>
     </div>
   </div>
 </section>
@@ -550,3 +203,5 @@
     </div>
   </div>
 </footer>
+</body>
+</html>
