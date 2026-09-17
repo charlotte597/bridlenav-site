@@ -1,0 +1,203 @@
+<title>BridleNav Terms of Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root{
+    --ground:#F7F4EC; --raised:#FFFFFF; --ink:#17241B; --ink-soft:#4C5A4C;
+    --rule:#DCD6C6; --green:#4A6741; --gold:#C9A96E; --gold-ink:#7E5F22;
+    --deep:#16211A; --deep-ink:#E9E5D9;
+    --verified:#4E8A32; --documented:#C07A10; --plotted:#8E8C84;
+    --display:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --body:'Source Serif 4',Georgia,'Times New Roman',serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#121A14; --raised:#1B261D; --ink:#EBE7DB; --ink-soft:#A8B3A4;
+      --rule:#2C3A2E; --green:#8FAE84; --gold:#C9A96E; --gold-ink:#D8BC85;
+      --deep:#0D140F; --deep-ink:#EBE7DB;
+      --verified:#7CC15A; --documented:#E8A73C; --plotted:#9A988F;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#121A14; --raised:#1B261D; --ink:#EBE7DB; --ink-soft:#A8B3A4;
+    --rule:#2C3A2E; --green:#8FAE84; --gold:#C9A96E; --gold-ink:#D8BC85;
+    --deep:#0D140F; --deep-ink:#EBE7DB;
+    --verified:#7CC15A; --documented:#E8A73C; --plotted:#9A988F;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--body);
+    font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding-inline:20px}
+  .measure{max-width:34rem}
+  h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;
+    letter-spacing:-.022em;text-wrap:balance;margin:0}
+  h1{font-size:clamp(2.3rem,6.2vw,4.1rem)}
+  h2{font-size:clamp(1.7rem,3.6vw,2.5rem)}
+  h3{font-size:1.06rem;font-weight:700;letter-spacing:-.01em}
+  p{margin:0}
+  a{color:inherit}
+  .eyebrow{font-family:var(--display);font-size:.7rem;font-weight:700;
+    letter-spacing:.17em;text-transform:uppercase;color:var(--gold-ink)}
+  .masthead{border-bottom:1px solid var(--rule)}
+  .masthead .wrap{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-block:18px}
+  .mark{font-family:var(--display);font-weight:800;font-size:1.32rem;letter-spacing:-.03em;text-decoration:none}
+  .mark span{color:var(--gold-ink)}
+  .mast-note{font-family:var(--display);font-size:.72rem;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  section{padding-block:clamp(50px,7vw,84px)}
+  .section-head{display:flex;flex-direction:column;gap:12px;margin-bottom:34px}
+  .band{background:var(--raised);border-block:1px solid var(--rule)}
+  footer{background:var(--deep);color:var(--deep-ink);padding-block:44px;font-size:.92rem}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between}
+  footer a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,.35)}
+  footer a:hover{border-bottom-color:var(--gold)}
+  .legal{color:#9FAC9C;font-size:.82rem;line-height:1.55;max-width:24rem}
+  .flinks{display:flex;flex-direction:column;gap:8px}
+  a:focus-visible,.store:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+  .doc{padding-block:clamp(38px,6vw,64px)}
+  .doc .wrap{max-width:46rem}
+  .doc h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:10px}
+  .doc .updated{font-family:var(--display);font-size:.74rem;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  .doc .intro{margin-top:26px;font-size:1.06rem;color:var(--ink-soft)}
+  .doc h2{font-size:1.32rem;margin-top:42px;margin-bottom:12px;
+    padding-top:20px;border-top:1px solid var(--rule)}
+  .doc p{margin-top:12px}
+  .doc ul{margin:12px 0 0;padding-left:1.1rem;color:var(--ink-soft)}
+  .doc li{margin-top:7px}
+  .doc .addr{font-family:var(--display);font-size:.95rem;line-height:1.72;
+    margin-top:14px;color:var(--ink-soft)}
+  .doc a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
+</style>
+<header class="masthead">
+  <div class="wrap">
+    <a class="mark" href="index.html">Bridle<span>Nav</span></a>
+    <div class="mast-note">Voice navigation for horse riders</div>
+  </div>
+</header>
+<article class="doc">
+  <div class="wrap">
+    <p class="eyebrow">BridleNav</p>
+    <h1>Terms of Service</h1>
+    <p class="updated">Last updated September 2026</p>
+
+    <p class="intro">BridleNav is a GPS navigation app designed specifically for horse riders. By
+      downloading and using BridleNav you agree to these Terms of Service. Please read them
+      carefully.</p>
+
+    <h2>1. About BridleNav</h2>
+    <p>The app is provided by BridleNav Limited, a company registered in England and Wales (company
+      number 17461028) whose registered office is Acorn Business Park, 7 Commercial Gate, Mansfield,
+      NG18 1EX. In these terms, &ldquo;we&rdquo;, &ldquo;us&rdquo; and &ldquo;our&rdquo; mean
+      BridleNav Limited.</p>
+
+    <h2>2. Navigation disclaimer</h2>
+    <p>BridleNav is a navigation aid only. Routes, directions and mapping data are provided for
+      guidance purposes and may not always be accurate, up to date or suitable for your horse and
+      riding ability.</p>
+    <p>It is your responsibility as a rider to:</p>
+    <ul>
+      <li>Assess whether a route is suitable for you and your horse</li>
+      <li>Obey all road traffic laws and bridleway regulations</li>
+      <li>Wear appropriate safety equipment at all times</li>
+      <li>Make your own judgement in all riding situations</li>
+    </ul>
+    <p>We accept no liability for any accidents, injuries, losses or damages arising from use of the
+      app or its routes.</p>
+
+    <h2>3. Emergency SOS</h2>
+    <p>BridleNav includes an emergency SOS feature that sends your location and a map link to a
+      pre-saved emergency contact and provides the option to call 999.</p>
+    <p>This feature is a supplementary safety tool only. It requires a working mobile data or
+      internet connection to send location messages. BridleNav cannot guarantee delivery of emergency
+      messages and is not a substitute for calling 999 directly.</p>
+    <p>Always tell someone where you are riding and when you expect to return. Do not rely solely on
+      BridleNav SOS in an emergency.</p>
+
+    <h2>4. Your account</h2>
+    <p>You can browse routes without an account, but you need one to subscribe. Accounts are created
+      with your email address, and you sign in using a six-digit code sent to that address. BridleNav
+      is for riders aged 13 and over, and we ask you to confirm this when you create an account.</p>
+    <p>You are responsible for keeping access to your email account secure, and for any activity
+      carried out through your BridleNav account.</p>
+    <p>You can delete your account at any time from within the app, in Settings. Deleting your
+      account removes your account record and profile from our systems.</p>
+
+    <h2>5. Subscription and payments</h2>
+    <p>BridleNav is available on a subscription basis. Subscriptions are managed through the Google
+      Play Store and Apple App Store.</p>
+    <ul>
+      <li>Subscriptions renew automatically unless cancelled at least 24 hours before the renewal date</li>
+      <li>You can manage or cancel your subscription in your device&rsquo;s app store settings</li>
+      <li>Refunds are subject to the relevant app store&rsquo;s refund policy</li>
+      <li>Prices may change with reasonable notice</li>
+    </ul>
+
+    <h2>6. Intellectual property</h2>
+    <p>All content within BridleNav &mdash; including route data, parking information, descriptions,
+      photography, the BridleNav name and logo &mdash; is owned by, or licensed to, BridleNav Limited
+      and Charlotte Lowe.</p>
+    <p>You may not copy, reproduce, distribute or create derivative works from any BridleNav content
+      without written permission.</p>
+
+    <h2>7. Privacy and data</h2>
+    <p>Our <a href="privacy.html">privacy policy</a> explains in full what we collect and why. In
+      summary:</p>
+    <ul>
+      <li>Your emergency contact details are stored locally on your device</li>
+      <li>If you create an account, we store your email address, any display name you choose and your
+        marketing preference</li>
+      <li>Location data is used to provide navigation and emergency SOS functionality</li>
+      <li>Subscription and payment data is handled by RevenueCat and the relevant app store</li>
+    </ul>
+    <p>We do not sell your personal data, and we do not share it with third parties except the
+      service providers we use to run the app.</p>
+
+    <h2>8. Acceptable use</h2>
+    <p>You agree to use BridleNav for lawful purposes only. You must not:</p>
+    <ul>
+      <li>Attempt to reverse engineer or copy the app</li>
+      <li>Use the app in a way that could endanger yourself or others</li>
+      <li>Share your subscription access with others</li>
+      <li>Use the app while driving a motor vehicle</li>
+    </ul>
+
+    <h2>9. Changes to these terms</h2>
+    <p>We may update these Terms of Service from time to time. Continued use of BridleNav after
+      changes are posted constitutes acceptance of the new terms. We will notify users of significant
+      changes within the app.</p>
+
+    <h2>10. Governing law</h2>
+    <p>These Terms of Service are governed by the law of England and Wales, and any dispute arising
+      from them is subject to the exclusive jurisdiction of the courts of England and Wales.</p>
+    <p>Nothing in these terms affects your statutory rights as a consumer.</p>
+
+    <h2>11. Contact</h2>
+    <p>If you have any questions about these terms please contact us at:</p>
+    <p class="addr">BridleNav Limited<br>Acorn Business Park, 7 Commercial Gate<br>Mansfield,
+      NG18 1EX<br><a href="mailto:charlotte@unthank-farm.co.uk">charlotte@unthank-farm.co.uk</a></p>
+  </div>
+</article>
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="mark" style="color:#F6F2E6;margin-bottom:10px">Bridle<span>Nav</span></div>
+      <p class="legal">
+        BridleNav is published by BridleNav Limited, registered in England and Wales,
+        company number 17461028. Registered office: Acorn Business Park,
+        7 Commercial Gate, Mansfield, NG18 1EX.
+      </p>
+      <p class="legal" style="margin-top:12px">
+        Always ride within your ability and your horse&rsquo;s. BridleNav guides you along a
+        route; it does not judge whether that route is safe on the day.
+      </p>
+    </div>
+    <div class="flinks">
+      <a href="mailto:hello@bridlenav.com">hello@bridlenav.com</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>

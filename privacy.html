@@ -1,0 +1,230 @@
+<title>BridleNav Privacy Policy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root{
+    --ground:#F7F4EC; --raised:#FFFFFF; --ink:#17241B; --ink-soft:#4C5A4C;
+    --rule:#DCD6C6; --green:#4A6741; --gold:#C9A96E; --gold-ink:#7E5F22;
+    --deep:#16211A; --deep-ink:#E9E5D9;
+    --verified:#4E8A32; --documented:#C07A10; --plotted:#8E8C84;
+    --display:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --body:'Source Serif 4',Georgia,'Times New Roman',serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#121A14; --raised:#1B261D; --ink:#EBE7DB; --ink-soft:#A8B3A4;
+      --rule:#2C3A2E; --green:#8FAE84; --gold:#C9A96E; --gold-ink:#D8BC85;
+      --deep:#0D140F; --deep-ink:#EBE7DB;
+      --verified:#7CC15A; --documented:#E8A73C; --plotted:#9A988F;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#121A14; --raised:#1B261D; --ink:#EBE7DB; --ink-soft:#A8B3A4;
+    --rule:#2C3A2E; --green:#8FAE84; --gold:#C9A96E; --gold-ink:#D8BC85;
+    --deep:#0D140F; --deep-ink:#EBE7DB;
+    --verified:#7CC15A; --documented:#E8A73C; --plotted:#9A988F;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--body);
+    font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding-inline:20px}
+  .measure{max-width:34rem}
+  h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;
+    letter-spacing:-.022em;text-wrap:balance;margin:0}
+  h1{font-size:clamp(2.3rem,6.2vw,4.1rem)}
+  h2{font-size:clamp(1.7rem,3.6vw,2.5rem)}
+  h3{font-size:1.06rem;font-weight:700;letter-spacing:-.01em}
+  p{margin:0}
+  a{color:inherit}
+  .eyebrow{font-family:var(--display);font-size:.7rem;font-weight:700;
+    letter-spacing:.17em;text-transform:uppercase;color:var(--gold-ink)}
+  .masthead{border-bottom:1px solid var(--rule)}
+  .masthead .wrap{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-block:18px}
+  .mark{font-family:var(--display);font-weight:800;font-size:1.32rem;letter-spacing:-.03em;text-decoration:none}
+  .mark span{color:var(--gold-ink)}
+  .mast-note{font-family:var(--display);font-size:.72rem;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  section{padding-block:clamp(50px,7vw,84px)}
+  .section-head{display:flex;flex-direction:column;gap:12px;margin-bottom:34px}
+  .band{background:var(--raised);border-block:1px solid var(--rule)}
+  footer{background:var(--deep);color:var(--deep-ink);padding-block:44px;font-size:.92rem}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between}
+  footer a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,.35)}
+  footer a:hover{border-bottom-color:var(--gold)}
+  .legal{color:#9FAC9C;font-size:.82rem;line-height:1.55;max-width:24rem}
+  .flinks{display:flex;flex-direction:column;gap:8px}
+  a:focus-visible,.store:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+  .doc{padding-block:clamp(38px,6vw,64px)}
+  .doc .wrap{max-width:46rem}
+  .doc h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:10px}
+  .doc .updated{font-family:var(--display);font-size:.74rem;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  .doc .intro{margin-top:26px;font-size:1.06rem;color:var(--ink-soft)}
+  .doc h2{font-size:1.32rem;margin-top:42px;margin-bottom:12px;
+    padding-top:20px;border-top:1px solid var(--rule)}
+  .doc p{margin-top:12px}
+  .doc ul{margin:12px 0 0;padding-left:1.1rem;color:var(--ink-soft)}
+  .doc li{margin-top:7px}
+  .doc .addr{font-family:var(--display);font-size:.95rem;line-height:1.72;
+    margin-top:14px;color:var(--ink-soft)}
+  .doc a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
+</style>
+<header class="masthead">
+  <div class="wrap">
+    <a class="mark" href="index.html">Bridle<span>Nav</span></a>
+    <div class="mast-note">Voice navigation for horse riders</div>
+  </div>
+</header>
+<article class="doc">
+  <div class="wrap">
+    <p class="eyebrow">BridleNav</p>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated 16 September 2026</p>
+
+    <p class="intro">BridleNav collects as little about you as possible. You can use the whole
+      app with no account at all &mdash; turn-by-turn navigation works without us knowing who you are.
+      If you choose to create an account, we store your email address and the rides you record, so
+      they can follow you to any phone you sign in on. You can delete any ride, or your whole
+      account, whenever you like.</p>
+
+    <h2>Who we are</h2>
+    <p>BridleNav is operated by BridleNav Limited, which is the data controller under UK data
+      protection law.</p>
+    <p class="addr">BridleNav Limited<br>Company number 17461028<br>Acorn Business Park,
+      7 Commercial Gate, Mansfield, NG18 1EX<br>
+      <a href="mailto:charlotte@unthank-farm.co.uk">charlotte@unthank-farm.co.uk</a></p>
+
+    <h2>What stays on your phone</h2>
+    <p>Whether or not you have an account, these are saved on your device only. They are never sent
+      to us and we cannot see them:</p>
+    <ul>
+      <li>Your emergency contact&rsquo;s name and number</li>
+      <li>Your chosen navigation voice</li>
+      <li>Your goal and app preferences</li>
+      <li>Whether you have seen the introduction screen</li>
+      <li>Whether you have used your free ride</li>
+    </ul>
+    <p>Deleting the app deletes all of it.</p>
+
+    <h2>Rides you record</h2>
+    <p>When you record a ride, BridleNav saves it &mdash; the route name, distance, time and the GPS
+      track &mdash; so you can look back on it.</p>
+    <ul>
+      <li><strong>Without an account:</strong> your recorded rides stay on your phone only. We cannot
+        see them, and deleting the app deletes them.</li>
+      <li><strong>With an account:</strong> your recorded rides are also saved to your account, so
+        they appear on any device you sign in on.</li>
+    </ul>
+    <p>You can delete any single ride in the app. Deleting your account removes all of your synced
+      rides from our systems.</p>
+
+    <h2>Routes you choose to share</h2>
+    <p>If you submit a recorded ride as a community route, we receive the track, the directions and
+      notes you wrote, and an anonymous identifier for your phone. You choose whether your name
+      appears on the route; leave it blank and it stays anonymous.</p>
+    <p>You can trim the start and finish of a ride before you send it, so a route need never begin at
+      your own yard. Every submission is read by us before it is published, and we may edit or
+      decline it.</p>
+
+    <h2>Reporting a problem</h2>
+    <p>If you report a problem with a route, we receive the category you picked, anything you typed,
+      and an anonymous identifier for your phone. Reports come to us and are not published. Please
+      don&rsquo;t include anyone&rsquo;s name or personal details in the box.</p>
+
+    <h2>Your location</h2>
+    <p>BridleNav needs your location to work &mdash; knowing where you are on a route is how it tells
+      you where to turn.</p>
+    <p>During live navigation, your location is used on your phone and is not stored. When you choose
+      to record a ride, the GPS track of that ride is saved as described above.</p>
+    <p><strong>Why we ask for &ldquo;Always&rdquo; location:</strong> riders pocket their phone and
+      the screen locks. If location is only allowed while the app is open, the voice stops when the
+      screen locks &mdash; which could leave you without directions in open country. You can decline,
+      and the app will still work with the screen on.</p>
+    <p>Lawful basis: performance of our contract with you. You can withdraw the permission at any
+      time in your phone&rsquo;s settings.</p>
+
+    <h2>Your account and signing in</h2>
+    <p>Creating an account is optional. If you choose to, we ask only for your email address. We sign
+      you in with a one-time code sent to that email &mdash; there is no password to remember.</p>
+    <p>What we hold for your account: your email address, a display name if you set one, the rides
+      you record, and the fact that you confirmed you are 13 or over. We use these only to identify
+      you and to sync your rides between your devices.</p>
+    <p><strong>Marketing:</strong> we will only email you about BridleNav news if you tick to opt in,
+      and you can change your mind at any time.</p>
+    <p><strong>Deleting your account:</strong> there is a &ldquo;Delete account&rdquo; button in the
+      app. It permanently removes your account, your email and your synced rides from our systems.</p>
+
+    <h2>The SOS feature</h2>
+    <p>If you use SOS, your phone sends a text to the emergency contact you chose, containing your
+      location and a map link. It is sent by your phone over your own network, directly to your
+      contact. It does not pass through us and we never receive a copy.</p>
+    <p>BridleNav SOS is not an emergency service and is not monitored by anyone. In a real emergency,
+      call 999.</p>
+
+    <h2>Subscriptions</h2>
+    <p>If you subscribe, payment is taken by Apple or Google, not by us. They hold your name, billing
+      address and card details. We never see them.</p>
+    <p>We use RevenueCat to tell us whether a subscription is active. It receives an identifier for
+      your device, store account or &mdash; if you are signed in &mdash; your BridleNav account,
+      together with your purchase history. It does not receive your name or location.</p>
+
+    <h2>How long we keep things</h2>
+    <ul>
+      <li>On your phone: until you delete it or delete the app</li>
+      <li>Recorded rides in your account: until you delete the ride or your account</li>
+      <li>Your account (email and display name): until you delete your account</li>
+      <li>Subscription records: six years after your subscription ends, as UK tax law requires</li>
+      <li>Emails you send us: up to two years after your query is dealt with</li>
+    </ul>
+
+    <h2>Where your information is held</h2>
+    <p>Your account and your synced rides are stored using Supabase, on servers located in London,
+      United Kingdom.</p>
+    <p>Mapbox supplies the map, and receives requests for the areas you look at. Tapping a what3words
+      address opens their app or website; we send them nothing about you. Apple and Google handle
+      payment and distribution. RevenueCat manages subscription status. Expo, the framework the app
+      is built with, may collect crash reports.</p>
+    <p>Some of these are US companies, so limited information is processed outside the UK, covered by
+      the safeguards recognised under UK data protection law.</p>
+
+    <h2>Your rights</h2>
+    <p>Under UK GDPR you can ask what we hold about you, have it corrected or erased, restrict or
+      object to how we use it, take it elsewhere, or withdraw consent.</p>
+    <p>If you have an account we hold your email, display name and recorded rides; otherwise we hold
+      very little, as most of what concerns you is on your own phone. Email
+      <a href="mailto:charlotte@unthank-farm.co.uk">charlotte@unthank-farm.co.uk</a> and we will
+      respond within one month.</p>
+    <p>If you are unhappy with how we have handled your information, you can complain to the
+      Information Commissioner&rsquo;s Office at <a href="https://ico.org.uk">ico.org.uk</a> or
+      0303 123 1113.</p>
+
+    <h2>Children</h2>
+    <p>BridleNav is for riders aged 13 and over. When you create an account we ask you to confirm you
+      are 13 or older. We do not ask for or store your date of birth &mdash; only the fact that you
+      confirmed, and when.</p>
+    <p>If you are under 18, please make sure a parent or guardian is happy for you to use BridleNav.</p>
+  </div>
+</article>
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="mark" style="color:#F6F2E6;margin-bottom:10px">Bridle<span>Nav</span></div>
+      <p class="legal">
+        BridleNav is published by BridleNav Limited, registered in England and Wales,
+        company number 17461028. Registered office: Acorn Business Park,
+        7 Commercial Gate, Mansfield, NG18 1EX.
+      </p>
+      <p class="legal" style="margin-top:12px">
+        Always ride within your ability and your horse&rsquo;s. BridleNav guides you along a
+        route; it does not judge whether that route is safe on the day.
+      </p>
+    </div>
+    <div class="flinks">
+      <a href="mailto:hello@bridlenav.com">hello@bridlenav.com</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
