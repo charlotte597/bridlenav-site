@@ -212,6 +212,14 @@
   .feat h3{font-family:var(--display);color:var(--ink)}
   .feat p{color:var(--ink-soft);font-size:.98rem}
   @media (max-width:640px){.feat > div{grid-template-columns:1fr}}
+  @media (max-width:640px){
+    .wrap{padding-inline:26px}
+    section{padding-block:66px}
+    .section-head{margin-bottom:28px}
+    .feat > div{padding-block:26px;gap:8px}
+    .faq details{padding-block:22px}
+    .hero .wrap{padding-block:64px}
+  }
   .tier{display:flex;gap:16px;align-items:flex-start;padding:18px 0 18px 16px;
     border-left:4px solid;border-bottom:1px solid var(--rule)}
   .tier:first-of-type{border-top:1px solid var(--rule)}
