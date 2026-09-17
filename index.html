@@ -223,9 +223,9 @@
   .t-doc{border-color:var(--documented)} .t-doc .count{color:var(--documented)}
   .t-plo{border-color:var(--plotted)} .t-plo .count{color:var(--plotted)}
   .t-com{border-color:var(--gold)} .t-com .count{color:var(--gold-ink)}
-  .strip{display:grid;grid-template-columns:repeat(2,1fr);gap:3px}
+  .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
   .strip img{width:100%;height:clamp(150px,22vw,260px);object-fit:cover;display:block}
-  @media (max-width:640px){.strip img{height:clamp(130px,30vw,200px)}}
+  @media (max-width:640px){.strip{grid-template-columns:1fr 1fr}.strip img:last-child{display:none}}
   .places{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
   .places span{font-family:var(--display);font-size:.85rem;font-weight:600;
     border:1px solid var(--rule);border-radius:2px;padding:7px 12px;color:var(--ink-soft)}
@@ -310,6 +310,7 @@
 
 <div class="strip" aria-hidden="true">
   <img src="photos/holmesfield.jpg" alt="">
+  <img src="photos/haweswater.jpg" alt="">
   <img src="photos/derwent.jpg" alt="">
 </div>
 
@@ -515,7 +516,7 @@
         <p>It started because riders kept getting lost on bridleways she knew by heart &mdash; and because there was no way to hand that knowledge over without riding alongside them.</p>
         <p>Every route carries the sort of detail you only get from someone who has actually stood at that gate.</p>
       </div>
-      <img src="photos/linacre.jpg" alt="A wooded bridleway on the Linacre route in Derbyshire">
+      <img src="photos/linacre.jpg" alt="Riding two abreast down a hedged lane near Holmesfield">
     </div>
   </div>
 </section>
