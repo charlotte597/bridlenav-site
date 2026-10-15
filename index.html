@@ -74,7 +74,11 @@
   .demo h2{color:#F6F2E6}
   .demo .frame{position:relative;margin-top:26px;border-radius:4px;overflow:hidden;
     background:#0D140F;border:1px solid rgba(201,169,110,.3)}
-  .demo video{display:block;width:100%;height:auto}
+  .demo svg{display:block;width:100%;height:auto;background:#0D140F}
+  .demo .rmeta{position:absolute;left:14px;bottom:14px;color:#F6F2E6}
+  .demo .rmeta strong{font-family:var(--display);font-weight:800;font-size:1.02rem;display:block;letter-spacing:-.01em}
+  .demo .rmeta span{font-family:var(--display);font-size:.74rem;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:#C9A96E}
   .demo .said{display:flex;align-items:center;gap:14px;margin-top:20px;
     background:rgba(246,242,230,.07);border:1px solid rgba(201,169,110,.4);
     border-radius:3px;padding:15px 18px}
@@ -119,20 +123,41 @@
   </div>
 </div>
 
-<section class="demo" id="demo" hidden>
+<section class="demo" id="demo">
   <div class="wrap">
-    <span class="eyebrow" style="color:var(--gold)">Thirty seconds on a real ride</span>
-    <h2 style="margin-block:14px 8px">This is what it sounds like.</h2>
-    <p class="cap">No screen, no stopping. Just the next instruction, in time to do something about it.</p>
+    <span class="eyebrow" style="color:var(--gold)">What a ride sounds like</span>
+    <h2 style="margin-block:14px 8px">It talks. That&rsquo;s the whole idea.</h2>
+    <p class="cap">Here is one of our routes, and the words BridleNav says as you set off. Press play and it will read them to you, the way it would from your pocket.</p>
+
     <div class="frame">
-      <video id="demovid" src="media/bridlenav-demo.mp4" poster="media/bridlenav-demo.jpg"
-             muted loop playsinline preload="metadata"></video>
+      <svg id="routesvg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" role="img"
+           aria-label="The Totley Moor Loop drawn on a map">
+        <defs>
+          <linearGradient id="gline" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#C9A96E"/><stop offset="100%" stop-color="#8FAE84"/>
+          </linearGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <g opacity=".13" stroke="#8FAE84" fill="none" stroke-width="1">
+          <circle cx="500" cy="300" r="120"/><circle cx="500" cy="300" r="200"/>
+          <circle cx="500" cy="300" r="280"/><circle cx="500" cy="300" r="360"/>
+        </g>
+        <path id="ghost" d="M501.0,488.8 L491.2,485.9 L487.9,494.9 L484.9,501.4 L483.7,504.3 L482.7,507.1 L481.2,510.6 L476.9,513.6 L472.5,516.8 L466.5,520.1 L460.3,523.3 L454.0,526.3 L446.8,527.3 L437.8,528.5 L429.1,530.3 L422.9,533.5 L416.6,537.0 L412.6,540.0 L407.7,537.8 L402.2,536.8 L398.4,537.3 L395.0,536.3 L390.2,533.0 L386.2,528.3 L382.2,523.0 L378.3,517.3 L375.0,511.1 L372.3,502.6 L369.8,493.4 L366.8,484.4 L362.8,481.2 L357.8,478.7 L352.3,474.2 L347.4,467.4 L344.9,458.5 L342.4,448.5 L335.4,445.3 L327.7,440.5 L320.4,432.5 L317.2,429.5 L315.5,424.8 L318.4,415.3 L320.7,405.4 L325.9,396.4 L335.1,389.7 L344.1,382.7 L348.1,376.7 L354.1,373.5 L356.3,367.7 L360.3,360.5 L366.8,353.3 L370.3,345.3 L374.5,331.3 L376.3,323.1 L383.7,320.9 L392.5,318.6 L400.2,316.6 L401.2,305.4 L400.4,293.9 L399.4,285.5 L394.0,281.2 L389.0,276.5 L383.7,270.8 L379.8,263.5 L374.8,256.3 L368.8,248.8 L378.8,250.6 L387.7,252.1 L396.2,253.6 L405.4,254.6 L404.9,246.8 L406.2,239.9 L403.2,230.7 L401.9,220.7 L405.7,212.2 L409.2,203.2 L411.9,193.5 L414.4,179.6 L417.4,165.4 L418.9,150.2 L423.6,134.2 L428.6,117.8 L435.8,101.8 L440.1,91.6 L444.3,85.6 L450.5,84.2 L457.0,84.2 L460.7,81.4 L462.5,75.7 L464.5,68.5 L469.0,62.2 L470.5,60.0 L473.2,63.0 L475.9,65.7 L478.4,71.0 L479.2,75.4 L480.2,80.7 L481.4,83.9 L484.7,84.4 L488.7,83.9 L491.2,83.4 L493.4,86.6 L495.9,89.6 L498.4,92.6 L500.9,95.9 L503.6,99.6 L506.6,104.1 L507.4,104.6 L505.4,105.1 L503.1,105.3 L500.9,106.6 L498.4,108.6 L495.9,111.1 L493.9,114.3 L491.2,117.8 L489.7,120.5 L488.4,119.8 L487.2,121.5 L485.7,124.0 L484.9,127.0 L484.2,130.7 L483.9,135.5 L480.9,140.0 L477.7,143.9 L474.5,148.2 L472.0,151.4 L471.2,153.9 L473.7,154.9 L476.9,155.7 L480.7,156.9 L484.7,158.1 L488.7,159.4 L492.7,160.6 L494.1,160.9 L492.9,164.1 L491.9,167.4 L492.2,171.3 L494.1,176.3 L496.6,175.8 L499.9,177.3 L503.4,178.8 L507.1,181.6 L512.6,184.6 L519.1,187.8 L526.0,190.5 L532.8,191.0 L539.0,194.8 L545.0,201.0 L550.5,208.0 L553.7,213.5 L556.0,219.7 L558.2,224.9 L561.4,228.4 L566.4,230.2 L570.4,233.6 L571.9,239.4 L572.4,246.4 L573.1,253.8 L573.4,259.6 L583.9,258.1 L589.8,257.6 L596.3,260.1 L597.8,246.8 L596.6,232.1 L598.3,223.7 L600.3,217.2 L603.3,216.7 L608.0,216.7 L615.8,217.4 L617.5,216.9 L622.0,213.7 L626.2,211.0 L631.5,211.7 L637.2,212.2 L644.7,211.5 L650.4,209.7 L656.1,206.7 L662.4,204.2 L666.1,201.3 L669.8,207.0 L673.6,213.0 L676.6,219.9 L678.6,226.9 L678.3,233.9 L677.3,242.4 L676.8,249.1 L677.8,254.8 L680.1,260.3 L677.8,267.3 L682.3,270.8 L684.5,271.5 L684.1,273.8 L683.3,277.0 L680.8,279.5 L676.6,281.2 L671.6,284.0 L666.1,286.2 L664.6,289.7 L663.4,293.9 L660.4,298.4 L656.9,303.2 L653.1,306.7 L648.2,309.2 L643.4,313.4 L638.4,318.1 L633.2,322.9 L628.0,327.1 L622.5,329.1 L616.3,330.6 L615.3,331.6 L617.0,332.8 L619.3,334.3 L622.0,335.8 L624.0,337.8 L623.2,340.1 L622.7,343.0 L621.7,346.5 L619.8,351.5 L617.8,356.5 L618.0,361.7 L618.8,365.7 L615.0,366.5 L609.8,365.7 L605.0,366.5 L599.6,366.2 L592.8,366.0 L584.9,365.5 L575.6,365.5 L565.9,364.2 L561.9,364.2 L558.9,365.2 L555.5,366.5 L551.7,369.0 L547.2,373.5 L542.7,378.7 L537.3,383.9 L531.8,389.4 L525.3,393.6 L519.1,398.6 L512.1,400.9 L509.8,402.1 L508.6,404.6 L507.1,408.6 L505.6,414.6 L503.6,422.6 L501.6,431.5 L500.1,441.8 L498.6,452.2 L496.4,460.2 L495.1,467.9 L493.9,476.2 L491.2,485.6 L496.1,487.6 L500.9,488.6" fill="none" stroke="#3A4A3C" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round"/>
+        <path id="live" d="M501.0,488.8 L491.2,485.9 L487.9,494.9 L484.9,501.4 L483.7,504.3 L482.7,507.1 L481.2,510.6 L476.9,513.6 L472.5,516.8 L466.5,520.1 L460.3,523.3 L454.0,526.3 L446.8,527.3 L437.8,528.5 L429.1,530.3 L422.9,533.5 L416.6,537.0 L412.6,540.0 L407.7,537.8 L402.2,536.8 L398.4,537.3 L395.0,536.3 L390.2,533.0 L386.2,528.3 L382.2,523.0 L378.3,517.3 L375.0,511.1 L372.3,502.6 L369.8,493.4 L366.8,484.4 L362.8,481.2 L357.8,478.7 L352.3,474.2 L347.4,467.4 L344.9,458.5 L342.4,448.5 L335.4,445.3 L327.7,440.5 L320.4,432.5 L317.2,429.5 L315.5,424.8 L318.4,415.3 L320.7,405.4 L325.9,396.4 L335.1,389.7 L344.1,382.7 L348.1,376.7 L354.1,373.5 L356.3,367.7 L360.3,360.5 L366.8,353.3 L370.3,345.3 L374.5,331.3 L376.3,323.1 L383.7,320.9 L392.5,318.6 L400.2,316.6 L401.2,305.4 L400.4,293.9 L399.4,285.5 L394.0,281.2 L389.0,276.5 L383.7,270.8 L379.8,263.5 L374.8,256.3 L368.8,248.8 L378.8,250.6 L387.7,252.1 L396.2,253.6 L405.4,254.6 L404.9,246.8 L406.2,239.9 L403.2,230.7 L401.9,220.7 L405.7,212.2 L409.2,203.2 L411.9,193.5 L414.4,179.6 L417.4,165.4 L418.9,150.2 L423.6,134.2 L428.6,117.8 L435.8,101.8 L440.1,91.6 L444.3,85.6 L450.5,84.2 L457.0,84.2 L460.7,81.4 L462.5,75.7 L464.5,68.5 L469.0,62.2 L470.5,60.0 L473.2,63.0 L475.9,65.7 L478.4,71.0 L479.2,75.4 L480.2,80.7 L481.4,83.9 L484.7,84.4 L488.7,83.9 L491.2,83.4 L493.4,86.6 L495.9,89.6 L498.4,92.6 L500.9,95.9 L503.6,99.6 L506.6,104.1 L507.4,104.6 L505.4,105.1 L503.1,105.3 L500.9,106.6 L498.4,108.6 L495.9,111.1 L493.9,114.3 L491.2,117.8 L489.7,120.5 L488.4,119.8 L487.2,121.5 L485.7,124.0 L484.9,127.0 L484.2,130.7 L483.9,135.5 L480.9,140.0 L477.7,143.9 L474.5,148.2 L472.0,151.4 L471.2,153.9 L473.7,154.9 L476.9,155.7 L480.7,156.9 L484.7,158.1 L488.7,159.4 L492.7,160.6 L494.1,160.9 L492.9,164.1 L491.9,167.4 L492.2,171.3 L494.1,176.3 L496.6,175.8 L499.9,177.3 L503.4,178.8 L507.1,181.6 L512.6,184.6 L519.1,187.8 L526.0,190.5 L532.8,191.0 L539.0,194.8 L545.0,201.0 L550.5,208.0 L553.7,213.5 L556.0,219.7 L558.2,224.9 L561.4,228.4 L566.4,230.2 L570.4,233.6 L571.9,239.4 L572.4,246.4 L573.1,253.8 L573.4,259.6 L583.9,258.1 L589.8,257.6 L596.3,260.1 L597.8,246.8 L596.6,232.1 L598.3,223.7 L600.3,217.2 L603.3,216.7 L608.0,216.7 L615.8,217.4 L617.5,216.9 L622.0,213.7 L626.2,211.0 L631.5,211.7 L637.2,212.2 L644.7,211.5 L650.4,209.7 L656.1,206.7 L662.4,204.2 L666.1,201.3 L669.8,207.0 L673.6,213.0 L676.6,219.9 L678.6,226.9 L678.3,233.9 L677.3,242.4 L676.8,249.1 L677.8,254.8 L680.1,260.3 L677.8,267.3 L682.3,270.8 L684.5,271.5 L684.1,273.8 L683.3,277.0 L680.8,279.5 L676.6,281.2 L671.6,284.0 L666.1,286.2 L664.6,289.7 L663.4,293.9 L660.4,298.4 L656.9,303.2 L653.1,306.7 L648.2,309.2 L643.4,313.4 L638.4,318.1 L633.2,322.9 L628.0,327.1 L622.5,329.1 L616.3,330.6 L615.3,331.6 L617.0,332.8 L619.3,334.3 L622.0,335.8 L624.0,337.8 L623.2,340.1 L622.7,343.0 L621.7,346.5 L619.8,351.5 L617.8,356.5 L618.0,361.7 L618.8,365.7 L615.0,366.5 L609.8,365.7 L605.0,366.5 L599.6,366.2 L592.8,366.0 L584.9,365.5 L575.6,365.5 L565.9,364.2 L561.9,364.2 L558.9,365.2 L555.5,366.5 L551.7,369.0 L547.2,373.5 L542.7,378.7 L537.3,383.9 L531.8,389.4 L525.3,393.6 L519.1,398.6 L512.1,400.9 L509.8,402.1 L508.6,404.6 L507.1,408.6 L505.6,414.6 L503.6,422.6 L501.6,431.5 L500.1,441.8 L498.6,452.2 L496.4,460.2 L495.1,467.9 L493.9,476.2 L491.2,485.6 L496.1,487.6 L500.9,488.6" fill="none" stroke="url(#gline)" stroke-width="5"
+              stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+        <circle id="rider" r="8" fill="#F6F2E6" stroke="#16211A" stroke-width="2" opacity="0"/>
+      </svg>
       <button class="sound" id="soundbtn" type="button">&#9654;&nbsp; Play with sound</button>
+      <div class="rmeta"><strong>Totley Moor Loop</strong><span>11.6 miles &middot; Challenging</span></div>
     </div>
+
     <div class="said">
       <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-      <p>&ldquo;In two hundred yards, through the gate on your right.&rdquo;</p>
+      <p id="saidtext">&ldquo;Welcome to BridleNav. Starting the Totley Moor loop, an eleven and a half mile ride over the Peak District moors from Fox Lane. There are three busy road crossings and possibly cattle, so take care — but the canter tracks and views are superb. Follow the green line and enjoy the ride.&rdquo;</p>
     </div>
+    <p class="cap" style="margin-top:14px">Your hands stay on the reins. Your eyes stay on the track.</p>
   </div>
 </section>
 
@@ -244,27 +269,70 @@
 </footer>
 <script>
 (function () {
-  // The section stays hidden until the clip actually exists, so the page is
-  // never showing a broken player. Drop the file in and it appears by itself.
-  var sec = document.getElementById('demo');
-  var v = document.getElementById('demovid');
+  'use strict';
+  var live = document.getElementById('live');
+  var rider = document.getElementById('rider');
   var btn = document.getElementById('soundbtn');
-  if (!sec || !v) return;
-  v.addEventListener('loadeddata', function () {
-    sec.hidden = false;
-    var p = v.play();
-    if (p && p.catch) p.catch(function () {});
-  });
-  v.addEventListener('error', function () { sec.hidden = true; });
+  var said = document.getElementById('saidtext');
+  if (!live || !btn) return;
+
+  var LEN = live.getTotalLength();
+  live.style.strokeDasharray = LEN;
+  live.style.strokeDashoffset = LEN;
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DRAW = 9000;   // the line takes nine seconds to walk the route
+
+  function draw(ts, t0) {
+    var p = Math.min(1, (ts - t0) / DRAW);
+    live.style.strokeDashoffset = LEN * (1 - p);
+    var pt = live.getPointAtLength(LEN * p);
+    rider.setAttribute('cx', pt.x); rider.setAttribute('cy', pt.y);
+    rider.setAttribute('opacity', p > 0 && p < 1 ? 1 : 0);
+    if (p < 1) requestAnimationFrame(function (n) { draw(n, t0); });
+  }
+  function start() {
+    if (reduce) { live.style.strokeDashoffset = 0; return; }
+    requestAnimationFrame(function (ts) { draw(ts, ts); });
+  }
+
+  // Only animate once it is actually on screen, so a rider arriving at the
+  // page does not find the line already drawn and the moment gone.
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { start(); io.disconnect(); } });
+    }, { threshold: 0.35 });
+    io.observe(document.getElementById('routesvg'));
+  } else { start(); }
+
+  // THE WEBSITE SPEAKS. Same voice settings the app uses, read by the
+  // browser - no audio file, nothing to download, and it is the actual
+  // wording a rider hears when this route starts.
+  var speaking = false;
+  function stop() {
+    try { window.speechSynthesis.cancel(); } catch (e) {}
+    speaking = false;
+    btn.innerHTML = '&#9654;&nbsp; Play with sound';
+  }
   btn.addEventListener('click', function () {
-    if (v.muted) {
-      v.muted = false; v.currentTime = 0; v.play();
-      btn.innerHTML = 'Mute';
-    } else {
-      v.muted = true;
-      btn.innerHTML = '&#9654;&nbsp; Play with sound';
+    if (!('speechSynthesis' in window)) {
+      btn.disabled = true;
+      btn.textContent = 'Your browser cannot speak';
+      return;
     }
+    if (speaking) { stop(); return; }
+    var text = said.textContent.replace(/[\u201c\u201d]/g, '').trim();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-GB';
+    u.rate = 0.95;
+    u.onend = stop;
+    u.onerror = stop;
+    speaking = true;
+    btn.innerHTML = 'Stop';
+    start();
+    window.speechSynthesis.speak(u);
   });
+  window.addEventListener('pagehide', stop);
 })();
 </script>
 </body>
