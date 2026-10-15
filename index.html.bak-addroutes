@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BridleNav — voice navigation for horse riders</title>
+<meta name="description" content="Voice-guided navigation for horse riders. BridleNav speaks UK bridleway routes turn by turn, works with no phone signal, and shares your location in an emergency.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://bridlenav.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BridleNav — voice navigation for horse riders">
+<meta property="og:description" content="Voice-guided navigation for horse riders. BridleNav speaks UK bridleway routes turn by turn, works with no phone signal, and shares your location in an emergency.">
+<meta property="og:url" content="https://bridlenav.com/">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "BridleNav",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "iOS, Android",
+      "description": "Voice-guided GPS navigation for horse riders. Spoken turn-by-turn directions along UK bridleways, offline maps, horsebox parking and an emergency SOS.",
+      "offers": [
+        {
+          "@type": "Offer",
+          "price": "10.99",
+          "priceCurrency": "GBP",
+          "description": "Monthly subscription"
+        },
+        {
+          "@type": "Offer",
+          "price": "99.99",
+          "priceCurrency": "GBP",
+          "description": "Annual subscription"
+        }
+      ],
+      "areaServed": {
+        "@type": "Country",
+        "name": "United Kingdom"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BridleNav Limited"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "BridleNav Limited",
+      "url": "https://bridlenav.com",
+      "email": "hello@bridlenav.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Acorn Business Park, 7 Commercial Gate",
+        "addressLocality": "Mansfield",
+        "postalCode": "NG18 1EX",
+        "addressCountry": "GB"
+      }
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <a class="mark" href="index.html">Bridle<span>Nav</span></a>
+    <nav class="nav">
+      <a href="how-it-works.html">How it works</a>
+      <a href="routes.html">Routes</a>
+      <a href="safety.html">Safety</a>
+      <a href="faq.html">FAQ</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <img src="photos/moorland.jpg" alt="The view between a horse’s ears along a moorland track in the Peak District">
+  <div class="wrap">
+    <p class="eyebrow">Built by a rider, in the Peak District</p>
+    <h1>Eyes up.<br>Reins in both hands.</h1>
+    <p class="lede">BridleNav speaks your route out loud, turn by turn, so your phone stays in your pocket and your hands stay where they belong.</p>
+    <div class="utterance">
+      <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <p>&ldquo;In two hundred yards, through the gate on your right.&rdquo;</p>
+    </div>
+    <div class="cta-row">
+      <a class="store" href="https://www.facebook.com/profile.php?id=61595187637261">Follow on Facebook</a>
+      <a class="store alt" href="mailto:hello@bridlenav.com?subject=Tell%20me%20when%20BridleNav%20is%20out">Email me when it&rsquo;s out</a>
+    </div>
+    <p class="cta-note" style="margin-top:14px">Coming spring 2027 &middot; Peak District, Cheshire, Lancashire &amp; the Lakes</p>
+  </div>
+</div>
+
+<section class="why">
+  <div class="wrap measure">
+    <p class="eyebrow">Why it exists</p>
+    <h2 style="margin-block:12px 20px">You can&rsquo;t read a map on a horse.</h2>
+    <p>Reins in both hands. Gloves on. A horse who won&rsquo;t stand still, on a track where stopping isn&rsquo;t sensible anyway. Every other navigation app quietly assumes you can look at a screen.</p>
+    <p>So BridleNav doesn&rsquo;t ask you to. It tells you what&rsquo;s coming while there&rsquo;s still time to do something about it, says &ldquo;now&rdquo; at the turn itself, and keeps talking with the screen off and the phone in your pocket.</p>
+    <p class="pull">If you have to look at it, it hasn&rsquo;t worked.</p>
+    </div>
+</section>
+
+<div class="strip" aria-hidden="true">
+  <img src="photos/holmesfield.jpg" alt="">
+  <img src="photos/haweswater.jpg" alt="">
+  <img src="photos/derwent.jpg" alt="">
+</div>
+
+<section class="band">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">What you get</p>
+      <h2>Made for the saddle, not the car.</h2>
+    </div>
+    <div class="feat">
+      <div>
+        <h3>Turn-by-turn voice</h3>
+        <p>A warning while there&rsquo;s still room to react, then &ldquo;Now, turn left&rdquo; at the turn. A UK voice you can change in Settings.</p>
+      </div>
+      <div>
+        <h3>Works with no signal</h3>
+        <p>Download the map before you box up. Riders have completed whole loops on BridleNav with no phone signal at all.</p>
+      </div>
+      <div>
+        <h3>Horsebox parking</h3>
+        <p>Where to park, with a postcode and a what3words square &mdash; plus height and length restrictions before you tow somewhere you can&rsquo;t turn round.</p>
+      </div>
+      <div>
+        <h3>Hazards called out</h3>
+        <p>Road crossings, gates, boggy stretches, and the two houses where the dogs come at the fence. The things a local would tell you.</p>
+      </div>
+    </div>
+    <a class="more" href="how-it-works.html">Everything it does &rarr;</a>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="section-head measure">
+      <p class="eyebrow">What it will cost</p>
+      <h2>One ride free. Then a week to make your mind up.</h2>
+      <p style="color:var(--ink-soft)">Your first complete ride is free, with everything switched on &mdash; voice, offline maps, the lot. After that there&rsquo;s a seven-day trial before you pay anything.</p>
+    </div>
+    <div class="prices">
+      <div class="price">
+        <span class="amt">&pound;10.99</span>
+        <span class="per">per month</span>
+        <p class="desc">Cancel any time. Good for a season.</p>
+      </div>
+      <div class="price best">
+        <span class="tag">Best value</span>
+        <span class="amt">&pound;99.99</span>
+        <span class="per">per year</span>
+        <p class="desc">Works out at &pound;8.33 a month &mdash; close to three months free against paying monthly.</p>
+      </div>
+    </div>
+    <p class="trial">BridleNav is not on sale yet &mdash; these are the prices it will launch at. Prices include VAT. Available in the United Kingdom. Subscriptions are managed through the App Store or Google Play, and you can cancel there at any time.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="section-head measure">
+      <p class="eyebrow">More about BridleNav</p>
+      <h2>Have a look round.</h2>
+    </div>
+    <div class="onward">
+      <a href="how-it-works.html"><h3>How it works</h3><p>Voice directions, offline maps, horsebox parking, hazards called out.</p></a>
+      <a href="routes.html"><h3>Routes</h3><p>Forty-one to begin with, each badged by how well we know it.</p></a>
+      <a href="safety.html"><h3>Safety</h3><p>SOS sends your exact location and a tappable map link to your emergency contact.</p></a>
+      <a href="faq.html"><h3>Questions</h3><p>The things riders ask before they download it.</p></a>
+      <a href="about.html"><h3>About</h3><p>Built at a farm in Holmesfield, not in an office.</p></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="mark" style="color:#F6F2E6;margin-bottom:10px">Bridle<span>Nav</span></div>
+      <p class="legal">
+        BridleNav is published by BridleNav Limited, registered in England and Wales,
+        company number 17461028. Registered office: Acorn Business Park,
+        7 Commercial Gate, Mansfield, NG18 1EX.
+      </p>
+      <p class="legal" style="margin-top:12px">
+        Always ride within your ability and your horse&rsquo;s. BridleNav guides you along a
+        route; it does not judge whether that route is safe on the day.
+      </p>
+    </div>
+    <div class="flinks">
+      <a href="mailto:hello@bridlenav.com">hello@bridlenav.com</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

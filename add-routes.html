@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Add your routes to BridleNav — share where you hack</title>
+<meta name="description" content="Riders know where the good hacking is. Send us a route you already ride — from a file you've already got, or recorded on your next ride — and it goes on the map for everyone.">
+<!-- Findable. This is the page that should turn up in a search, because it
+     explains what is wanted before anybody reaches an upload box. The form
+     itself stays out of the index. -->
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://bridlenav.com/add-routes.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Add your routes to BridleNav">
+<meta property="og:description" content="Riders know where the good hacking is. Send a route you already ride and it goes on the map for everyone.">
+<meta property="og:url" content="https://bridlenav.com/add-routes.html">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="css/site.css">
+
+<style>
+  /* Page-only. The gaps need to read as absence, not as a menu of links. */
+  .gaps{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .gaps span{font-family:var(--display);font-size:.88rem;font-weight:600;
+    border:1px dashed var(--rule);border-radius:2px;padding:8px 13px;color:var(--ink-soft)}
+  .gaps span.has{border-style:solid;border-color:var(--green);color:var(--green)}
+  .count{font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,5vw,3.2rem);
+    letter-spacing:-.03em;line-height:1;display:block}
+  .count-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:22px;margin-top:30px;max-width:40rem}
+  .count-row .sub{font-family:var(--display);font-size:.72rem;font-weight:600;
+    letter-spacing:.11em;text-transform:uppercase;color:var(--ink-soft);margin-top:7px;display:block}
+  .steps{counter-reset:s;margin-top:26px;border-top:1px solid var(--rule)}
+  .steps > div{display:grid;grid-template-columns:3rem 1fr;gap:6px 20px;
+    padding-block:22px;border-bottom:1px solid var(--rule);align-items:start}
+  .steps .n{counter-increment:s;font-family:var(--display);font-weight:800;
+    font-size:1.5rem;color:var(--gold-ink);line-height:1.1}
+  .steps .n::before{content:counter(s)}
+  .steps h3{font-family:var(--display);margin-bottom:5px}
+  .steps p{color:var(--ink-soft);font-size:1.01rem}
+  @media (max-width:640px){.steps > div{grid-template-columns:1fr;gap:4px}}
+  .big-cta{display:inline-block;font-family:var(--display);font-weight:700;font-size:1rem;
+    background:var(--green);color:#F6F2E6;border:1px solid var(--green);
+    padding:15px 30px;border-radius:3px;text-decoration:none;margin-top:8px}
+  .quote{border-left:3px solid var(--gold);padding-left:18px;margin-top:26px;max-width:34rem}
+  .quote p{font-style:italic;color:var(--ink-soft)}
+  .quote cite{font-family:var(--display);font-size:.78rem;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--gold-ink);font-style:normal;display:block;margin-top:10px}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="mark" href="index.html">Bridle<span>Nav</span></a>
+    <nav class="nav">
+      <a href="how-it-works.html">How it works</a>
+      <a href="routes.html">Routes</a>
+      <a href="add-routes.html" aria-current="page">Add your routes</a>
+      <a href="safety.html">Safety</a>
+      <a href="faq.html">FAQ</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">The map grows where riders are</span>
+    <h1 style="margin-block:14px 20px">Add your routes</h1>
+    <p class="lede measure" style="font-size:1.14rem">
+      Nobody has ever had a decent list of where you can hack. Riders work it out themselves,
+      one ride at a time, and then it stays in their heads. This is how it gets out of them.
+    </p>
+    <p class="measure" style="margin-top:16px;color:var(--ink-soft)">
+      If you already ride somewhere good, you already have what BridleNav needs. Send it over,
+      and the next rider who boxes up near you doesn&rsquo;t have to guess.
+    </p>
+    <p style="margin-top:28px">
+      <a class="big-cta" href="share-a-route.html">Send a route</a>
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <span class="eyebrow">Where we&rsquo;re up to</span>
+    <h2 style="margin-block:12px 6px">Forty-eight routes, and a lot of blank map</h2>
+    <div class="count-row">
+      <div><span class="count">43</span><span class="sub">Ridden or written up by us</span></div>
+      <div><span class="count">5</span><span class="sub">Shared by riders</span></div>
+      <div><span class="count">6</span><span class="sub">Areas with anything in them</span></div>
+    </div>
+
+    <p class="measure" style="margin-top:34px">
+      Here is the honest picture. Green is somewhere a rider would find something today.
+      Everything else is a county where somebody is going out this weekend and BridleNav has
+      nothing to offer them.
+    </p>
+    <div class="gaps">
+      <span class="has">Peak District</span>
+      <span class="has">Lancashire</span>
+      <span class="has">Cheshire</span>
+      <span class="has">Lake District</span>
+      <span class="has">Yorkshire</span>
+      <span class="has">North East</span>
+      <span>Lincolnshire</span>
+      <span>York &amp; Hull</span>
+      <span>Doncaster</span>
+      <span>Northumberland</span>
+      <span>Nottinghamshire</span>
+      <span>Shropshire</span>
+      <span>The Cotswolds</span>
+      <span>Wales</span>
+      <span>Scotland</span>
+      <span>The South West</span>
+      <span>The South Downs</span>
+      <span>East Anglia</span>
+    </div>
+    <p class="measure" style="margin-top:22px;color:var(--ink-soft)">
+      If your county has a dashed line round it, you are not one of many. You would be the first,
+      and the first route somewhere new is worth ten in the Peak District.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">What makes one worth sharing</span>
+    <h2 style="margin-block:12px 20px">Four things, and only one of them is fiddly</h2>
+
+    <div class="feat">
+      <div>
+        <h3>Anyone may ride it</h3>
+        <p>
+          Public bridleway, byway, road or a path open to everyone. Not a field a farmer lets
+          <em>you</em> cross, because that permission doesn&rsquo;t travel to the strangers who will
+          ride it on your word. This is the one thing we cannot check for you, and the one thing
+          we ask you to confirm.
+        </p>
+      </div>
+      <div>
+        <h3>Parking a stranger can find</h3>
+        <p>
+          Where you actually leave the lorry, what the surface is like, and whether a trailer
+          will turn. A postcode often drops somebody at the wrong end of a long lane, so we ask
+          for the what3words square instead.
+        </p>
+      </div>
+      <div>
+        <h3>The words you&rsquo;d say at each turn</h3>
+        <p>
+          This is the fiddly one, and it is also the whole point. BridleNav reads your words out
+          loud as the rider approaches the junction, so &ldquo;left through the gate by the barn&rdquo; is
+          worth far more than &ldquo;turn left&rdquo;. Gates, water and livestock get marked the same way.
+        </p>
+      </div>
+      <div>
+        <h3>Two photographs</h3>
+        <p>
+          A view, the going underfoot, the parking. They are what makes another rider pick your
+          route, and they are shrunk in your browser before they are sent, which strips the
+          location tag your camera put in them.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <span class="eyebrow">How it works</span>
+    <h2 style="margin-block:12px 6px">You probably don&rsquo;t need to ride anything again</h2>
+    <p class="measure" style="margin-top:14px;color:var(--ink-soft)">
+      Most riders who track their hacks already have the hard part sitting in an app.
+    </p>
+
+    <div class="steps">
+      <div>
+        <span class="n"></span>
+        <div>
+          <h3>Send the file you already have</h3>
+          <p>
+            A GPX file out of Equilab, Strava, OS Maps, Footpath or a Garmin. In Equilab it&rsquo;s on a
+            ride&rsquo;s Summary page; in Garmin Connect it&rsquo;s Export to GPX. If you&rsquo;ve never tracked a
+            ride, record your next one in BridleNav instead and share it from the app when you&rsquo;re home.
+          </p>
+        </div>
+      </div>
+      <div>
+        <span class="n"></span>
+        <div>
+          <h3>Trim it, then tell it what to say</h3>
+          <p>
+            Drag the start forward so the route doesn&rsquo;t begin at your own yard &mdash; what you cut off
+            never leaves the page. Then we show you where your line turns, and you write what you&rsquo;d
+            want said out loud at each one.
+          </p>
+        </div>
+      </div>
+      <div>
+        <span class="n"></span>
+        <div>
+          <h3>We read it before anybody rides it</h3>
+          <p>
+            Every route is read through by a person before it goes anywhere near the app. Nothing
+            is published automatically, and if something doesn&rsquo;t look right we come back to you
+            rather than guess.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:30px">
+      <a class="big-cta" href="share-a-route.html">Send a route</a>
+    </p>
+    <p class="measure" style="margin-top:14px;color:var(--ink-soft);font-size:.97rem">
+      About ten minutes for your first one, and rather less after that.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Your name on it</span>
+    <h2 style="margin-block:12px 18px">Routes are credited to the rider who found them</h2>
+    <p class="measure">
+      Every shared route carries a badge saying it came from a rider, with your name on it &mdash; or
+      your horse&rsquo;s name alongside yours, if that&rsquo;s how you&rsquo;d rather be known. If you&rsquo;d sooner not be
+      named at all, leave the name blank and the route goes up anonymously. Nobody has to put
+      themselves on the internet to be useful.
+    </p>
+
+    <div class="quote">
+      <p>
+        &ldquo;We did write a couple of books for the North East to help people try and find somewhere
+        to hack, as no one really had any idea of the locations.&rdquo;
+      </p>
+      <cite>A rider who sent us his first route this week</cite>
+    </div>
+
+    <p class="measure" style="margin-top:28px;color:var(--ink-soft)">
+      That is the whole problem, in one sentence, from somebody who went and wrote two books about
+      it. You don&rsquo;t have to write a book. One route will do.
+    </p>
+
+    <p style="margin-top:26px">
+      <a class="more" href="routes.html">See how routes are badged</a>
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="onward">
+      <a href="how-it-works.html">
+        <h3>How it works</h3>
+        <p>What the app actually does on a ride.</p>
+      </a>
+      <a href="routes.html">
+        <h3>Routes</h3>
+        <p>What&rsquo;s on the map, and how each one is badged.</p>
+      </a>
+      <a href="faq.html">
+        <h3>Questions</h3>
+        <p>Coverage, signal, cost and safety.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="mark" style="color:#F6F2E6;margin-bottom:10px">Bridle<span>Nav</span></div>
+      <p class="legal">
+        BridleNav is published by BridleNav Limited, registered in England and Wales,
+        company number 17461028. Registered office: Acorn Business Park,
+        7 Commercial Gate, Mansfield, NG18 1EX.
+      </p>
+      <p class="legal" style="margin-top:12px">
+        Always ride within your ability and your horse&rsquo;s. BridleNav guides you along a
+        route; it does not judge whether that route is safe on the day.
+      </p>
+    </div>
+    <div class="flinks">
+      <a href="add-routes.html">Add your routes</a>
+      <a href="mailto:hello@bridlenav.com">hello@bridlenav.com</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
