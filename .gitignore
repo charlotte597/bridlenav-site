@@ -1,0 +1,9 @@
+# Backup copies made before an edit. They live on disk as a safety net and
+# must never be published: this repo IS the website, so anything committed
+# here is served at bridlenav.com under its own filename.
+*.bak
+*.bak-*
+*.pre-*-bak
+
+# macOS
+.DS_Store
