@@ -17,6 +17,28 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
 <link rel="stylesheet" href="css/site.css">
+<style>
+  /* The route list. Deliberately a list and not a gallery: most of these have
+     no photograph that belongs to the website, and a grid three-quarters full
+     of empty tiles looks like a mistake rather than a decision. */
+  .area-block{margin-top:34px}
+  .area-block h3{font-family:var(--display);font-size:1.12rem;display:flex;
+    align-items:baseline;gap:10px;padding-bottom:9px;border-bottom:2px solid var(--rule)}
+  .area-block h3 em{font-style:normal;font-family:var(--display);font-size:.7rem;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .rt{display:grid;grid-template-columns:1fr auto;gap:4px 18px;align-items:baseline;
+    padding:12px 0;border-bottom:1px solid var(--rule)}
+  .rt .nm{font-family:var(--display);font-weight:700;font-size:1rem}
+  .rt .by{font-size:.86rem;color:var(--gold-ink);display:block;margin-top:2px}
+  .rt .meta{font-size:.9rem;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .rt .bdg{font-family:var(--display);font-size:.62rem;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;border-radius:20px;padding:3px 9px;margin-left:8px;white-space:nowrap}
+  .b-ver{background:#5F9E3E;color:#fff} .b-doc{background:#EF9F27;color:#3A2A00}
+  .b-plo{background:#9A9890;color:#fff} .b-map{background:#6E8CA0;color:#fff}
+  .b-com{background:#C9A96E;color:#2C3E2D}
+  @media (max-width:560px){.rt{grid-template-columns:1fr}.rt .meta{white-space:normal}}
+  .listnote{color:var(--ink-soft);font-size:.95rem;margin-top:26px;max-width:38rem}
+</style>
 </head>
 <body>
 <header class="masthead">
@@ -87,11 +109,10 @@
       <p style="color:var(--ink-soft)">The routes we have ridden and written up ourselves are here, and BridleNav began in Derbyshire. But riders anywhere in the UK can record and share their own, so the map grows wherever riders are &mdash; not only where we&rsquo;ve been.</p>
       <p style="margin-top:18px"><a class="more" href="add-routes.html">Add your routes</a></p>
     </div>
-    <div class="places">
-      <span>Peak District</span><span>Derbyshire</span><span>Cheshire</span>
-      <span>Lancashire</span><span>Staffordshire</span><span>Lake District</span>
-      <span>Yorkshire</span><span>North East</span>
+    <div id="routelist">
+      <p class="listnote">Loading the routes&hellip;</p>
     </div>
+    <p class="listnote" id="listnote"></p>
   </div>
 </section>
 
@@ -131,5 +152,118 @@
     </div>
   </div>
 </footer>
+
+<script>
+(function () {
+  'use strict';
+  // THE LIST BUILDS ITSELF. BridleNav's own routes come from routes-data.json,
+  // exported from the app. Riders' routes are read live from the same public
+  // view the app reads, so a route Charlotte approves turns up here on its own
+  // within minutes - no deploy, no editing this page.
+  //
+  // WHAT IS DELIBERATELY NOT HERE: the spoken turn-by-turn, the gate and water
+  // marks, the parking directions and the what3words squares. Those are the app.
+  // This page exists to show the routes are real and to let a contributor point
+  // at their own name.
+  var SB  = 'https://xlvjhktfaiagtbdxaetn.supabase.co';
+  var KEY = 'sb_publishable_OYjxynX2htU7Z5BAC0lcUg_kqqt1mo_';
+
+  var LABEL = {
+    verified: ['Verified', 'b-ver'], documented: ['Documented', 'b-doc'],
+    plotted: ['Map only', 'b-plo'], map_guided: ['Map guided', 'b-map'],
+    community: ['Shared by a rider', 'b-com']
+  };
+
+  function areaKey(r) {
+    return String(r || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+  }
+  var SMALL = { of:1, the:1, and:1, upon:1, on:1, in:1 };
+  function areaLabel(k) {
+    return String(k).split('_').filter(Boolean).map(function (w, i) {
+      return (i && SMALL[w]) ? w : w.charAt(0).toUpperCase() + w.slice(1);
+    }).join(' ');
+  }
+  function esc(t) {
+    return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  // Miles from a [lon,lat] line, so a rider's route reads the same as ours.
+  function miles(track) {
+    if (!track || track.length < 2) return null;
+    var R = 6371000, rad = function (d) { return d * Math.PI / 180; }, m = 0;
+    for (var i = 1; i < track.length; i++) {
+      var a = track[i - 1], b = track[i];
+      var p1 = rad(a[1]), p2 = rad(b[1]), dp = rad(b[1] - a[1]), dl = rad(b[0] - a[0]);
+      var h = Math.sin(dp / 2) * Math.sin(dp / 2) + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) * Math.sin(dl / 2);
+      m += 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+    }
+    return (m / 1609.34).toFixed(1) + ' miles';
+  }
+
+  function render(all) {
+    var by = {};
+    all.forEach(function (r) {
+      var k = r.areaKey || 'elsewhere';
+      (by[k] = by[k] || []).push(r);
+    });
+    var keys = Object.keys(by).sort(function (x, y) {
+      return by[y].length - by[x].length || areaLabel(x).localeCompare(areaLabel(y));
+    });
+    var html = '';
+    keys.forEach(function (k) {
+      var list = by[k].slice().sort(function (a, b) { return a.name.localeCompare(b.name); });
+      html += '<div class="area-block"><h3>' + esc(areaLabel(k)) +
+              ' <em>' + list.length + (list.length === 1 ? ' route' : ' routes') + '</em></h3>';
+      list.forEach(function (r) {
+        var lab = LABEL[r.tier] || LABEL.plotted;
+        html += '<div class="rt"><div><span class="nm">' + esc(r.name) + '</span>' +
+                (r.by ? '<span class="by">Found by ' + esc(r.by) + '</span>' : '') +
+                '</div><div class="meta">' + esc(r.distance || '') +
+                (r.difficulty ? ' &middot; ' + esc(r.difficulty) : '') +
+                '<span class="bdg ' + lab[1] + '">' + lab[0] + '</span></div></div>';
+      });
+      html += '</div>';
+    });
+    document.getElementById('routelist').innerHTML = html;
+    var n = all.length;
+    document.getElementById('listnote').innerHTML =
+      n + ' routes, across ' + keys.length + ' ' + (keys.length === 1 ? 'area' : 'areas') +
+      '. Riders&rsquo; routes appear here as soon as they&rsquo;re checked and published. ' +
+      '<a class="more" style="margin-top:14px" href="add-routes.html">Add yours</a>';
+  }
+
+  var ours = [];
+  fetch('routes-data.json', { cache: 'no-cache' })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      ours = (d.routes || []).map(function (r) {
+        return { name: r.n, areaKey: areaKey(r.a), distance: r.d, difficulty: r.h, tier: r.t, by: null };
+      });
+    })
+    .catch(function () { ours = []; })
+    .then(function () {
+      // Riders' routes. If this fails the page still shows ours rather than
+      // nothing - a broken list is worse than a shorter one.
+      return fetch(SB + '/rest/v1/community_routes?select=name,area,submitter_name,track', {
+        headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
+      }).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
+    })
+    .then(function (shared) {
+      var theirs = (shared || []).map(function (r) {
+        return {
+          name: r.name, areaKey: areaKey(r.area), distance: miles(r.track),
+          difficulty: null, tier: 'community', by: r.submitter_name || null
+        };
+      }).filter(function (r) { return r.name && r.areaKey; });
+      if (!ours.length && !theirs.length) {
+        document.getElementById('routelist').innerHTML =
+          '<p class="listnote">The route list could not be loaded just now. Please try again in a moment.</p>';
+        return;
+      }
+      render(ours.concat(theirs));
+    });
+})();
+</script>
 </body>
 </html>
