@@ -3,7 +3,7 @@
 # here is served at bridlenav.com under its own filename.
 *.bak
 *.bak-*
-*.pre-*-bak
+*.pre-*
 
 # macOS
 .DS_Store

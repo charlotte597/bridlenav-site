@@ -198,17 +198,28 @@
 <!-- ------------------------------------------------------------------ 3 -->
 <div class="step" id="s3" hidden>
   <span class="num">Step three</span>
-  <h2>What BridleNav should say</h2>
+  <h2>Now tell it what to say</h2>
   <p class="help">
-    These are the places your line changed direction. The firm ones are listed ready for you to
-    write; the shallow bends start set aside, because most of those are just the path winding
-    through trees rather than somewhere a rider needs telling. Nothing is hidden &mdash; if one of the
-    set-aside ones is really a junction, put it back.
+    <strong>This is the part that does the work, and only you can do it.</strong> The file gives us your line.
+    It cannot tell a rider which way to go at a fork, where the gate is, or which of two paths is
+    the right one. That comes from you, and what you write below is <strong>read out loud</strong> as the rider
+    gets there.
   </p>
   <p class="help">
-    Whatever you write here is <strong>spoken out loud</strong> to the rider as they approach it, so write it
-    the way you would say it to somebody riding behind you. &ldquo;Left through the gate by the barn&rdquo;
-    beats &ldquo;turn left&rdquo;. You can also mark gates, water and livestock, and those need no words at all.
+    <strong>Which places need words?</strong> Imagine riding it with a friend who has never been. Wherever they
+    would slow down and look at you is where BridleNav needs to say something. A bend in a single
+    track with nowhere else to go needs nothing at all. A fork, a gate, a road crossing, or a spot
+    where the obvious-looking path is the wrong one &mdash; those all need words.
+    <strong>Most routes come out somewhere between eight and twenty.</strong>
+  </p>
+  <p class="help">
+    Write it the way you would say it out loud: &ldquo;left through the gate by the barn&rdquo; is worth ten of
+    &ldquo;turn left&rdquo;, because it names something a rider can see. Mark the gates, water and livestock
+    too, even where there is no decision to make &mdash; a rider likes the warning. Those need no words.
+  </p>
+  <p class="help">
+    The firm turns are listed below ready for you to write. Shallow bends start set aside because
+    most are just the path winding; nothing is hidden, so put any of them back if it is really a junction.
   </p>
 
   <div id="turns"></div>
@@ -540,6 +551,7 @@
   var photos = [];      // {blob, url}
   var picks = { difficulty: '', traffic: '', routeType: '', fits: [] };
   var ticked = false;
+  var warnedNoWords = false;
   var adding = false;
   var map = null, lineOn = null, lineOff = null, pins = [];
 
@@ -735,6 +747,41 @@
   // Re-label the rows and the running total in place. Used when a row changes
   // state mid-typing, where a full re-render would take the focus out of the
   // box the rider is in the middle of.
+  // Every detected turn arrives carrying our guess - a bare 'left' or 'right'.
+  // That is not the rider saying anything, so it must not be counted as words,
+  // or a route nobody has touched reads back as fully written.
+  function ownWords() {
+    var c = 0;
+    marks.forEach(function (m) {
+      if (m.dropped || m.index < trimA() || m.index > trimB()) return;
+      var note = (m.note || '').trim();
+      if (note && AUTO_WORDS.indexOf(note.toLowerCase()) < 0) c++;
+    });
+    return c;
+  }
+
+  function sayCount(n, aside) {
+    var written = ownWords();
+    var t;
+    if (!n) {
+      t = 'Nothing will go with the route at the moment \u2014 BridleNav would draw your line and stay silent the whole way round.' +
+        (aside ? ' Put a point back above wherever the path really does make a decision.' : '');
+    } else {
+      t = n + ' point' + (n === 1 ? '' : 's') + ' will go with the route' +
+        (aside ? ', and ' + aside + ' set aside as probably just the path winding. Put any of those back if it is really a junction.' : '.');
+      if (!written) {
+        t += '  None of them is in your words yet \u2014 as it stands BridleNav would say a bare \u201cleft\u201d or \u201cright\u201d and nothing about what the rider is looking at.';
+      } else {
+        t += '  ' + written + ' of them ' + (written === 1 ? 'is' : 'are') + ' in your own words.';
+      }
+    }
+    if (n && written && warnedNoWords) {
+      warnedNoWords = false;
+      $('send').textContent = 'Send it for review';
+    }
+    $('turnsay').textContent = t;
+  }
+
   function renumber() {
     var n = 0, shown = 0;
     marks.forEach(function (m, i) {
@@ -746,9 +793,7 @@
       var tag = row.querySelector('.where i');
       if (tag) tag.textContent = m.dropped ? 'not used' : 'point ' + n;
     });
-    var aside = shown - n;
-    $('turnsay').textContent = n + ' point' + (n === 1 ? '' : 's') + ' will go with the route' +
-      (aside ? ', and ' + aside + ' set aside as probably just the path winding. Put any of those back if it is really a junction.' : '.');
+    sayCount(n, shown - n);
   }
 
   var WANT_LIVE = 28;   // turns to write before it stops feeling like a form
@@ -846,9 +891,11 @@
           m.dropped = false;
           row.classList.remove('gone');
           kill.textContent = 'not needed';
-          renumber();
           if (map) drawPins();
         }
+        // The running line counts words now, so it has to keep up with the
+        // typing. renumber() re-labels in place and leaves the caret alone.
+        renumber();
       });
 
       var kill = document.createElement('button');
@@ -869,9 +916,7 @@
       host.innerHTML = '<p class="help" style="margin:0">Nothing was spotted on this line, which happens on a route that ' +
         'runs more or less straight. Use the button below to add the gates and turns yourself.</p>';
     }
-    var aside = shown - n;
-    $('turnsay').textContent = n + ' point' + (n === 1 ? '' : 's') + ' will go with the route' +
-      (aside ? ', and ' + aside + ' set aside as probably just the path winding. Put any of those back if it is really a junction.' : '.');
+    sayCount(n, shown - n);
     if (map) drawPins();
   }
 
@@ -1034,6 +1079,9 @@
     say.textContent = msg;
     $('send').disabled = false;
     $('send').textContent = 'Send it for review';
+    // The message sits under the button. On a page this long that can be off
+    // the bottom of the screen, which reads as the button doing nothing.
+    say.scrollIntoView({ block: 'center', behavior: 'smooth' });
     return false;
   }
 
@@ -1051,6 +1099,23 @@
     if (photos.length < MIN_PHOTOS) return problem('Two photographs are needed before a route can be sent.');
     if (!ticked) {
       return problem('Please confirm any rider could follow this route. Permission given to you personally does not pass to the strangers who will ride it on your word - if any part of this needs that, it cannot be shared.');
+    }
+
+    // A silent route still works - the app draws the line and says nothing,
+    // and a plain track is worth having. But almost nobody means to send one,
+    // so ask once and then get out of the way.
+    if (!warnedNoWords) {
+      var live = collectPoints().length, mine = ownWords();
+      if (!live || !mine) {
+        warnedNoWords = true;
+        say.className = 'say bad';
+        say.textContent = !live
+          ? 'Nothing is going with the route, so BridleNav would draw the line and stay silent the whole way round. Go back up to step three and mark even a few of the places a rider has to make a decision \u2014 or press again and it will go as a plain track.'
+          : 'None of your points is in your own words yet, so BridleNav would say a bare \u201cleft\u201d or \u201cright\u201d with nothing about what the rider is looking at. Go back up and write even a handful \u2014 or press again and it will go as it stands.';
+        $('send').textContent = 'Send it anyway';
+        say.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        return false;
+      }
     }
 
     $('send').disabled = true;
