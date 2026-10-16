@@ -7,3 +7,6 @@
 
 # macOS
 .DS_Store
+
+# Scratch files written while building something; never part of the site.
+.tmp-*
