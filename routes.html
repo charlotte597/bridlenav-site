@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BridleNav routes — where you can ride</title>
-<meta name="description" content="Forty-eight bridleway routes, each badged by how well we know it, across the Peak District, Cheshire, Lancashire and the Lakes.">
+<meta name="description" content="Bridleway routes across the Peak District, Yorkshire, the North East, Lancashire, Cheshire, the Lakes and wherever riders add their own — each badged by how well we know it.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://bridlenav.com/routes.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="BridleNav routes — where you can ride">
-<meta property="og:description" content="Forty-eight bridleway routes, each badged by how well we know it, across the Peak District, Cheshire, Lancashire and the Lakes.">
+<meta property="og:description" content="Bridleway routes across the Peak District, Yorkshire, the North East, Lancashire, Cheshire, the Lakes and wherever riders add their own — each badged by how well we know it.">
 <meta property="og:url" content="https://bridlenav.com/routes.html">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -63,41 +63,41 @@
       <p style="color:var(--ink-soft)">A route drawn from a map and a route someone has ridden on a horse are not the same thing, and you deserve to know which one you&rsquo;re about to load a horse for. Every route in BridleNav carries a badge.</p>
     </div>
     <div class="tier t-ver">
-      <div class="count">13</div>
+      <div class="count" id="n-ver">13</div>
       <div>
         <h3>Verified</h3>
         <p>Personally ridden and checked by BridleNav or a trusted local guide.</p>
       </div>
     </div>
     <div class="tier t-doc">
-      <div class="count">9</div>
+      <div class="count" id="n-doc">9</div>
       <div>
         <h3>Documented</h3>
         <p>Based on a local rider&rsquo;s detailed guide, but not yet personally ridden by the BridleNav team.</p>
       </div>
     </div>
     <div class="tier t-plo">
-      <div class="count">20</div>
+      <div class="count" id="n-plo">20</div>
       <div>
         <h3>Map-plotted</h3>
         <p>Drawn from maps, not yet ridden. Full written guide, parking and notes &mdash; but no spoken turn-by-turn yet.</p>
       </div>
     </div>
     <div class="tier t-plo">
-      <div class="count">1</div>
+      <div class="count" id="n-map">1</div>
       <div>
         <h3>Map guided</h3>
         <p>Spoken turn-by-turn built from map data rather than a rider&rsquo;s own description. The line follows mapped bridleways and the directions name real tracks and gates &mdash; but none of it has been checked on the ground.</p>
       </div>
     </div>
     <div class="tier t-com">
-      <div class="count">5</div>
+      <div class="count" id="n-com">6</div>
       <div>
         <h3>Shared by a rider</h3>
         <p>Recorded and written up by another rider, and read by us before it went live. Not ridden by the BridleNav team, and we say so on the route.</p>
       </div>
     </div>
-    <p style="margin-top:24px;color:var(--ink-soft);max-width:34rem">Forty-eight routes so far — forty-three of ours and five shared by riders — every one badged honestly. If nobody has ridden it yet, we say so.</p>
+    <p id="tiersay" style="margin-top:24px;color:var(--ink-soft);max-width:34rem">Forty-nine routes so far — forty-three of ours and six shared by riders — every one badged honestly. If nobody has ridden it yet, we say so.</p>
   </div>
 </section>
 
@@ -174,6 +174,40 @@
     community: ['Shared by a rider', 'b-com']
   };
 
+  // The badge numbers and the sentence under them used to be typed in by hand,
+  // so every route a rider added left them a little further out of date. They
+  // are counted from the same data the list is built from now. The numbers in
+  // the HTML are only what shows if the script never runs.
+  var ONES = ['zero','one','two','three','four','five','six','seven','eight','nine','ten',
+    'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  var TENS = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  function inWords(n) {
+    if (n < 0 || n > 99 || n !== Math.floor(n)) return String(n);
+    if (n < 20) return ONES[n];
+    var t = TENS[Math.floor(n / 10)], u = n % 10;
+    return u ? t + '-' + ONES[u] : t;
+  }
+  function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
+
+  function tierCounts(all) {
+    var c = {};
+    all.forEach(function (r) { c[r.tier] = (c[r.tier] || 0) + 1; });
+    var put = function (id, n) { var el = document.getElementById(id); if (el) el.textContent = n || 0; };
+    put('n-ver', c.verified);
+    put('n-doc', c.documented);
+    put('n-plo', c.plotted);
+    put('n-map', c.map_guided);
+    put('n-com', c.community);
+
+    var shared = c.community || 0, total = all.length, mine = total - shared;
+    var say = document.getElementById('tiersay');
+    if (!say) return;
+    say.innerHTML = cap(inWords(total)) + ' route' + (total === 1 ? '' : 's') + ' so far \u2014 ' +
+      inWords(mine) + ' of ours and ' +
+      (shared ? inWords(shared) + ' shared by riders' : 'none shared by riders yet') +
+      ' \u2014 every one badged honestly. If nobody has ridden it yet, we say so.';
+  }
+
   function areaKey(r) {
     return String(r || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
   }
@@ -226,6 +260,7 @@
       html += '</div>';
     });
     document.getElementById('routelist').innerHTML = html;
+    tierCounts(all);
     var n = all.length;
     document.getElementById('listnote').innerHTML =
       n + ' routes, across ' + keys.length + ' ' + (keys.length === 1 ? 'area' : 'areas') +
