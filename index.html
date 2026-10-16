@@ -66,6 +66,20 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
 <link rel="stylesheet" href="css/site.css">
 <style>
+  /* The launch list. Replaces a mailto link that put every signup into an
+     inbox to be dug out by hand five months later. */
+  .joinrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;max-width:31rem}
+  .joinrow[hidden]{display:none}
+  .joinrow input{flex:1 1 15rem;min-width:0;padding:13px 15px;border-radius:10px;
+    border:1px solid rgba(246,242,230,.38);background:rgba(14,20,15,.45);
+    color:#F6F2E6;font-family:var(--body);font-size:1rem}
+  .joinrow input::placeholder{color:rgba(246,242,230,.55)}
+  .joinrow button{flex:0 0 auto;cursor:pointer;border:0}
+  .joinsay{margin-top:11px;font-size:.98rem;color:#F6F2E6;max-width:31rem;min-height:1.2em}
+  .joinsay.bad{color:#F2C9A4}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap}
+
   /* The clip. The whole pitch is that BridleNav TALKS to you, and a website is
      a silent medium - so the words it speaks are printed under the picture for
      the majority who will never turn the sound on. */
@@ -117,9 +131,15 @@
     </div>
     <div class="cta-row">
       <a class="store" href="https://www.facebook.com/profile.php?id=61595187637261">Follow on Facebook</a>
-      <a class="store alt" href="mailto:hello@bridlenav.com?subject=Tell%20me%20when%20BridleNav%20is%20out">Email me when it&rsquo;s out</a>
     </div>
-    <p class="cta-note" style="margin-top:14px">Coming spring 2027 &middot; Peak District, Cheshire, Lancashire &amp; the Lakes</p>
+    <form class="joinrow" id="joinform" novalidate>
+      <label class="sr-only" for="joinemail">Your email address</label>
+      <input id="joinemail" type="email" inputmode="email" autocomplete="email"
+             placeholder="you@example.com" required>
+      <button class="store" type="submit" id="joinbtn">Email me when it&rsquo;s out</button>
+    </form>
+    <p class="joinsay" id="joinsay" role="status"></p>
+    <p class="cta-note" style="margin-top:14px">Coming spring 2027 &middot; one email, from me, the day it goes live</p>
   </div>
 </div>
 
@@ -336,5 +356,54 @@
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3ce65c5be3d24e7da86beb59ef09d51f"}'></script><!-- End Cloudflare Web Analytics -->
+<script>
+(function () {
+  'use strict';
+  var SB  = 'https://xlvjhktfaiagtbdxaetn.supabase.co';
+  var KEY = 'sb_publishable_OYjxynX2htU7Z5BAC0lcUg_kqqt1mo_';
+  var f = document.getElementById('joinform');
+  if (!f) return;
+  var say = document.getElementById('joinsay');
+  var btn = document.getElementById('joinbtn');
+  var LABEL = btn.innerHTML;
+  var DONE = 'Thank you \u2014 you\u2019re on the list. One email from me the day it goes live, and nothing else.';
+
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('joinemail').value.trim();
+    say.className = 'joinsay';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      say.className = 'joinsay bad';
+      say.textContent = 'That address does not look quite right \u2014 could you check it?';
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Adding you\u2026';
+    fetch(SB + '/rest/v1/launch_list', {
+      method: 'POST',
+      headers: {
+        apikey: KEY, Authorization: 'Bearer ' + KEY,
+        'Content-Type': 'application/json', Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ email: email, source: 'website' })
+    }).then(function (r) {
+      // 409 is the unique index saying this address is already down. From
+      // where the rider is standing that is the same outcome as success, so
+      // it gets the same answer rather than an error telling them off.
+      if (r.ok || r.status === 409) {
+        f.hidden = true;
+        say.textContent = DONE;
+        return;
+      }
+      throw new Error(String(r.status));
+    }).catch(function () {
+      say.className = 'joinsay bad';
+      say.textContent = 'That did not go through. Email hello@bridlenav.com and I will put you on by hand.';
+      btn.disabled = false;
+      btn.innerHTML = LABEL;
+    });
+  });
+})();
+</script>
 </body>
 </html>

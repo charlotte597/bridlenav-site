@@ -22,6 +22,19 @@
 <link rel="stylesheet" href="css/site.css">
 
 <style>
+  /* Launch list, light version. Same form as the home page. */
+  .joinrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;max-width:31rem}
+  .joinrow[hidden]{display:none}
+  .joinrow input{flex:1 1 15rem;min-width:0;padding:13px 15px;border-radius:10px;
+    border:1px solid var(--rule);background:var(--raised);
+    color:var(--ink);font-family:var(--body);font-size:1rem}
+  .joinrow input::placeholder{color:var(--ink-soft);opacity:.7}
+  .joinrow button{flex:0 0 auto;cursor:pointer;border:0}
+  .joinsay{margin-top:11px;font-size:.98rem;color:var(--ink);max-width:31rem;min-height:1.2em}
+  .joinsay.bad{color:#8C3A24}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap}
+
   /* Page-only. The gaps need to read as absence, not as a menu of links. */
   .gaps{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
   .gaps span{font-family:var(--display);font-size:.88rem;font-weight:600;
@@ -271,6 +284,24 @@
   </div>
 </section>
 
+<section class="band">
+  <div class="wrap">
+    <div class="section-head measure">
+      <p class="eyebrow">Not ready to send one yet?</p>
+      <h2>I&rsquo;ll tell you when it&rsquo;s out.</h2>
+      <p style="color:var(--ink-soft)">One email from me the day BridleNav goes live, and nothing else.
+        No newsletter, and your address goes nowhere near anybody else.</p>
+    </div>
+    <form class="joinrow" id="joinform" novalidate>
+      <label class="sr-only" for="joinemail">Your email address</label>
+      <input id="joinemail" type="email" inputmode="email" autocomplete="email"
+             placeholder="you@example.com" required>
+      <button class="store" type="submit" id="joinbtn">Email me when it&rsquo;s out</button>
+    </form>
+    <p class="joinsay" id="joinsay" role="status"></p>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div>
@@ -293,6 +324,50 @@
     </div>
   </div>
 </footer>
+<script>
+(function () {
+  'use strict';
+  var SB  = 'https://xlvjhktfaiagtbdxaetn.supabase.co';
+  var KEY = 'sb_publishable_OYjxynX2htU7Z5BAC0lcUg_kqqt1mo_';
+  var f = document.getElementById('joinform');
+  if (!f) return;
+  var say = document.getElementById('joinsay');
+  var btn = document.getElementById('joinbtn');
+  var LABEL = btn.innerHTML;
+  var DONE = 'Thank you \u2014 you\u2019re on the list. One email from me the day it goes live, and nothing else.';
+
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('joinemail').value.trim();
+    say.className = 'joinsay';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      say.className = 'joinsay bad';
+      say.textContent = 'That address does not look quite right \u2014 could you check it?';
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Adding you\u2026';
+    fetch(SB + '/rest/v1/launch_list', {
+      method: 'POST',
+      headers: {
+        apikey: KEY, Authorization: 'Bearer ' + KEY,
+        'Content-Type': 'application/json', Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ email: email, source: 'add-routes' })
+    }).then(function (r) {
+      // 409 means the unique index already has this address. Same outcome for
+      // the rider, so the same answer rather than an error.
+      if (r.ok || r.status === 409) { f.hidden = true; say.textContent = DONE; return; }
+      throw new Error(String(r.status));
+    }).catch(function () {
+      say.className = 'joinsay bad';
+      say.textContent = 'That did not go through. Email hello@bridlenav.com and I will put you on by hand.';
+      btn.disabled = false;
+      btn.innerHTML = LABEL;
+    });
+  });
+})();
+</script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3ce65c5be3d24e7da86beb59ef09d51f"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
