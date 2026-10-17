@@ -226,7 +226,7 @@
 
   <p style="margin-top:18px">
     <button type="button" class="store alt" id="addpt"
-            style="color:var(--ink);border-color:var(--rule)">Add a point by tapping the map</button>
+            style="color:var(--ink);border-color:var(--rule)">Add a point &mdash; tap the map</button>
   </p>
   <p class="say" id="turnsay"></p>
 </div>
@@ -552,7 +552,6 @@
   var picks = { difficulty: '', traffic: '', routeType: '', fits: [] };
   var ticked = false;
   var warnedNoWords = false;
-  var adding = false;
   var map = null, lineOn = null, lineOff = null, pins = [];
 
   function trimA() { return parseInt($('trimA').value, 10) || 0; }
@@ -648,11 +647,21 @@
       maxZoom: 18,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+    // A tap on the map adds a point, full stop. There used to be a button you
+    // had to arm first: tap the map without it and nothing happened and nothing
+    // was said, so the rider who tried assumed she was doing it wrong. She
+    // wasn't. A double-tap would now drop two points, so that zoom goes - pinch
+    // and the +/- buttons both still work.
+    map.doubleClickZoom.disable();
+    var lastTap = 0, lastAt = null;
     map.on('click', function (e) {
-      if (!adding) return;
-      adding = false;
-      $('addpt').textContent = 'Add a point by tapping the map';
-      addMarkAt(nearestIndex(e.latlng.lng, e.latlng.lat));
+      // Turning the zoom off stops a double-tap zooming, but Leaflet still
+      // fires the click twice, which stacked two points on the same gate.
+      // Two taps close together in both time AND place count as one.
+      var now = Date.now(), at = map.latLngToContainerPoint(e.latlng);
+      if (now - lastTap < 400 && lastAt && at.distanceTo(lastAt) < 24) { lastTap = now; return; }
+      lastTap = now; lastAt = at;
+      addMarkAt(nearestIndex(e.latlng.lng, e.latlng.lat), true);
     });
   }
 
@@ -827,10 +836,24 @@
     renderTurns();
   }
 
-  function addMarkAt(index) {
+  function addMarkAt(index, announce) {
     marks.push({ index: index, kind: 'gate', note: '', dropped: false });
     marks.sort(function (x, y) { return x.index - y.index; });
     renderTurns();
+    if (!announce) return;
+    // The new row is below the fold on a phone, so without this a tap looks
+    // like it did nothing. renderTurns has just rewritten the running line,
+    // which is why this comes after it rather than inside it.
+    var place = 0, i;
+    for (i = 0; i < marks.length; i++) {
+      if (marks[i].index < trimA() || marks[i].index > trimB()) continue;
+      if (!marks[i].dropped) place++;
+      if (marks[i].index === index) break;
+    }
+    var say = $('turnsay');
+    say.className = 'say';
+    say.textContent = 'Added as point ' + place + '. Write what you would say to a friend riding it, in the ' +
+                      'list above, then tap the map again for the next one.';
   }
 
   function renderTurns() {
@@ -914,16 +937,17 @@
 
     if (!shown) {
       host.innerHTML = '<p class="help" style="margin:0">Nothing was spotted on this line, which happens on a route that ' +
-        'runs more or less straight. Use the button below to add the gates and turns yourself.</p>';
+        'runs more or less straight. Tap the map above to add the gates and turns yourself.</p>';
     }
     sayCount(n, shown - n);
     if (map) drawPins();
   }
 
   $('addpt').addEventListener('click', function () {
-    adding = !adding;
-    $('addpt').textContent = adding ? 'Now tap the map where it goes' : 'Add a point by tapping the map';
-    if (adding) $('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    var say = $('turnsay');
+    say.className = 'say';
+    say.textContent = 'Tap the map wherever the gate or turn is and it will be added to the list.';
   });
 
   // ====================================================================
