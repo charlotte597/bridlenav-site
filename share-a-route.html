@@ -77,6 +77,9 @@
     background:none;border:none;color:var(--ink-soft);cursor:pointer;
     text-decoration:underline;padding:0 4px}
   .turn.gone{opacity:.42}
+  .turn .swap{color:var(--gold-ink)}
+  @keyframes pinpop{0%{transform:scale(.4);opacity:.25}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+  .pin.fresh{animation:pinpop .45s ease-out}
   @media (max-width:640px){.turn{grid-template-columns:1fr}.turn .where{padding-top:0}}
 
   .pics{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
@@ -666,13 +669,61 @@
     });
   }
 
-  function nearestIndex(lon, lat) {
-    var best = trimA(), bestD = Infinity, i, d;
-    for (i = trimA(); i <= trimB(); i++) {
+  // A route that doubles back lays the way home straight on top of the way out,
+  // so a tap near a gate is within a few metres of BOTH passes. This used to
+  // take whichever was a hair closer, which left GPS noise deciding - and a
+  // point that snapped to the wrong leg carried the wrong distance along the
+  // route, so the app would have spoken it on the wrong leg of the ride. Paul
+  // Boyles found it on an out-and-back: his second point kept arriving as
+  // number one and shunting the first one down.
+  var SAME_PASS = 12;     // points this close together are one pass, not two
+  var NEAR_ENOUGH = 45;   // metres - further out than this is not a pass at all
+  var lastAdded = -1;     // where the last point landed, so the next can follow on
+  var lastPasses = [];    // the passes behind the most recent nearestIndex call
+  var justAdded = -1;     // the pin to flash, so a tap visibly did something
+
+  // Every separate time the line comes past the finger - the closest point of
+  // each pass, in riding order.
+  function passesNear(lon, lat) {
+    var a = trimA(), b = trimB(), i, d, best = Infinity;
+    for (i = a; i <= b; i++) {
       d = metresBetween(full[i], [lon, lat]);
-      if (d < bestD) { bestD = d; best = i; }
+      if (d < best) best = d;
     }
-    return best;
+    var limit = Math.min(Math.max(best + 20, best * 2.5), Math.max(best + 1, NEAR_ENOUGH));
+    var out = [], cur = null;
+    for (i = a; i <= b; i++) {
+      d = metresBetween(full[i], [lon, lat]);
+      if (d > limit) continue;
+      if (cur && i - cur.last <= SAME_PASS) {
+        cur.last = i;
+        if (d < cur.d) { cur.d = d; cur.index = i; }
+      } else {
+        cur = { index: i, d: d, last: i };
+        out.push(cur);
+      }
+    }
+    if (!out.length) out.push({ index: a, d: best, last: a });
+    return out;
+  }
+
+  // Riders place their points in the order they ride them, so where the line
+  // passes twice the one that CONTINUES the sequence is the one meant. With
+  // nothing placed yet this takes the earliest pass, which sets the rest up to
+  // follow on. Tapping the same gate a second time therefore gives you the way
+  // home, which is what you want on a there-and-back. Either way the row says
+  // it is ridden twice and offers a swap, so a wrong guess is visible on the
+  // page and one tap from being put right.
+  function choosePass(list) {
+    if (list.length === 1) return list[0];
+    var after = list.filter(function (p) { return p.index > lastAdded; });
+    if (after.length) return after.reduce(function (x, y) { return y.index < x.index ? y : x; });
+    return list.reduce(function (x, y) { return y.d < x.d ? y : x; });
+  }
+
+  function nearestIndex(lon, lat) {
+    lastPasses = passesNear(lon, lat);
+    return choosePass(lastPasses).index;
   }
 
   function latlngs(part) { return part.map(function (p) { return [p[1], p[0]]; }); }
@@ -697,7 +748,8 @@
       if (live) n++;
       var icon = L.divIcon({
         className: '', iconSize: [24, 24], iconAnchor: [12, 12],
-        html: '<div class="pin' + (live ? '' : ' off') + '">' + (live ? n : '&middot;') + '</div>'
+        html: '<div class="pin' + (live ? '' : ' off') + (m.index === justAdded ? ' fresh' : '') +
+              '">' + (live ? n : '&middot;') + '</div>'
       });
       var mk = L.marker([full[m.index][1], full[m.index][0]], { icon: icon }).addTo(map);
       mk.on('click', function () {
@@ -706,6 +758,7 @@
       });
       pins.push(mk);
     });
+    justAdded = -1;   // one flash only, not on every redraw
   }
 
   // ====================================================================
@@ -838,7 +891,16 @@
   }
 
   function addMarkAt(index, announce) {
-    marks.push({ index: index, kind: 'gate', note: '', dropped: false });
+    // Where the line comes past this spot more than once, the alternatives ride
+    // along on the mark so the row can offer to move it to the other leg.
+    var alts = null;
+    if (lastPasses.length > 1 && lastPasses.some(function (p) { return p.index === index; })) {
+      alts = lastPasses.map(function (p) { return p.index; });
+    }
+    lastPasses = [];
+    lastAdded = index;
+    justAdded = index;
+    marks.push({ index: index, kind: 'gate', note: '', dropped: false, alts: alts });
     marks.sort(function (x, y) { return x.index - y.index; });
     renderTurns();
     if (!announce) return;
@@ -855,6 +917,11 @@
     say.className = 'say';
     say.textContent = 'Added as point ' + place + '. Write what you would say to a friend riding it, in the ' +
                       'list above, then tap the map again for the next one.';
+    if (alts) {
+      say.textContent = 'Added as point ' + place + '. You ride this bit twice, so it has gone on the ' +
+                        'leg that follows on from your last point - the row says so, and you can move it ' +
+                        'to the other one. Tap the same spot again to mark the way home as well.';
+    }
   }
 
   function renderTurns() {
@@ -928,9 +995,36 @@
       kill.textContent = m.dropped ? 'put back' : 'not needed';
       kill.addEventListener('click', function () { m.dropped = !m.dropped; renderTurns(); });
 
+      // On a there-and-back the same gate sits on the line twice. Rather than
+      // hide that, the row says so and lets the rider move the point to the
+      // other leg without deleting anything they have written.
+      // Only the passes that are still empty. Without this, swapping a point
+      // onto a leg the rider has ALREADY marked quietly stacks two points on
+      // one gate, and the app would say the same thing twice.
+      var free = (m.alts || []).filter(function (a) {
+        if (a === m.index) return false;
+        return !marks.some(function (o) { return o !== m && o.index === a; });
+      });
+
+      var swap = null;
+      if (free.length) {
+        swap = document.createElement('button');
+        swap.type = 'button';
+        swap.className = 'drop-it swap';
+        swap.textContent = 'ridden twice \u2014 use the other pass';
+        swap.addEventListener('click', function () {
+          m.index = free[0];
+          lastAdded = m.index;
+          justAdded = m.index;
+          marks.sort(function (x, y) { return x.index - y.index; });
+          renderTurns();
+        });
+      }
+
       ctrls.appendChild(sel);
       ctrls.appendChild(txt);
       ctrls.appendChild(kill);
+      if (swap) ctrls.appendChild(swap);
       row.appendChild(where);
       row.appendChild(ctrls);
       host.appendChild(row);
