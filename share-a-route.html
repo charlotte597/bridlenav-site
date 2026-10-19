@@ -230,6 +230,8 @@
   <p style="margin-top:18px">
     <button type="button" class="store alt" id="addpt"
             style="color:var(--ink);border-color:var(--rule)">Add a point &mdash; tap the map</button>
+    <button type="button" class="store alt" id="cutbtn"
+            style="color:var(--ink);border-color:var(--rule);margin-left:8px">Remove a dead end</button>
   </p>
   <p class="say" id="turnsay"></p>
 </div>
@@ -556,11 +558,41 @@
   var picks = { difficulty: '', traffic: '', routeType: '', fits: [] };
   var ticked = false;
   var warnedNoWords = false;
-  var map = null, lineOn = null, lineOff = null, pins = [];
+  var map = null, lineOn = null, lineOff = null, lineCut = null, pins = [];
+  // A rider who meets a locked gate or a blocked path turns round and rides
+  // back the way they came. That doubling-back is on the recording, and left
+  // in it would send the next rider down the same dead end. The ends of a ride
+  // come off with the two handles above; this takes a piece out of the MIDDLE.
+  // One piece is enough - nobody has yet met two blocked paths on one hack.
+  var cut = null;            // {a, b} indices into full, inclusive
+  var cutting = 0;           // 0 off, 1 waiting for the start, 2 waiting for the end
+  var cutStart = -1;
 
   function trimA() { return parseInt($('trimA').value, 10) || 0; }
   function trimB() { return parseInt($('trimB').value, 10) || 0; }
-  function shared() { return full.slice(trimA(), trimB() + 1); }
+  function inCut(i) { return !!cut && i >= cut.a && i <= cut.b; }
+
+  // Every place that used to ask "is this point between the two handles" has to
+  // ask about the removed middle as well, so it is one question in one place.
+  function kept(m) {
+    var i = (typeof m === 'number') ? m : m.index;
+    return i >= trimA() && i <= trimB() && !inCut(i);
+  }
+
+  function shared() {
+    var a = trimA(), b = trimB(), out = [], i;
+    for (i = a; i <= b; i++) if (!inCut(i)) out.push(full[i]);
+    return out;
+  }
+
+  // Metres of the removed piece that lie BEFORE this point. Without it every
+  // point after the cut keeps the distance it had when the dead end was still
+  // in, and the app would speak them all late by the length of the spur.
+  function lostBefore(i) {
+    if (!cut || i <= cut.a) return 0;
+    var cum = cumulative(full);
+    return cum[Math.min(i, cut.b)] - cum[cut.a];
+  }
 
   // ====================================================================
   // STEP ONE - the file
@@ -665,6 +697,7 @@
       var now = Date.now(), at = map.latLngToContainerPoint(e.latlng);
       if (now - lastTap < 400 && lastAt && at.distanceTo(lastAt) < 24) { lastTap = now; return; }
       lastTap = now; lastAt = at;
+      if (cutting) { takeCutTap(e.latlng.lng, e.latlng.lat); return; }
       addMarkAt(nearestIndex(e.latlng.lng, e.latlng.lat), true);
     });
   }
@@ -694,7 +727,7 @@
     var out = [], cur = null;
     for (i = a; i <= b; i++) {
       d = metresBetween(full[i], [lon, lat]);
-      if (d > limit) continue;
+      if (d > limit || inCut(i)) continue;
       if (cur && i - cur.last <= SAME_PASS) {
         cur.last = i;
         if (d < cur.d) { cur.d = d; cur.index = i; }
@@ -726,14 +759,101 @@
     return choosePass(lastPasses).index;
   }
 
+  // Plain nearest point, removed piece included - used to CHOOSE the piece,
+  // where the clever pass-picking above would get in the way.
+  function nearestAny(lon, lat) {
+    var best = trimA(), bestD = Infinity, i, d;
+    for (i = trimA(); i <= trimB(); i++) {
+      d = metresBetween(full[i], [lon, lat]);
+      if (d < bestD) { bestD = d; best = i; }
+    }
+    return best;
+  }
+
+  function cutMiles() {
+    if (!cut) return '0';
+    var cum = cumulative(full);
+    return miles(cum[cut.b] - cum[cut.a]);
+  }
+
+  function cutSay(msg, bad) {
+    var say = $('turnsay');
+    say.className = bad ? 'say bad' : 'say';
+    say.textContent = msg;
+  }
+
+  // ONE tap, not two. Asking for the two ends sounds simpler and is wrong: at a
+  // dead end both ends ARE the same junction, so a tap there could mean the
+  // index where you left the main path or the one where you came back to it,
+  // and picking the wrong one takes out half the spur - leaving the route
+  // either riding down the dead end or starting at the far end of it.
+  // So the rider taps anywhere ON the dead end and we work out the rest.
+  function spurAround(i) {
+    // Where else does the line come past this same spot? On a there-and-back
+    // that is the matching point on the other leg.
+    var k = -1, kd = Infinity, j, d;
+    for (j = trimA(); j <= trimB(); j++) {
+      if (Math.abs(j - i) <= SAME_PASS) continue;
+      d = metresBetween(full[j], full[i]);
+      if (d < kd) { kd = d; k = j; }
+    }
+    if (k < 0 || kd > 40) return null;
+    // Walk both legs back together towards the junction. On a there-and-back the
+    // two legs lie on each other, so the gap between the ends stays small and
+    // keeps shrinking as we approach the junction. Past the junction the ride
+    // carries on in two different directions and that gap starts GROWING - so
+    // the first step that makes it bigger is the junction, and we stop there.
+    // Stopping on size alone is not enough: where the main path runs straight
+    // on through, the points either side of the junction stay close for a
+    // while, and we would eat a bit of the real route on each side.
+    var a = Math.min(i, k), b = Math.max(i, k);
+    var gap = metresBetween(full[a], full[b]);
+    while (a > trimA() && b < trimB()) {
+      var next = metresBetween(full[a - 1], full[b + 1]);
+      if (next > gap + 3 || next > 25) break;
+      a--; b++; gap = next;
+    }
+    return { a: a, b: b };
+  }
+
+  function takeCutTap(lon, lat) {
+    var found = spurAround(nearestAny(lon, lat));
+    if (!found) {
+      cutSay('That part is only ridden once, so there is no there-and-back to take out. ' +
+             'Tap somewhere along the bit you rode down and came back up. If you want to lose ' +
+             'the beginning or the end of the ride instead, use the two handles further up.', true);
+      return;
+    }
+    cut = found;
+    cutting = 0; cutStart = -1;
+    setCutBtn();
+    drawMap(false);
+    renderTurns();
+    sayTrim();
+    cutSay('Taken out - ' + cutMiles() + ' miles of it, shown in red on the map and no longer part of the ' +
+           'route. Any points in there have gone with it, and everything after it has moved back. ' +
+           'If that is not the right bit, press Put it back and try again.');
+  }
+
+  function setCutBtn() {
+    $('cutbtn').textContent = cut ? 'Put the removed bit back' : 'Remove a dead end';
+  }
+
   function latlngs(part) { return part.map(function (p) { return [p[1], p[0]]; }); }
 
   function drawMap(fit) {
     ensureMap();
     if (lineOff) map.removeLayer(lineOff);
     if (lineOn) map.removeLayer(lineOn);
+    if (lineCut) { map.removeLayer(lineCut); lineCut = null; }
     lineOff = L.polyline(latlngs(full), { color: '#9A988F', weight: 3, opacity: 0.5, dashArray: '5,6' }).addTo(map);
     lineOn = L.polyline(latlngs(shared()), { color: '#4A6741', weight: 5 }).addTo(map);
+    // Drawn ON TOP of the green so the removed piece cannot be mistaken for
+    // part of the route, and so the rider can see exactly what they took out.
+    if (cut) {
+      lineCut = L.polyline(latlngs(full.slice(cut.a, cut.b + 1)),
+                           { color: '#B4472E', weight: 5, opacity: 0.85, dashArray: '2,7' }).addTo(map);
+    }
     drawPins();
     if (fit) map.fitBounds(lineOff.getBounds(), { padding: [24, 24] });
   }
@@ -743,7 +863,7 @@
     pins = [];
     var n = 0;
     marks.forEach(function (m, i) {
-      if (m.index < trimA() || m.index > trimB()) return;
+      if (!kept(m)) return;
       var live = !m.dropped;
       if (live) n++;
       var icon = L.divIcon({
@@ -768,6 +888,8 @@
     var a = $('trimA'), b = $('trimB');
     a.max = String(full.length - 1); b.max = String(full.length - 1);
     a.value = '0'; b.value = String(full.length - 1);
+    cut = null; cutting = 0; cutStart = -1;
+    setCutBtn();
     drawMap(true);
     sayTrim();
   }
@@ -775,9 +897,10 @@
   function sayTrim() {
     var part = shared();
     var total = part.length > 1 ? cumulative(part)[part.length - 1] : 0;
-    var cut = full.length - part.length;
+    var off = full.length - part.length;
     $('trimsay').innerHTML = 'Sharing <b>' + miles(total) + '</b> miles' +
-      (cut > 0 ? ' &mdash; ' + cut + ' of ' + full.length + ' points trimmed off the ends' : ' &mdash; the whole line');
+      (off > 0 ? ' &mdash; ' + off + ' of ' + full.length + ' points trimmed off the ends' : ' &mdash; the whole line') +
+      (cut ? '. A ' + cutMiles() + '-mile dead end has been taken out of the middle.' : '');
     drawMap(false);
     renderTurns();
   }
@@ -816,7 +939,7 @@
   function ownWords() {
     var c = 0;
     marks.forEach(function (m) {
-      if (m.dropped || m.index < trimA() || m.index > trimB()) return;
+      if (m.dropped || !kept(m)) return;
       var note = (m.note || '').trim();
       if (note && AUTO_WORDS.indexOf(note.toLowerCase()) < 0) c++;
     });
@@ -848,7 +971,7 @@
   function renumber() {
     var n = 0, shown = 0;
     marks.forEach(function (m, i) {
-      if (m.index < trimA() || m.index > trimB()) return;
+      if (!kept(m)) return;
       shown++;
       if (!m.dropped) n++;
       var row = $('turnrow' + i);
@@ -909,7 +1032,7 @@
     // which is why this comes after it rather than inside it.
     var place = 0, i;
     for (i = 0; i < marks.length; i++) {
-      if (marks[i].index < trimA() || marks[i].index > trimB()) continue;
+      if (!kept(marks[i])) continue;
       if (!marks[i].dropped) place++;
       if (marks[i].index === index) break;
     }
@@ -932,7 +1055,7 @@
     var shown = 0, n = 0;
 
     marks.forEach(function (m, i) {
-      if (m.index < trimA() || m.index > trimB()) return;   // trimmed away
+      if (!kept(m)) return;   // trimmed off an end, or inside the removed piece
       shown++;
       if (!m.dropped) n++;
 
@@ -942,7 +1065,7 @@
 
       var where = document.createElement('div');
       where.className = 'where';
-      where.innerHTML = alongRide(Math.max(0, cum[m.index] - base)) +
+      where.innerHTML = alongRide(Math.max(0, cum[m.index] - base - lostBefore(m.index))) +
                         '<i>' + (m.dropped ? 'not used' : 'point ' + n) + '</i>';
 
       var ctrls = document.createElement('div');
@@ -1037,6 +1160,19 @@
     sayCount(n, shown - n);
     if (map) drawPins();
   }
+
+  $('cutbtn').addEventListener('click', function () {
+    if (cut) {
+      cut = null; cutting = 0; cutStart = -1;
+      setCutBtn(); drawMap(false); renderTurns(); sayTrim();
+      cutSay('Put back. The whole ride is in the route again.');
+      return;
+    }
+    cutting = 1; cutStart = -1;
+    $('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    cutSay('Tap anywhere along the bit you rode down and came back up, and the whole of it will ' +
+           'come out - back to the junction at each end. You do not have to be precise.');
+  });
 
   $('addpt').addEventListener('click', function () {
     $('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1179,12 +1315,12 @@
   function collectPoints() {
     var cum = cumulative(full), base = cum[trimA()];
     return marks
-      .filter(function (m) { return !m.dropped && m.index >= trimA() && m.index <= trimB(); })
+      .filter(function (m) { return !m.dropped && kept(m); })
       .map(function (m) {
         return {
           lat: full[m.index][1],
           lon: full[m.index][0],
-          meters: Math.max(0, Math.round(cum[m.index] - base)),
+          meters: Math.max(0, Math.round(cum[m.index] - base - lostBefore(m.index))),
           kind: m.kind,
           note: (m.note || '').trim().slice(0, 400) || undefined
         };
