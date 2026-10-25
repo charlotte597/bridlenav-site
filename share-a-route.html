@@ -107,6 +107,18 @@
   :root:not([data-theme="light"]) .say.bad{color:#E79080}
   @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .say.bad{color:#E79080}}
 
+  /* The draft offer. Gold left edge rather than a full box, so it reads as
+     the page talking rather than as another step to fill in. */
+  .resume{border:1px solid var(--rule);border-left:4px solid var(--gold);border-radius:3px;
+    background:var(--raised);padding:16px 18px;margin-top:16px;max-width:40rem}
+  .resume p{font-size:.98rem;color:var(--ink);line-height:1.5}
+  .resume p + p{margin-top:8px;color:var(--ink-soft);font-size:.92rem}
+  .resumebtns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .resumebtns button{font-family:var(--display);font-weight:700;font-size:.9rem;
+    border-radius:3px;padding:11px 18px;cursor:pointer}
+  #resumego{background:var(--green);border:1px solid var(--green);color:#F6F2E6}
+  #resumedrop{background:none;border:1px solid var(--rule);color:var(--ink-soft)}
+
   .done{border:2px solid var(--green);border-radius:4px;background:var(--raised);
     padding:clamp(24px,4vw,38px);max-width:40rem}
   .done h2{margin-bottom:12px}
@@ -169,6 +181,22 @@
        own click handler and spin forever. -->
   <input type="file" id="file" accept=".gpx,application/gpx+xml,text/xml" style="display:none">
   <p class="say" id="filesay"></p>
+
+  <!-- Only ever shown when a draft from an earlier visit is sitting in this
+       browser, and nothing is put back without her pressing for it. A rider
+       sharing her SECOND route must not find the first one's words waiting in
+       the boxes. -->
+  <div class="resume" id="resume" hidden>
+    <p id="resumesay"></p>
+    <p>
+      The GPX file itself and any photographs are the two things not kept &mdash; a web page
+      is not allowed to hold on to files between visits. Everything you typed is here.
+    </p>
+    <div class="resumebtns">
+      <button type="button" id="resumego">Pick up where I left off</button>
+      <button type="button" id="resumedrop">Start again</button>
+    </div>
+  </div>
 </div>
 
 <!-- ------------------------------------------------------------------ 2 -->
@@ -1048,6 +1076,10 @@
   }
 
   function renderTurns() {
+    // Everything that changes a mark, the trim or the removed middle ends up
+    // here, so this is the one place a save has to be asked for. The typing in
+    // the boxes is caught separately, by the listener on the form.
+    scheduleSave();
     var host = $('turns');
     var cum = cumulative(full);
     var base = cum[trimA()];
@@ -1281,11 +1313,12 @@
   // ====================================================================
   // STEP SEVEN - the tick
   // ====================================================================
-  function toggleTick() {
-    ticked = !ticked;
+  function setTick(on) {
+    ticked = !!on;
     $('tick').classList.toggle('on', ticked);
     $('tick').setAttribute('aria-checked', ticked ? 'true' : 'false');
   }
+  function toggleTick() { setTick(!ticked); }
   $('tick').addEventListener('click', toggleTick);
   $('tick').addEventListener('keydown', function (e) {
     if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleTick(); }
@@ -1339,6 +1372,241 @@
     say.scrollIntoView({ block: 'center', behavior: 'smooth' });
     return false;
   }
+
+  // ====================================================================
+  // THE DRAFT
+  // ====================================================================
+  // Writing a route up properly takes a while: a dozen turns, each with a
+  // sentence about what the rider is looking at. Until now a closed tab, a
+  // flat phone or a stray back-button threw the whole lot away, and the rider
+  // who lost it did not start again. So it is written down as she goes.
+  //
+  // It is kept in THIS BROWSER only. Nothing is sent anywhere until she
+  // presses send - which is the promise made at the top of the page, and this
+  // must not quietly break it.
+  //
+  // Two things genuinely cannot be kept: the GPX file and the photographs. A
+  // page may not hold a File between visits. The marks are stored as positions
+  // along the track, so the track has to be stored with them - that is the
+  // bulk of what follows.
+  var DRAFT_KEY = 'bridlenav.share.draft.v1';
+  var DRAFT_MAX = 3 * 1024 * 1024;   // well inside the ~5MB a browser allows
+  var TEXT_IDS = ['name', 'region', 'notes', 'parking', 'w3w', 'who', 'contact'];
+  // 'website' is the honeypot and is deliberately absent. Storing it would
+  // mean restoring it, and a restored honeypot would silently bin a real
+  // rider's route.
+
+  var saveTimer = null;
+  var draftOff = false;   // set once storage has refused us, so we stop asking
+  var pending = null;     // a draft found on load, until she says what to do
+
+  function storage() {
+    try {
+      var st = window.localStorage;
+      st.setItem('bridlenav.probe', '1');
+      st.removeItem('bridlenav.probe');
+      return st;
+    } catch (e) { return null; }   // private window, or storage turned off
+  }
+
+  function scheduleSave() {
+    if (draftOff || pending) return;   // never overwrite a draft she has not answered about yet
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveDraft, 600);   // after she stops typing, not on every key
+  }
+
+  function saveDraft() {
+    saveTimer = null;
+    if (draftOff || pending) return;
+    var store = storage();
+    if (!store) { draftOff = true; return; }
+
+    var text = {}, any = false;
+    TEXT_IDS.forEach(function (id) {
+      var v = $(id).value;
+      text[id] = v;
+      if (v.trim()) any = true;
+    });
+    if (picks.difficulty || picks.traffic || picks.routeType || picks.fits.length) any = true;
+    if (marks.length || full.length) any = true;
+    if (!any) { try { store.removeItem(DRAFT_KEY); } catch (e) {} return; }
+
+    var d = {
+      at: Date.now(),
+      text: text,
+      picks: { difficulty: picks.difficulty, traffic: picks.traffic,
+               routeType: picks.routeType, fits: picks.fits.slice() },
+      ticked: ticked,
+      photoCount: photos.length,
+      // Six decimal places is about 11cm. The track is the big thing in here
+      // and full float precision doubles it for no gain anyone can ride.
+      track: full.map(function (p) { return [+p[0].toFixed(6), +p[1].toFixed(6)]; }),
+      trimA: trimA(),
+      trimB: trimB(),
+      cut: cut ? { a: cut.a, b: cut.b } : null,
+      marks: marks.map(function (m) {
+        return { index: m.index, kind: m.kind, note: m.note,
+                 dropped: !!m.dropped, alts: m.alts || null };
+      })
+    };
+
+    var json;
+    try { json = JSON.stringify(d); } catch (e) { return; }
+    // A very long recording could outgrow what a browser will hold. Rather
+    // than fail, keep the words and let go of the track - the words are the
+    // hours of work, the file can be chosen again in a second.
+    if (json.length > DRAFT_MAX) {
+      d.track = []; d.marks = []; d.cut = null; d.partial = true;
+      try { json = JSON.stringify(d); } catch (e) { return; }
+    }
+    try {
+      store.setItem(DRAFT_KEY, json);
+    } catch (e) {
+      // Out of room even so. Try once more with the words alone, then stop.
+      try {
+        d.track = []; d.marks = []; d.cut = null; d.partial = true;
+        store.setItem(DRAFT_KEY, JSON.stringify(d));
+      } catch (e2) { draftOff = true; }
+    }
+  }
+
+  function clearDraft() {
+    if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+    draftOff = true;        // the form is gone; nothing left worth keeping
+    var store = storage();
+    if (store) { try { store.removeItem(DRAFT_KEY); } catch (e) {} }
+  }
+
+  function readDraft() {
+    var store = storage();
+    if (!store) return null;
+    var raw;
+    try { raw = store.getItem(DRAFT_KEY); } catch (e) { return null; }
+    if (!raw) return null;
+    var d;
+    try { d = JSON.parse(raw); } catch (e) { return null; }
+    if (!d || typeof d !== 'object' || !d.text) return null;
+    // A month-old draft is almost certainly a route she decided against.
+    if (!d.at || Date.now() - d.at > 30 * 24 * 3600 * 1000) {
+      try { store.removeItem(DRAFT_KEY); } catch (e) {}
+      return null;
+    }
+    return d;
+  }
+
+  function ago(ms) {
+    var mins = Math.round((Date.now() - ms) / 60000);
+    if (mins < 2) return 'a moment ago';
+    if (mins < 60) return mins + ' minutes ago';
+    var hrs = Math.round(mins / 60);
+    if (hrs < 24) return hrs === 1 ? 'an hour ago' : hrs + ' hours ago';
+    var days = Math.round(hrs / 24);
+    return days === 1 ? 'yesterday' : days + ' days ago';
+  }
+
+  function paintChoices() {
+    ['difficulty', 'traffic', 'routeType'].forEach(function (id) {
+      Array.prototype.forEach.call($(id).querySelectorAll('button'), function (b) {
+        b.setAttribute('aria-pressed', b.getAttribute('data-v') === picks[id] ? 'true' : 'false');
+      });
+    });
+    Array.prototype.forEach.call($('fits').querySelectorAll('button'), function (b) {
+      b.setAttribute('aria-pressed',
+        picks.fits.indexOf(b.getAttribute('data-v')) >= 0 ? 'true' : 'false');
+    });
+  }
+
+  function applyDraft(d) {
+    TEXT_IDS.forEach(function (id) {
+      if (typeof d.text[id] === 'string') $(id).value = d.text[id];
+    });
+    var p = d.picks || {};
+    picks.difficulty = p.difficulty || '';
+    picks.traffic = p.traffic || '';
+    picks.routeType = p.routeType || '';
+    picks.fits = Array.isArray(p.fits) ? p.fits.slice() : [];
+    paintChoices();
+    setTick(!!d.ticked);
+
+    var hasTrack = Array.isArray(d.track) && d.track.length > 1;
+    if (hasTrack) {
+      full = d.track;
+      // Revealed before the map is touched, for the reason given in takeFile:
+      // Leaflet measures a hidden container as zero and fitBounds then throws.
+      ['s2', 's3', 's4', 's5', 's6', 's7'].forEach(function (id) { $(id).hidden = false; });
+      var a = $('trimA'), b = $('trimB');
+      a.max = String(full.length - 1); b.max = String(full.length - 1);
+      var ta = Math.max(0, Math.min(full.length - 2, d.trimA | 0));
+      var tb = Math.min(full.length - 1, Math.max(ta + 1, d.trimB | 0));
+      a.value = String(ta); b.value = String(tb);
+      cut = (d.cut && d.cut.b > d.cut.a) ? { a: d.cut.a, b: d.cut.b } : null;
+      cutting = 0; cutStart = -1;
+      marks = (Array.isArray(d.marks) ? d.marks : [])
+        .filter(function (m) { return m && m.index >= 0 && m.index < full.length; })
+        .map(function (m) {
+          return { index: m.index, kind: m.kind || 'turn', note: m.note || '',
+                   dropped: !!m.dropped, alts: m.alts || null };
+        });
+      setCutBtn();
+      if (map) map.invalidateSize();
+      drawMap(true);
+      sayTrim();        // says the mileage, redraws, re-renders the turns
+    } else {
+      // The words came back without a track - either it was too big to keep or
+      // it was never chosen. The boxes are filled in; the file is still needed.
+      ['s4', 's5', 's6', 's7'].forEach(function (id) { $(id).hidden = false; });
+    }
+    drawPics();
+
+    var part = shared();
+    var say = $('filesay');
+    say.className = 'say';
+    say.textContent = hasTrack
+      ? 'Your words are back, and so is the line — ' +
+        miles(part.length > 1 ? cumulative(part)[part.length - 1] : 0) +
+        ' miles of it. Choose the GPX file again only if you want to start from a different ride.'
+      : 'Your words are back. The line was not kept, so choose the GPX file again and the turns can be marked afresh.';
+  }
+
+  function offerDraft() {
+    var d = readDraft();
+    if (!d) return;
+    pending = d;    // saving is held off until she answers
+    var bits = [];
+    var written = (Array.isArray(d.marks) ? d.marks : [])
+      .filter(function (m) { return m && m.note && String(m.note).trim(); }).length;
+    if (d.text.name && d.text.name.trim()) bits.push('“' + d.text.name.trim() + '”');
+    if (written) bits.push(written + (written === 1 ? ' marked place' : ' marked places'));
+    $('resumesay').innerHTML = 'You started a route on this browser ' + ago(d.at) +
+      (bits.length ? ' — ' + bits.join(', ') : '') + '. Would you like to carry on with it?';
+    $('resume').hidden = false;
+
+    $('resumego').addEventListener('click', function () {
+      $('resume').hidden = true;
+      pending = null;
+      applyDraft(d);
+      scheduleSave();
+    });
+    $('resumedrop').addEventListener('click', function () {
+      $('resume').hidden = true;
+      pending = null;
+      clearDraft();
+      draftOff = false;     // she is starting again, not turning saving off
+    });
+  }
+
+  // One listener on the form catches every box, every choice button and the
+  // tick, without having to find and change each handler above.
+  $('form').addEventListener('input', scheduleSave);
+  $('form').addEventListener('change', scheduleSave);
+  $('form').addEventListener('click', function () { setTimeout(scheduleSave, 0); });
+  // A phone that gets put in a pocket mid-sentence never fires anything else.
+  window.addEventListener('pagehide', function () { saveDraft(); });
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') saveDraft();
+  });
+
+  offerDraft();
 
   $('form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -1412,6 +1680,7 @@
       })
       .then(function (r) {
         if (!r.ok) return r.text().then(function (t) { throw new Error(t || 'save'); });
+        clearDraft();   // it is safely in the database now
         $('form').hidden = true;
         $('thanks').hidden = false;
         $('thanks').scrollIntoView({ behavior: 'smooth', block: 'start' });
