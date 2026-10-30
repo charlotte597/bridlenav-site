@@ -777,6 +777,23 @@
   // page and one tap from being put right.
   function choosePass(list) {
     if (list.length === 1) return list[0];
+    var earliest = list.reduce(function (x, y) { return y.index < x.index ? y : x; });
+
+    // A rider filling in something BEFORE everything she has already placed
+    // means that earlier spot, not the same place on the way home. Without
+    // this, going back to mark the start of a loop lands it at the FINISH,
+    // because the only pass after the last one placed is the one at the end -
+    // and the start gate then gets read out four miles too late. It is the
+    // commonest thing a new rider does: mark the interesting bits, then
+    // remember to mark where you set off from.
+    var firstMark = Infinity;
+    for (var i = 0; i < marks.length; i++) {
+      var m = marks[i];
+      if (m.dropped || !kept(m)) continue;
+      if (m.index < firstMark) firstMark = m.index;
+    }
+    if (earliest.index < firstMark) return earliest;
+
     var after = list.filter(function (p) { return p.index > lastAdded; });
     if (after.length) return after.reduce(function (x, y) { return y.index < x.index ? y : x; });
     return list.reduce(function (x, y) { return y.d < x.d ? y : x; });
@@ -1619,6 +1636,7 @@
     if (full.length < 2) return problem('There is no route yet - choose a GPX file at the top.');
     if (!$('name').value.trim()) return problem('The route needs a name.');
     if (!picks.traffic) return problem('Please say whether there are roads on it. Riders filter on that, and leaving it blank hides your route from them.');
+    if (!picks.routeType) return problem('Please say whether it is a hack or a day out. Riders filter on that as well, and a blank there hides your route from them just the same.');
     if (photos.length < MIN_PHOTOS) return problem('Two photographs are needed before a route can be sent.');
     if (!ticked) {
       return problem('Please confirm any rider could follow this route. Permission given to you personally does not pass to the strangers who will ride it on your word - if any part of this needs that, it cannot be shared.');
