@@ -332,6 +332,12 @@
   </div>
 
   <div class="field">
+    <label for="approach">Getting there with a trailer or lorry</label>
+    <p class="sub">The last few miles, not the whole journey. Which way to come in, and anything that would catch somebody out towing - a narrow lane, a steep pull, a turn you cannot make. Leave it blank if there is nothing to watch for.</p>
+    <textarea id="approach" maxlength="700" style="min-height:92px"></textarea>
+  </div>
+
+  <div class="field">
     <label for="w3w">The what3words square for it</label>
     <p class="sub">Three words with dots between, like <em>///egging.escalates.upstarts</em>. Open the what3words app where you park and copy what it says.</p>
     <input type="text" id="w3w" maxlength="80" placeholder="///word.word.word">
@@ -1408,7 +1414,7 @@
   // bulk of what follows.
   var DRAFT_KEY = 'bridlenav.share.draft.v1';
   var DRAFT_MAX = 3 * 1024 * 1024;   // well inside the ~5MB a browser allows
-  var TEXT_IDS = ['name', 'region', 'notes', 'parking', 'w3w', 'who', 'contact'];
+  var TEXT_IDS = ['name', 'region', 'notes', 'parking', 'approach', 'w3w', 'who', 'contact'];
   // 'website' is the honeypot and is deliberately absent. Storing it would
   // mean restoring it, and a restored honeypot would silently bin a real
   // rider's route.
@@ -1689,6 +1695,8 @@
         };
         if (w3w) row.parking_w3w = w3w;
         if (picks.fits.length) row.parking_fits = picks.fits;
+        var approach = $('approach').value.trim();
+        if (approach) row.parking_approach = approach;
 
         return fetch(SB + '/rest/v1/route_submissions', {
           method: 'POST',
