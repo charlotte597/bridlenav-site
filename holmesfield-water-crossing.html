@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Holmesfield Water Crossing &mdash; a 4.7 mile bridleway ride in Derbyshire | BridleNav</title>
+<meta name="description" content="A 4.7-mile circular bridleway ride from Holmesfield, Derbyshire, with a ford, hedged green lanes and bluebell woods. Horsebox parking, the gates, the going underfoot &mdash; written by the rider who knows it.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://bridlenav.com/holmesfield-water-crossing.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Holmesfield Water Crossing &mdash; a 4.7 mile bridleway ride in Derbyshire">
+<meta property="og:description" content="Quiet lanes, a proper ford and bluebell woods, four and a half miles from Holmesfield on the edge of the Peak District.">
+<meta property="og:url" content="https://bridlenav.com/holmesfield-water-crossing.html">
+<meta property="og:image" content="https://bridlenav.com/photos/holmesfield/bluebell-wood.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Holmesfield Water Crossing bridleway ride",
+  "url": "https://bridlenav.com/holmesfield-water-crossing.html",
+  "description": "A 4.7-mile circular bridleway ride from Holmesfield, Derbyshire, with a ford, hedged green lanes and bluebell woods.",
+  "primaryImageOfPage": "https://bridlenav.com/photos/holmesfield/bluebell-wood.jpg",
+  "about": {
+    "@type": "Place",
+    "name": "Holmesfield Water Crossing",
+    "address": { "@type": "PostalAddress", "addressLocality": "Holmesfield", "addressRegion": "Derbyshire", "addressCountry": "GB" },
+    "geo": { "@type": "GeoCoordinates", "latitude": 53.276254, "longitude": -1.541863 }
+  },
+  "isPartOf": { "@type": "WebSite", "name": "BridleNav", "url": "https://bridlenav.com" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+  .rt-head h1{margin-block:8px 0;line-height:1.08;font-size:clamp(1.7rem,3.6vw,2.5rem)}
+  .rt-sub{color:var(--ink-soft);max-width:34rem;margin-block:14px 0}
+  .rt-facts{display:flex;flex-wrap:wrap;gap:10px;margin-block:20px 0;padding:0;list-style:none}
+  .rt-facts li{font-family:var(--display);font-weight:600;font-size:.82rem;letter-spacing:.02em;
+    border:1px solid var(--rule);border-radius:999px;padding:7px 14px;color:var(--ink-soft);background:var(--raised)}
+  .rt-facts li.ver{border-color:var(--verified);color:var(--verified)}
+  .rt-hero{border-radius:14px;overflow:hidden;margin-block:30px 30px;background:var(--rule)}
+  .rt-hero img{display:block;width:100%;height:clamp(240px,40vw,440px);object-fit:cover}
+
+  .rt-box{border:1px solid var(--rule);border-radius:14px;padding:22px 24px;background:var(--raised)}
+  .rt-box h3{margin-block:0 10px}
+  .rt-two{display:grid;gap:24px}
+  @media(min-width:760px){.rt-two{grid-template-columns:1fr 1fr;gap:34px;align-items:start}}
+  .rt-know{margin:0;padding-left:20px}
+  .rt-know li{margin-block:0 10px}
+
+  #rt-map{height:clamp(300px,46vw,470px);border-radius:14px;border:1px solid var(--rule);margin-block:0 10px;z-index:0}
+  .rt-cap{color:var(--ink-soft);font-size:.92rem;margin-block:0 0}
+
+  .stage{display:grid;gap:20px;align-items:center;margin-block:0 42px}
+  .stage:last-child{margin-bottom:0}
+  @media(min-width:760px){
+    .stage{grid-template-columns:1fr 1fr;gap:36px}
+    .stage:nth-of-type(odd) figure{order:2}
+  }
+  .stage figure{margin:0}
+  .stage img{display:block;width:100%;height:clamp(210px,28vw,320px);object-fit:cover;
+    border-radius:12px;border:1px solid var(--rule)}
+  .stage figcaption{color:var(--ink-soft);font-size:.9rem;margin-top:8px}
+  .stage h3{font-size:1.2rem;margin-block:0 10px}
+  .stage p{margin-block:0 12px}
+  .stage p:last-child{margin-bottom:0}
+  .stage .step{font-family:var(--display);font-size:.7rem;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold-ink);display:block;margin-bottom:6px}
+
+  .rt-says{border-left:3px solid var(--gold);padding-left:20px;margin-block:18px 0}
+  .rt-says p{font-size:1.06rem;margin-block:0 14px}
+  .rt-says p:last-child{margin-bottom:0}
+  .w3w{font-family:var(--display);font-weight:600;color:var(--gold-ink)}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <a class="mark" href="index.html">Bridle<span>Nav</span></a>
+    <nav class="nav">
+      <a href="how-it-works.html">How it works</a>
+      <a href="routes.html" aria-current="page">Routes</a>
+      <a href="add-routes.html">Add your routes</a>
+      <a href="safety.html">Safety</a>
+      <a href="faq.html">FAQ</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<!-- 1. What it is -->
+<section>
+  <div class="wrap">
+    <div class="rt-head">
+      <p class="eyebrow">Peak District &middot; Derbyshire</p>
+      <h1>Holmesfield Water Crossing</h1>
+      <p class="rt-sub">Four and a half miles of quiet lane and old bridleway on the edge of the Peak District, with a proper ford in the middle of it &mdash; the sort horses remember.</p>
+      <ul class="rt-facts">
+        <li>4.7 miles</li><li>About 2 hours</li><li>Moderate</li><li>Circular</li>
+        <li class="ver">Verified &mdash; ridden and checked</li>
+      </ul>
+    </div>
+
+    <figure class="rt-hero">
+      <img src="photos/holmesfield/bluebell-wood.jpg" width="1100" height="825"
+           alt="Looking between a horse's ears into a beech wood carpeted with bluebells near Holmesfield">
+    </figure>
+
+    <div class="measure">
+      <p>This is the ride I send people out on first. It starts from our own field on Fox Lane, just outside Holmesfield, and loops down through Barlow and back &mdash; about two hours at a walk and steady trot, with enough going on to keep a young horse interested and nothing on it that will frighten one.</p>
+      <p>The lanes are quiet, the bridleway is wide enough to ride beside someone, and you are never more than a mile or so from the start. It makes a good first ride away from home.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Before you go -->
+<section class="band">
+  <div class="wrap">
+    <div class="section-head measure">
+      <p class="eyebrow">Before you set off</p>
+      <h2>Where it goes, and where to park.</h2>
+    </div>
+    <div id="rt-map"></div>
+    <p class="rt-cap" style="margin-bottom:34px">Starting and finishing at the Fox Lane field. Map &copy; OpenStreetMap contributors.</p>
+
+    <div class="rt-two">
+      <div class="rt-box">
+        <h3>Parking &mdash; Fox Lane Field, Holmesfield</h3>
+        <p>The ride starts from our own field on Fox Lane. There is room to turn a lorry or a trailer, and it is flat. &pound;5 per vehicle, booked in advance through <a href="https://unthankequestrian.co.uk">unthankequestrian.co.uk</a>.</p>
+        <p style="margin-bottom:0">what3words: <span class="w3w">///egging.escalates.upstarts</span> &mdash; that points at the field gate, not the farmhouse.</p>
+      </div>
+      <ul class="rt-know">
+        <li><strong>The ford after rain.</strong> Judge it on the day. There is no alternative crossing.</li>
+        <li><strong>Gates.</strong> All openable from the saddle if your horse stands, but there are a few &mdash; a better ride with company if you are on something that fidgets.</li>
+        <li><strong>Far Lane.</strong> Quiet, but it is a working lane: expect the occasional tractor and not much room to get out of the way.</li>
+        <li><strong>The peacocks</strong> at Barlow Woodseats, and <strong>the dogs</strong> at the end of the bridleway. Neither is a problem if you know they are coming.</li>
+        <li><strong>Shoes.</strong> Fine barefoot in summer; the stony stretch and the old setts are the parts to think about.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3. The ride itself, in order -->
+<section>
+  <div class="wrap">
+    <div class="section-head measure">
+      <p class="eyebrow">The ride, in order</p>
+      <h2>Lane, ford, bridleway, home.</h2>
+    </div>
+
+    <div class="stage">
+      <figure>
+        <img loading="lazy" src="photos/holmesfield/setts-and-stile.jpg" width="1000" height="750"
+             alt="A horse standing on an old stone setted lane beside a dry stone wall, with fields beyond">
+        <figcaption>Old setts on the way down. They can be slick when wet.</figcaption>
+      </figure>
+      <div>
+        <span class="step">First</span>
+        <h3>Out of the field, down Fox Lane</h3>
+        <p>You come out of the field and turn right onto Fox Lane, which drops away downhill with the wood on one side. At the end of the lane you turn right, and a little further on right again onto Mill Lane, which takes you down to the crossing.</p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <figure>
+        <img loading="lazy" src="photos/holmesfield/water-crossing.jpg" width="600" height="600"
+             alt="Two riders walking their horses through the ford at Holmesfield">
+        <figcaption>The crossing itself, on a normal summer day.</figcaption>
+      </figure>
+      <div>
+        <span class="step">Then</span>
+        <h3>The water crossing</h3>
+        <p>Shallow and firm underfoot in normal weather &mdash; knee-deep at most, and most horses walk straight through once one has led. It is the bit everybody remembers, and the bit worth taking your time over.</p>
+        <p>After heavy rain it runs a good deal faster and deeper, and there is no footbridge alongside to cross by instead. If it has been wet for days, leave it for another week.</p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <figure>
+        <img loading="lazy" src="photos/holmesfield/hedged-lane.jpg" width="1000" height="1333"
+             alt="A narrow bridleway running between two trimmed hedges in spring sunshine">
+        <figcaption>The long bridleway &mdash; hedged both sides, and quiet.</figcaption>
+      </figure>
+      <div>
+        <span class="step">The best part</span>
+        <h3>Johnnygate Lane and the long bridleway</h3>
+        <p>Out of the water you turn right onto Johnnygate Lane, which runs past Barlow Woodseats Hall. There are peacocks in the grounds and they will sometimes call as you go by, so it is worth knowing before your horse hears one.</p>
+        <p>Then the long bridleway. Hedges both sides, bluebells through the wood in late April and May. It climbs gently and keeps going for the better part of a mile.</p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <figure>
+        <img loading="lazy" src="photos/holmesfield/stony-bridleway.jpg" width="1000" height="1333"
+             alt="A stony bridleway running uphill between trees and a mossy wall">
+        <figcaption>Stony in places. Nothing a shod horse minds.</figcaption>
+      </figure>
+      <div>
+        <span class="step">Home</span>
+        <h3>Far Lane, and back to the field</h3>
+        <p>At the far end of the bridleway there are two houses on the left with dogs that often bark as riders pass. Nothing comes out at you, but gather your horse up in good time rather than meeting it by surprise.</p>
+        <p>The last stretch is Far Lane, a proper country lane, then back onto Fox Lane past Shillito Wood and the car park. The parking field comes into view across the open ground, which is a nice way to finish.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. What the app adds -->
+<section class="band">
+  <div class="wrap">
+    <div class="section-head measure">
+      <p class="eyebrow">What you would hear</p>
+      <h2>The app says it out loud.</h2>
+    </div>
+    <div class="measure">
+      <p>Riding this in BridleNav, you are not reading any of the above off a screen. It is spoken to you as you reach each point, in the words of the person who knows the ride &mdash; so your hands stay on the reins and your eyes stay up. Three of the real lines from this route:</p>
+      <div class="rt-says">
+        <p>&ldquo;Turn right onto Mill Lane for the water crossing &mdash; take care.&rdquo;</p>
+        <p>&ldquo;Turn right onto Johnnygate Lane. Follow it along &mdash; you will pass Barlow Woodseats Hall on your left, where you might spot some beautiful peacocks &mdash; then continue onto the long bridleway.&rdquo;</p>
+        <p>&ldquo;As you come to the end of the bridleway there are two houses on your left with dogs that often bark &mdash; gather your horse up in good time.&rdquo;</p>
+      </div>
+      <p style="margin-top:22px">That is the difference between a line on a map and someone who has ridden it telling you what is coming. BridleNav is in build and comes out in spring 2027 &mdash; <a class="more" href="index.html">see what it will cost and get the email when it lands</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. The ask -->
+<section>
+  <div class="wrap">
+    <div class="section-head measure">
+      <p class="eyebrow">Your turn</p>
+      <h2>Got a ride like this one?</h2>
+      <p class="rt-sub">Anywhere in the country, two miles or twenty-two. If you have a ride you love and a GPX file of it, that is all it takes to start &mdash; and the next rider gets to hear it in your words.</p>
+      <p style="margin-top:18px"><a class="more" href="share-a-route.html">Send a route in</a></p>
+    </div>
+    <div class="onward">
+      <a href="routes.html"><h3>All the routes</h3><p>Where you can ride so far.</p></a>
+      <a href="how-it-works.html"><h3>How it works</h3><p>What the app does on a ride.</p></a>
+      <a href="about.html"><h3>Who&rsquo;s behind it</h3><p>Built at a farm, not in an office.</p></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="mark" style="color:#F6F2E6;margin-bottom:10px">Bridle<span>Nav</span></div>
+      <p class="legal">
+        BridleNav is published by BridleNav Limited, registered in England and Wales,
+        company number 17461028. Registered office: Acorn Business Park,
+        7 Commercial Gate, Mansfield, NG18 1EX.
+      </p>
+      <p class="legal" style="margin-top:12px">
+        Always ride within your ability and your horse&rsquo;s. BridleNav guides you along a
+        route; it does not judge whether that route is safe on the day. Rights of way and
+        ground conditions change &mdash; this description was last ridden and checked in 2026.
+      </p>
+    </div>
+    <div class="flinks">
+      <a href="add-routes.html">Add your routes</a>
+      <a href="mailto:hello@bridlenav.com">hello@bridlenav.com</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+(function(){
+  var line = [[53.271828, -1.557038], [53.272066, -1.558449], [53.274003, -1.557677], [53.276544, -1.556904], [53.277917, -1.556497], [53.279341, -1.556025], [53.280816, -1.555359], [53.28115, -1.554179], [53.281535, -1.552913], [53.282035, -1.551669], [53.282664, -1.550531], [53.283292, -1.549501], [53.283908, -1.54845], [53.284537, -1.547377], [53.284678, -1.546776], [53.284716, -1.546154], [53.28478, -1.545575], [53.284742, -1.545038], [53.284691, -1.544394], [53.284665, -1.542506], [53.284691, -1.540554], [53.284627, -1.539738], [53.284614, -1.53888], [53.284614, -1.538064], [53.284678, -1.537721], [53.284639, -1.537292], [53.284652, -1.536734], [53.284793, -1.535897], [53.28487, -1.535425], [53.28478, -1.534824], [53.284665, -1.534181], [53.284473, -1.533709], [53.284216, -1.533258], [53.284075, -1.5327], [53.284101, -1.531949], [53.284101, -1.531134], [53.284049, -1.530297], [53.283985, -1.529353], [53.283959, -1.528387], [53.283934, -1.527336], [53.284062, -1.526327], [53.283985, -1.525705], [53.283818, -1.525319], [53.283639, -1.525276], [53.283446, -1.525362], [53.283074, -1.52534], [53.282638, -1.525512], [53.282138, -1.52564], [53.28183, -1.525619], [53.281548, -1.525254], [53.281191, -1.525004], [53.280727, -1.524611], [53.280521, -1.524332], [53.280047, -1.524353], [53.279572, -1.524374], [53.279174, -1.52431], [53.27893, -1.524117], [53.278802, -1.523859], [53.278507, -1.523387], [53.278122, -1.522937], [53.27766, -1.522465], [53.277455, -1.523001], [53.277224, -1.523516], [53.276929, -1.524117], [53.276531, -1.524804], [53.27621, -1.525447], [53.275864, -1.526134], [53.275402, -1.527078], [53.275299, -1.527421], [53.275107, -1.527743], [53.27476, -1.528258], [53.274517, -1.528709], [53.27435, -1.529074], [53.274148, -1.529168], [53.273901, -1.529438], [53.273618, -1.529717], [53.273349, -1.530125], [53.273028, -1.53049], [53.272836, -1.530726], [53.272656, -1.530833], [53.272412, -1.530576], [53.27213, -1.530318], [53.271937, -1.530425], [53.271758, -1.53064], [53.271514, -1.530983], [53.271167, -1.531198], [53.27086, -1.531692], [53.270577, -1.5324], [53.270295, -1.533236], [53.269936, -1.534116], [53.269653, -1.535082], [53.269538, -1.535597], [53.269384, -1.536026], [53.26914, -1.536477], [53.268755, -1.536906], [53.268716, -1.536992], [53.268781, -1.53727], [53.268948, -1.537571], [53.26905, -1.537871], [53.269012, -1.538129], [53.268986, -1.538472], [53.268896, -1.53888], [53.268742, -1.539459], [53.268627, -1.539738], [53.268498, -1.540017], [53.268357, -1.540296], [53.26819, -1.540618], [53.267998, -1.541026], [53.267921, -1.541476], [53.267818, -1.542013], [53.26778, -1.542678], [53.267805, -1.543579], [53.26787, -1.544566], [53.267831, -1.545381], [53.267741, -1.546326], [53.267716, -1.546712], [53.267767, -1.547227], [53.267818, -1.547828], [53.267728, -1.54845], [53.267638, -1.549072], [53.267677, -1.54963], [53.267728, -1.550231], [53.26778, -1.550875], [53.267754, -1.551497], [53.267703, -1.552205], [53.26769, -1.55302], [53.267728, -1.553814], [53.267844, -1.554651], [53.267908, -1.555424], [53.267947, -1.55566], [53.268036, -1.556089], [53.268165, -1.556776], [53.268306, -1.557612], [53.268383, -1.558363], [53.268614, -1.559222], [53.26887, -1.560102], [53.269101, -1.560938], [53.269281, -1.56126], [53.269551, -1.560488], [53.269948, -1.55993], [53.270667, -1.559415], [53.271424, -1.558921], [53.272053, -1.558492]];
+  var marks = [[53.2808163, -1.5553594], [53.2838183, -1.5253186], [53.2821377, -1.5256405], [53.2776602, -1.5224648], [53.2687165, -1.5369916], [53.2692811, -1.5612602], [53.272053, -1.5584922]];
+  var css = getComputedStyle(document.documentElement);
+  var green = (css.getPropertyValue('--green') || '#4A6741').trim();
+  var map = L.map('rt-map', { scrollWheelZoom:false });
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  var poly = L.polyline(line, { color: green, weight: 5, opacity: .95 }).addTo(map);
+  map.fitBounds(poly.getBounds(), { padding:[26,26] });
+  L.circleMarker(line[0], { radius:8, color:'#fff', weight:3, fillColor:green, fillOpacity:1 })
+    .addTo(map).bindPopup('Start and finish &mdash; Fox Lane field');
+  marks.forEach(function(m, i){
+    L.circleMarker(m, { radius:5, color:green, weight:2, fillColor:'#fff', fillOpacity:1 })
+      .addTo(map).bindPopup('Point ' + (i+1));
+  });
+})();
+</script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3ce65c5be3d24e7da86beb59ef09d51f"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
