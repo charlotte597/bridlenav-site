@@ -47,6 +47,9 @@
   .rt-hero img{display:block;width:100%;height:clamp(240px,40vw,440px);object-fit:cover}
 
   .rt-box{border:1px solid var(--rule);border-radius:14px;padding:22px 24px;background:var(--raised)}
+  .rt-box{padding:0;overflow:hidden}
+  .rt-box .rt-box-body{padding:20px 24px 22px}
+  .rt-box img{display:block;width:100%;height:clamp(150px,20vw,200px);object-fit:cover}
   .rt-box h3{margin-block:0 10px}
   .rt-two{display:grid;gap:24px}
   @media(min-width:760px){.rt-two{grid-template-columns:1fr 1fr;gap:34px;align-items:start}}
@@ -130,9 +133,13 @@
 
     <div class="rt-two">
       <div class="rt-box">
-        <h3>Parking &mdash; Fox Lane Field, Holmesfield</h3>
-        <p>The ride starts from our own field on Fox Lane. There is room to turn a lorry or a trailer, and it is flat. &pound;5 per vehicle, booked in advance through <a href="https://unthankequestrian.co.uk">unthankequestrian.co.uk</a>.</p>
-        <p style="margin-bottom:0">what3words: <span class="w3w">///egging.escalates.upstarts</span> &mdash; that points at the field gate, not the farmhouse.</p>
+        <img src="photos/holmesfield/parking-field.jpg" width="1200" height="645" loading="lazy"
+             alt="The flat open grass field on Fox Lane where riders park, looking out across Derbyshire">
+        <div class="rt-box-body">
+          <h3>Parking &mdash; Fox Lane Field, Holmesfield</h3>
+          <p>The ride starts from our own field on Fox Lane. Flat, mown, and room to turn a lorry or a trailer without a three-point turn. &pound;5 per vehicle, booked in advance through <a href="https://unthankequestrian.co.uk">unthankequestrian.co.uk</a>.</p>
+          <p style="margin-bottom:0">what3words: <span class="w3w">///egging.escalates.upstarts</span> &mdash; that points at the field gate, not the farmhouse.</p>
+        </div>
       </div>
       <ul class="rt-know">
         <li><strong>The ford after rain.</strong> Judge it on the day. There is no alternative crossing.</li>
