@@ -987,12 +987,39 @@
   // Every detected turn arrives carrying our guess - a bare 'left' or 'right'.
   // That is not the rider saying anything, so it must not be counted as words,
   // or a route nobody has touched reads back as fully written.
+  // Does this note tell a rider anything beyond which way to go? It does not
+  // matter whether we suggested the words or she typed them herself.
+  //
+  // This used to be an exact match against AUTO_WORDS, our own guesses. On
+  // 2 Nov a route came in from a forest in Fife with five points on it, every
+  // one of them typed by hand as "Right turn" or "Left turn". None of those
+  // is in AUTO_WORDS, so all five counted as written, the warning below never
+  // appeared and the confirm on Send never fired. She had no way of knowing
+  // the route would reach the next rider saying nothing useful at all.
+  //
+  // So strip the direction words out and see whether anything survives.
+  // "left", "Right turn", "bear right" all come out empty; "left through the
+  // gate by the barn" keeps gate and barn.
+  var DIRECTION_ONLY = ['turn', 'turns', 'turning', 'go', 'goes', 'going',
+    'carry', 'carrying', 'continue', 'bear', 'bears', 'bearing', 'head',
+    'heading', 'keep', 'keeping', 'take', 'taking', 'sharp', 'sharply',
+    'hairpin', 'slight', 'slightly', 'then', 'and', 'a', 'an', 'the', 'to',
+    'on', 'onto', 'at', 'into', 'is', 'it', 'you', 'your', 'left', 'right',
+    'straight', 'ahead', 'round', 'around', 'back', 'next', 'here', 'now'];
+
+  function saysSomething(note) {
+    var words = (note || '').toLowerCase().replace(/[^a-z\s]+/g, ' ').split(/\s+/);
+    for (var i = 0; i < words.length; i++) {
+      if (words[i] && DIRECTION_ONLY.indexOf(words[i]) < 0) return true;
+    }
+    return false;
+  }
+
   function ownWords() {
     var c = 0;
     marks.forEach(function (m) {
       if (m.dropped || !kept(m)) return;
-      var note = (m.note || '').trim();
-      if (note && AUTO_WORDS.indexOf(note.toLowerCase()) < 0) c++;
+      if (saysSomething(m.note)) c++;
     });
     return c;
   }
