@@ -145,7 +145,7 @@
       return;
     }
 
-    var areas = (d.areas && d.areas.length) ? d.areas : ['Peak District', 'Yorkshire', 'North East'];
+    var areas = (d.areas && d.areas.length) ? d.areas : ['Peak District', 'Yorkshire', 'North East', 'Scotland'];
     var inUse = d.areas_in_use || [];
     var chips = areas.map(function (a, i) {
       var thin = inUse.indexOf(a) === -1 ? ' thin' : '';
