@@ -319,15 +319,15 @@
 <!-- ------------------------------------------------------------------ 5 -->
 <div class="step" id="s5" hidden>
   <span class="num">Step five</span>
-  <h2>Parking</h2>
-  <p class="help">
+  <h2 id="parkHead">Parking</h2>
+  <p class="help" id="parkHelp">
     This is the part riders thank you for. A postcode often drops somebody towing a lorry at the
     wrong end of a long lane.
   </p>
 
   <div class="field">
     <label for="parking">Where do you park?</label>
-    <p class="sub">Name it, say what the surface is like, and say whether it costs anything.</p>
+    <p class="sub" id="parkSub">Name it, say what the surface is like, and say whether it costs anything.</p>
     <textarea id="parking" maxlength="700" style="min-height:92px"></textarea>
   </div>
 
@@ -1287,6 +1287,28 @@
   wireChoices('difficulty', false);
   wireChoices('traffic', false);
   wireChoices('routeType', false);
+
+  /*
+   * Step five asks about parking. On a hack there is usually nothing to say:
+   * a hack is a route a rider rides TO from her own yard, so nobody is boxing
+   * up. Nothing here was ever compulsory - but "This is the part riders thank
+   * you for" over an empty box reads as something she has failed to do, and a
+   * rider who feels she has to answer answers with the only place she knows,
+   * which is whoever's gate she actually uses. That is how a private yard gets
+   * published. So the step says out loud that a hack can walk past it.
+   */
+  function parkingWordsForKind() {
+    var hack = picks.routeType === 'hack';
+    $('parkHead').textContent = hack ? 'Parking, if there is any' : 'Parking';
+    $('parkHelp').textContent = hack
+      ? 'Most hacks have nothing to put here, and that is a perfectly good answer \u2014 riders looking at hacks are looking for something they can ride to from their own yard. Only fill this in if there genuinely is somewhere to leave a box. You can go straight past this step.'
+      : 'This is the part riders thank you for. A postcode often drops somebody towing a lorry at the wrong end of a long lane.';
+    $('parkSub').textContent = hack
+      ? 'Leave it blank if riders would simply hack to this one.'
+      : 'Name it, say what the surface is like, and say whether it costs anything.';
+  }
+  $('routeType').addEventListener('click', function () { setTimeout(parkingWordsForKind, 0); });
+  parkingWordsForKind();
   wireChoices('fits', true);
 
   // ====================================================================
@@ -1564,6 +1586,10 @@
       b.setAttribute('aria-pressed',
         picks.fits.indexOf(b.getAttribute('data-v')) >= 0 ? 'true' : 'false');
     });
+    // A restored draft already knows it is a hack, so step five has to come
+    // back worded for one - otherwise the rider is asked for a car park again
+    // on the route she has already said she rides to.
+    if (typeof parkingWordsForKind === 'function') parkingWordsForKind();
   }
 
   function applyDraft(d) {
