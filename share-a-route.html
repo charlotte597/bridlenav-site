@@ -301,17 +301,20 @@
   </div>
 
   <div class="field">
-    <label>Is it a hack or a day out?</label>
-    <p class="sub">A hack goes from a yard or a lane end and takes an hour or two. A day out is one you box up for.</p>
+    <label>What kind of route is this?</label>
+    <p class="sub">A hack goes from a yard or a lane end and takes an hour or two. A day out is one you
+      box up for. Open ground is a beach, a sand flat or a moor with no paths on it, where your line is
+      one way across rather than the way.</p>
     <div class="choices" id="routeType">
       <button type="button" data-v="hack" aria-pressed="false">A hack</button>
       <button type="button" data-v="day_out" aria-pressed="false">A day out</button>
+      <button type="button" data-v="open_ground" aria-pressed="false">Open ground</button>
     </div>
   </div>
 
   <div class="field">
-    <label for="notes">Anything riders should know?</label>
-    <p class="sub">Going underfoot, whether it dries out, gates that are stiff, where it gets busy with walkers, anything you would mention in the lorry park.</p>
+    <label for="notes" id="notesLabel">Anything riders should know?</label>
+    <p class="sub" id="notesHelp">Going underfoot, whether it dries out, gates that are stiff, where it gets busy with walkers, anything you would mention in the lorry park.</p>
     <textarea id="notes" maxlength="1200"></textarea>
   </div>
 </div>
@@ -1297,6 +1300,22 @@
    * which is whoever's gate she actually uses. That is how a private yard gets
    * published. So the step says out loud that a hack can walk past it.
    */
+  // On open ground the notes field stops being "anything else" and becomes the
+  // only place the things that matter can live: where you get on and off, and
+  // the tide. The line itself carries neither.
+  function notesWordsForKind() {
+    var open = picks.routeType === 'open_ground';
+    $('notesLabel').textContent = open
+      ? 'Tides, and where you get on and off'
+      : 'Anything riders should know?';
+    $('notesHelp').textContent = open
+      ? 'This is the part the line cannot carry. Where do you get onto it and where do you come off, '
+        + 'and what does a rider need to know about the tide before she sets off? Please do not leave '
+        + 'this one blank.'
+      : 'Going underfoot, whether it dries out, gates that are stiff, where it gets busy with walkers, '
+        + 'anything you would mention in the lorry park.';
+  }
+
   function parkingWordsForKind() {
     var hack = picks.routeType === 'hack';
     $('parkHead').textContent = hack ? 'Parking, if there is any' : 'Parking';
@@ -1307,8 +1326,11 @@
       ? 'Leave it blank if riders would simply hack to this one.'
       : 'Name it, say what the surface is like, and say whether it costs anything.';
   }
-  $('routeType').addEventListener('click', function () { setTimeout(parkingWordsForKind, 0); });
+  $('routeType').addEventListener('click', function () {
+    setTimeout(function () { parkingWordsForKind(); notesWordsForKind(); }, 0);
+  });
   parkingWordsForKind();
+  notesWordsForKind();
   wireChoices('fits', true);
 
   // ====================================================================
@@ -1590,6 +1612,7 @@
     // back worded for one - otherwise the rider is asked for a car park again
     // on the route she has already said she rides to.
     if (typeof parkingWordsForKind === 'function') parkingWordsForKind();
+    if (typeof notesWordsForKind === 'function') notesWordsForKind();
   }
 
   function applyDraft(d) {
@@ -1695,7 +1718,11 @@
     if (full.length < 2) return problem('There is no route yet - choose a GPX file at the top.');
     if (!$('name').value.trim()) return problem('The route needs a name.');
     if (!picks.traffic) return problem('Please say whether there are roads on it. Riders filter on that, and leaving it blank hides your route from them.');
-    if (!picks.routeType) return problem('Please say whether it is a hack or a day out. Riders filter on that as well, and a blank there hides your route from them just the same.');
+    if (!picks.routeType) return problem('Please say what kind of route it is. Riders filter on that as well, and a blank there hides your route from them just the same.');
+    // A beach with nothing said about the tide is the one case where a route is
+    // worse than no route at all.
+    if (picks.routeType === 'open_ground' && !$('notes').value.trim())
+      return problem('Open ground is the one kind of route where the line on its own is not enough - the tide moves the ground under it and there is no path to pick up. Please say where a rider gets on and off, and what she needs to know about the water.');
     if (photos.length < MIN_PHOTOS) return problem('Two photographs are needed before a route can be sent.');
     if (!ticked) {
       return problem('Please confirm any rider could follow this route. Permission given to you personally does not pass to the strangers who will ride it on your word - if any part of this needs that, it cannot be shared.');
