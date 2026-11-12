@@ -161,6 +161,15 @@
 </section>
 
 <div class="wrap">
+
+<!-- Where the "Change what I sent" link in the rider's email lands. Hidden
+     unless ?edit=<token> is on the address. -->
+<div class="step" id="editbox" hidden style="border-top:none">
+  <span class="num">Your route</span>
+  <h2 id="edithead">Fetching your route&hellip;</h2>
+  <p class="help" id="editsay"></p>
+</div>
+
 <form id="form" autocomplete="on">
 
 <!-- ------------------------------------------------------------------ 1 -->
@@ -410,6 +419,13 @@
   </div>
 
   <p style="margin-top:28px">
+    <div id="editkept" hidden>
+      <p class="help"><strong>What is not on this page.</strong> The line itself, the turns you
+        marked along it and the photographs all came through and are safe &mdash; they are just not
+        editable here yet. If one of those is what needs changing, reply to the email and it will
+        be sorted by hand.</p>
+      <p class="help" id="editkeptbits"></p>
+    </div>
     <button type="submit" class="send" id="send">Send it for review</button>
   </p>
   <p class="say" id="sendsay"></p>
@@ -1705,7 +1721,166 @@
     if (document.visibilityState === 'hidden') saveDraft();
   });
 
-  offerDraft();
+  // ====================================================================
+  // EDIT MODE
+  // --------------------------------------------------------------------
+  // A rider who has already sent a route arrives here from the link in her
+  // confirmation email, carrying ?edit=<token>. The token is the only proof
+  // of ownership there is - the website has no accounts - so everything it
+  // allows is decided by the database, in submission_for_edit and
+  // update_submission_by_token. This page just shows what they return.
+  //
+  // THE LINE AND THE TURNS ARE NOT EDITABLE HERE. The waypoints are pinned to
+  // distance along the track, so changing one without the other silently moves
+  // every mark on the route. Rather than half-build that, it is said plainly
+  // on the page and the words - which are what riders actually come back to
+  // fix - are what can be changed.
+  // ====================================================================
+  var EDIT_TOKEN = '';
+  try {
+    EDIT_TOKEN = (new URLSearchParams(window.location.search)).get('edit') || '';
+  } catch (e) { EDIT_TOKEN = ''; }
+
+  function rpc(fn, body) {
+    return fetch(SB + '/rest/v1/rpc/' + fn, {
+      method: 'POST',
+      headers: headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      if (!r.ok) return r.text().then(function (t) { throw new Error(t || fn); });
+      return r.json();
+    });
+  }
+
+  function editFail(head, words) {
+    $('edithead').textContent = head;
+    $('editsay').textContent = words;
+    $('form').hidden = true;
+  }
+
+  function startEdit() {
+    // The draft on this browser belongs to a DIFFERENT, unsent route. Offering
+    // it here would quietly overwrite what she actually sent.
+    draftOff = true;
+    $('editbox').hidden = false;
+    ['s1', 's2', 's3'].forEach(function (id) { if ($(id)) $(id).hidden = true; });
+
+    rpc('submission_for_edit', { p_token: EDIT_TOKEN }).then(function (d) {
+      if (!d) {
+        return editFail('That link has expired or is not right',
+          'It may have been typed in by hand, or the route may have been taken down. ' +
+          'Reply to the email you were sent and it can be sorted out.');
+      }
+      if (!d.editable) {
+        return editFail('Charlotte has already read this one',
+          'A route cannot change once it is being checked, or after it has gone on the map - ' +
+          'otherwise it would change under the person reading it. If something still needs ' +
+          'fixing, reply to the email and she will do it by hand.');
+      }
+
+      $('edithead').textContent = 'Change what you sent';
+      $('editsay').textContent =
+        'This is your route exactly as it arrived. Change anything you like and press save. ' +
+        'It replaces what you sent rather than adding a second copy.';
+
+      $('name').value    = d.name || '';
+      $('region').value  = d.region || '';
+      $('notes').value   = d.notes || '';
+      $('parking').value = d.parking || '';
+      $('approach').value = d.parking_approach || '';
+      $('w3w').value     = d.parking_w3w || '';
+      $('who').value     = d.submitter_name || '';
+
+      picks.difficulty = d.difficulty || '';
+      picks.traffic    = d.traffic || '';
+      picks.routeType  = d.route_type || '';
+      picks.fits       = Array.isArray(d.parking_fits) ? d.parking_fits.slice() : [];
+      paintChoices();
+      if (typeof parkingWordsForKind === 'function') parkingWordsForKind();
+      if (typeof notesWordsForKind === 'function') notesWordsForKind();
+
+      // Say what came through and is being kept, so she is not left wondering
+      // whether her photographs and her turns arrived. Not knowing is exactly
+      // what made one rider do the whole thing twice.
+      var nPhotos = Array.isArray(d.photos) ? d.photos.length : 0;
+      var nPoints = Array.isArray(d.points) ? d.points.length : 0;
+      var nTrack  = Array.isArray(d.track) ? d.track.length : 0;
+      var bits = [];
+      if (nTrack > 1)  bits.push('the line');
+      if (nPoints)     bits.push(nPoints + (nPoints === 1 ? ' marked point' : ' marked points'));
+      if (nPhotos)     bits.push(nPhotos + (nPhotos === 1 ? ' photograph' : ' photographs'));
+      $('editkeptbits').textContent = bits.length
+        ? 'Still held against this route: ' + bits.join(', ') + '.'
+        : '';
+      $('editkept').hidden = false;
+
+      setTick(true);
+      $('send').textContent = 'Save the changes';
+      ['s4', 's5', 's6', 's7'].forEach(function (id) { $(id).hidden = false; });
+      if ($('s6')) $('s6').hidden = true;   // photographs: see editkept
+      $('editsay').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }).catch(function () {
+      editFail('That did not load',
+        'Something went wrong fetching your route - nothing has been changed. ' +
+        'Try the link again in a moment, or reply to the email.');
+    });
+  }
+
+  if (EDIT_TOKEN) startEdit(); else offerDraft();
+
+  // Saving a change is a different job from sending a route: there is no file,
+  // no photographs to upload and no new row. Only the words move, and only the
+  // ones she can see - the database decides the rest.
+  function saveEdit(say) {
+    if (!$('name').value.trim()) return problem('The route needs a name.');
+    if (!picks.traffic) return problem('Please say whether there are roads on it. Riders filter on that, and leaving it blank hides your route from them.');
+    if (!picks.routeType) return problem('Please say what kind of route it is. Riders filter on that as well, and a blank there hides your route from them just the same.');
+    if (picks.routeType === 'open_ground' && !$('notes').value.trim())
+      return problem('Open ground is the one kind of route where the line on its own is not enough - the tide moves the ground under it and there is no path to pick up. Please say where a rider gets on and off, and what she needs to know about the water.');
+
+    $('send').disabled = true;
+    say.textContent = 'Saving...';
+
+    var w3w = normaliseW3W($('w3w').value);
+    // Only keys that are SENT are touched. Photographs, points and the track
+    // are absent on purpose, so the database leaves them exactly as they are.
+    var patch = {
+      name: $('name').value.trim(),
+      region: $('region').value.trim(),
+      difficulty: picks.difficulty || '',
+      parking: $('parking').value.trim(),
+      parking_approach: $('approach').value.trim(),
+      parking_w3w: w3w || '',
+      parking_fits: picks.fits.slice(),
+      notes: $('notes').value.trim(),
+      traffic: picks.traffic || '',
+      route_type: picks.routeType || '',
+      submitter_name: $('who').value.trim()
+    };
+
+    rpc('update_submission_by_token', { p_token: EDIT_TOKEN, p_patch: patch })
+      .then(function (result) {
+        $('send').disabled = false;
+        if (result === 'ok') {
+          $('form').hidden = true;
+          $('editbox').hidden = false;
+          $('edithead').textContent = 'Saved';
+          $('editsay').textContent =
+            'Your route has been updated. There is nothing else to do - it is the same ' +
+            'submission, not a second one, and Charlotte will see this version when she reads it.';
+          $('editbox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+        if (result === 'locked') {
+          return problem('Charlotte has started reading this one, so it can no longer be changed here - a route should not move under the person checking it. Reply to the email and she will make the change by hand.');
+        }
+        problem('That link no longer works. Reply to the email you were sent and it can be sorted out.');
+      })
+      .catch(function () {
+        $('send').disabled = false;
+        problem('That did not save, and nothing has been changed. Try again in a moment, and if it keeps happening email hello@bridlenav.com.');
+      });
+  }
 
   $('form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -1714,6 +1889,8 @@
 
     // A bot filled in the field nobody can see. Say nothing, do nothing.
     if ($('website').value.trim() !== '') { $('thanks').hidden = false; $('form').hidden = true; return; }
+
+    if (EDIT_TOKEN) return saveEdit(say);
 
     if (full.length < 2) return problem('There is no route yet - choose a GPX file at the top.');
     if (!$('name').value.trim()) return problem('The route needs a name.');
