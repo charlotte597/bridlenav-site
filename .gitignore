@@ -10,3 +10,6 @@
 
 # Scratch files written while building something; never part of the site.
 .tmp-*
+
+# loose photos dropped in the site root by accident
+/*.jpg
