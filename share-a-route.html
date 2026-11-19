@@ -364,6 +364,18 @@
     </div>
   </div>
 
+  <!-- A height bar turns a rider round at the gateway rather than in the car
+       park, and nothing else here asks about it. Sue Rogers, who collects
+       parking information for BHS Northumberland, pointed it out: coastal car
+       parks put them up to stop camper vans staying overnight and they stay up
+       whether the place is empty or not. Kept separate from "what can get in"
+       on purpose - a trailer often goes under one that stops a lorry. -->
+  <div class="field">
+    <label for="heightbar">Is there a height barrier on the way in?</label>
+    <p class="sub">The bar across the entrance that stops camper vans parking overnight. It stays up whether the car park is empty or not, and it is the one thing that turns a lorry round before it has even got in. Tell us how high if you know, or just say no.</p>
+    <input type="text" id="heightbar" maxlength="120" placeholder="2.1m bar at the entrance">
+  </div>
+
   <!-- Access and permits. Pauline Mather's Perranporth to Goonhavern (18 Nov)
        carried five of these at once - a parking fee payable to the petrol
        station in summer, donations to charity off season, a destination car
@@ -1551,7 +1563,7 @@
   // bulk of what follows.
   var DRAFT_KEY = 'bridlenav.share.draft.v1';
   var DRAFT_MAX = 3 * 1024 * 1024;   // well inside the ~5MB a browser allows
-  var TEXT_IDS = ['name', 'region', 'notes', 'parking', 'approach', 'access', 'w3w', 'who', 'contact'];
+  var TEXT_IDS = ['name', 'region', 'notes', 'parking', 'approach', 'access', 'heightbar', 'w3w', 'who', 'contact'];
   // 'website' is the honeypot and is deliberately absent. Storing it would
   // mean restoring it, and a restored honeypot would silently bin a real
   // rider's route.
@@ -1839,6 +1851,7 @@
       $('parking').value = d.parking || '';
       $('approach').value = d.parking_approach || '';
       $('access').value = d.access_notes || '';
+      $('heightbar').value = d.parking_height_bar || '';
       $('w3w').value     = d.parking_w3w || '';
       $('who').value     = d.submitter_name || '';
 
@@ -1902,6 +1915,7 @@
       parking: $('parking').value.trim(),
       parking_approach: $('approach').value.trim(),
       access_notes: $('access').value.trim(),
+      parking_height_bar: $('heightbar').value.trim(),
       parking_w3w: w3w || '',
       parking_fits: picks.fits.slice(),
       notes: $('notes').value.trim(),
@@ -2013,6 +2027,8 @@
         if (approach) row.parking_approach = approach;
         var access = $('access').value.trim();
         if (access) row.access_notes = access;
+        var heightbar = $('heightbar').value.trim();
+        if (heightbar) row.parking_height_bar = heightbar;
 
         return fetch(SB + '/rest/v1/route_submissions', {
           method: 'POST',
