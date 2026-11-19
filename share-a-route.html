@@ -418,6 +418,21 @@
     </span>
   </div>
 
+  <!-- Digital Law's wording, verbatim (Contributor Agreement V2, 12 Nov 2026).
+       It is the licence that lets BridleNav publish the route at all. Do not
+       reword it to sound more like the rest of the page. -->
+  <div class="tickrow" id="tickterms" role="checkbox" aria-checked="false" tabindex="0">
+    <span class="box">&#10003;</span>
+    <span class="words">
+      I have read and accept the
+      <a href="contributor-terms.html" target="_blank" rel="noopener" id="termslink">BridleNav Contributor Terms</a>.
+      I confirm that this route is entirely on public bridleway, byway, road or path open to
+      everyone on horseback and that nothing in it relies on permission given to me personally.
+      I confirm that the route description, directions and photographs are my own work, or that
+      I have permission to submit them and I grant BridleNav the licence set out in the terms.
+    </span>
+  </div>
+
   <p style="margin-top:28px">
     <div id="editkept" hidden>
       <p class="help"><strong>What is not on this page.</strong> The line itself, the turns you
@@ -485,6 +500,10 @@
   // phone produces, and is approved on the same page. Nothing here is special.
   // --------------------------------------------------------------------
   var SB  = 'https://xlvjhktfaiagtbdxaetn.supabase.co';
+  // Must match CONTRIBUTOR_TERMS_VERSION in the app's lib/community.ts and the
+  // version shown on contributor-terms.html. Clause 11.3 means a later redraft
+  // does not apply to what was accepted under this one.
+  var CONTRIBUTOR_TERMS_VERSION = 'V2-2026-11-12';
   var KEY = 'sb_publishable_OYjxynX2htU7Z5BAC0lcUg_kqqt1mo_';
   var BUCKET = 'route-photos';
   var TARGET_POINTS = 150;   // same as the app: lib/simplifyLine.ts
@@ -610,6 +629,10 @@
   var photos = [];      // {blob, url}
   var picks = { difficulty: '', traffic: '', routeType: '', fits: [] };
   var ticked = false;
+  // NOT kept in the draft, unlike ticked above. Accepting terms is something
+  // a rider does for the route she is sending today, not a box that stays
+  // ticked on this browser for ever.
+  var termsTicked = false;
   var warnedNoWords = false;
   var map = null, lineOn = null, lineOff = null, lineCut = null, pins = [];
   // A rider who meets a locked gate or a blocked path turns round and rides
@@ -1434,6 +1457,20 @@
     if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleTick(); }
   });
 
+  function setTermsTick(on) {
+    termsTicked = !!on;
+    $('tickterms').classList.toggle('on', termsTicked);
+    $('tickterms').setAttribute('aria-checked', termsTicked ? 'true' : 'false');
+  }
+  function toggleTermsTick() { setTermsTick(!termsTicked); }
+  $('tickterms').addEventListener('click', toggleTermsTick);
+  $('tickterms').addEventListener('keydown', function (e) {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleTermsTick(); }
+  });
+  // The whole row is the checkbox, so a tap on the link inside it would toggle
+  // the tick as well as open the terms. Reading them must not accept them.
+  $('termslink').addEventListener('click', function (e) { e.stopPropagation(); });
+
   // ====================================================================
   // SEND
   // ====================================================================
@@ -1904,6 +1941,9 @@
     if (!ticked) {
       return problem('Please confirm any rider could follow this route. Permission given to you personally does not pass to the strangers who will ride it on your word - if any part of this needs that, it cannot be shared.');
     }
+    if (!termsTicked) {
+      return problem('Please accept the Contributor Terms. They are what lets BridleNav show your route to other riders, and they say the credit and the ownership stay yours.');
+    }
 
     // A silent route still works - the app draws the line and says nothing,
     // and a plain track is worth having. But almost nobody means to send one,
@@ -1945,6 +1985,8 @@
           traffic: picks.traffic || null,
           route_type: picks.routeType || null,
           rights_confirmed_at: new Date().toISOString(),
+          contributor_terms_accepted_at: new Date().toISOString(),
+          contributor_terms_version: CONTRIBUTOR_TERMS_VERSION,
           submitter_name: $('who').value.trim() || null,
           submitter_contact: $('contact').value.trim() || null,
           device_id: 'web-form',
