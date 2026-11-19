@@ -363,6 +363,19 @@
       <button type="button" data-v="Lorry" aria-pressed="false">Lorry</button>
     </div>
   </div>
+
+  <!-- Access and permits. Pauline Mather's Perranporth to Goonhavern (18 Nov)
+       carried five of these at once - a parking fee payable to the petrol
+       station in summer, donations to charity off season, a destination car
+       park padlocked and in dispute, tide times, and seasonal horse
+       restrictions on the beach - and there was nowhere on this form to put
+       any of it, so it went in the notes and read as scenery. A rider who
+       finds out at the gate has already boxed up and driven. -->
+  <div class="field">
+    <label for="access">Does a rider have to sort anything out before she sets off?</label>
+    <p class="sub">A permit, a booking, a phone call, a parking fee, a gate code, a season, a tide - anything that stops her simply turning up. Who to ring, how much, which months: the detail is the useful bit. Leave it blank if she can just go.</p>
+    <textarea id="access" maxlength="700" style="min-height:92px"></textarea>
+  </div>
 </div>
 
 <!-- ------------------------------------------------------------------ 6 -->
@@ -1538,7 +1551,7 @@
   // bulk of what follows.
   var DRAFT_KEY = 'bridlenav.share.draft.v1';
   var DRAFT_MAX = 3 * 1024 * 1024;   // well inside the ~5MB a browser allows
-  var TEXT_IDS = ['name', 'region', 'notes', 'parking', 'approach', 'w3w', 'who', 'contact'];
+  var TEXT_IDS = ['name', 'region', 'notes', 'parking', 'approach', 'access', 'w3w', 'who', 'contact'];
   // 'website' is the honeypot and is deliberately absent. Storing it would
   // mean restoring it, and a restored honeypot would silently bin a real
   // rider's route.
@@ -1825,6 +1838,7 @@
       $('notes').value   = d.notes || '';
       $('parking').value = d.parking || '';
       $('approach').value = d.parking_approach || '';
+      $('access').value = d.access_notes || '';
       $('w3w').value     = d.parking_w3w || '';
       $('who').value     = d.submitter_name || '';
 
@@ -1887,6 +1901,7 @@
       difficulty: picks.difficulty || '',
       parking: $('parking').value.trim(),
       parking_approach: $('approach').value.trim(),
+      access_notes: $('access').value.trim(),
       parking_w3w: w3w || '',
       parking_fits: picks.fits.slice(),
       notes: $('notes').value.trim(),
@@ -1996,6 +2011,8 @@
         if (picks.fits.length) row.parking_fits = picks.fits;
         var approach = $('approach').value.trim();
         if (approach) row.parking_approach = approach;
+        var access = $('access').value.trim();
+        if (access) row.access_notes = access;
 
         return fetch(SB + '/rest/v1/route_submissions', {
           method: 'POST',
