@@ -388,6 +388,19 @@
     <p class="sub">A permit, a booking, a phone call, a parking fee, a gate code, a season, a tide - anything that stops her simply turning up. Who to ring, how much, which months: the detail is the useful bit. Leave it blank if she can just go.</p>
     <textarea id="access" maxlength="700" style="min-height:92px"></textarea>
   </div>
+
+  <!-- How much of this has anybody actually ridden? Pauline Mather mapped the
+       Ridgeway and has ridden parts of it - she was set to go last July and
+       the heat beat her, and it is exposed chalk the whole way with no shade
+       and no water. A national trail is easy to trace and hard to get all the
+       way along, so this will keep coming up. Asking is better than turning
+       the route away, and far better than publishing it as though somebody
+       had been over every mile. -->
+  <div class="field">
+    <label for="ridden">How much of this route have you ridden yourself?</label>
+    <p class="sub">Nobody minds a route you have mapped but not finished - riders would far rather have it with an honest note than not have it at all. Say which stretches you know and which you have only mapped, and that is what the next rider sees.</p>
+    <textarea id="ridden" maxlength="500" style="min-height:76px" placeholder="All of it - or which parts, and which you have only mapped"></textarea>
+  </div>
 </div>
 
 <!-- ------------------------------------------------------------------ 6 -->
@@ -1563,7 +1576,7 @@
   // bulk of what follows.
   var DRAFT_KEY = 'bridlenav.share.draft.v1';
   var DRAFT_MAX = 3 * 1024 * 1024;   // well inside the ~5MB a browser allows
-  var TEXT_IDS = ['name', 'region', 'notes', 'parking', 'approach', 'access', 'heightbar', 'w3w', 'who', 'contact'];
+  var TEXT_IDS = ['name', 'region', 'notes', 'parking', 'approach', 'access', 'heightbar', 'ridden', 'w3w', 'who', 'contact'];
   // 'website' is the honeypot and is deliberately absent. Storing it would
   // mean restoring it, and a restored honeypot would silently bin a real
   // rider's route.
@@ -1852,6 +1865,7 @@
       $('approach').value = d.parking_approach || '';
       $('access').value = d.access_notes || '';
       $('heightbar').value = d.parking_height_bar || '';
+      $('ridden').value = d.ridden_notes || '';
       $('w3w').value     = d.parking_w3w || '';
       $('who').value     = d.submitter_name || '';
 
@@ -1916,6 +1930,7 @@
       parking_approach: $('approach').value.trim(),
       access_notes: $('access').value.trim(),
       parking_height_bar: $('heightbar').value.trim(),
+      ridden_notes: $('ridden').value.trim(),
       parking_w3w: w3w || '',
       parking_fits: picks.fits.slice(),
       notes: $('notes').value.trim(),
@@ -2029,6 +2044,8 @@
         if (access) row.access_notes = access;
         var heightbar = $('heightbar').value.trim();
         if (heightbar) row.parking_height_bar = heightbar;
+        var ridden = $('ridden').value.trim();
+        if (ridden) row.ridden_notes = ridden;
 
         return fetch(SB + '/rest/v1/route_submissions', {
           method: 'POST',
