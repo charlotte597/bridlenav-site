@@ -384,8 +384,8 @@
        any of it, so it went in the notes and read as scenery. A rider who
        finds out at the gate has already boxed up and driven. -->
   <div class="field">
-    <label for="access">Does a rider have to sort anything out before she sets off?</label>
-    <p class="sub">A permit, a booking, a phone call, a parking fee, a gate code, a season, a tide - anything that stops her simply turning up. Who to ring, how much, which months: the detail is the useful bit. Leave it blank if she can just go.</p>
+    <label for="access">Does a rider have to sort anything out before they set off?</label>
+    <p class="sub">A permit, a booking, a phone call, a parking fee, a gate code, a season, a tide - anything that stops them simply turning up. Who to ring, how much, which months: the detail is the useful bit. Leave it blank if they can just go.</p>
     <textarea id="access" maxlength="700" style="min-height:92px"></textarea>
   </div>
 
@@ -1387,7 +1387,7 @@
       : 'Anything riders should know?';
     $('notesHelp').textContent = open
       ? 'This is the part the line cannot carry. Where do you get onto it and where do you come off, '
-        + 'and what does a rider need to know about the tide before she sets off? Please do not leave '
+        + 'and what does a rider need to know about the tide before they set off? Please do not leave '
         + 'this one blank.'
       : 'Going underfoot, whether it dries out, gates that are stiff, where it gets busy with walkers, '
         + 'anything you would mention in the lorry park.';
@@ -1914,7 +1914,7 @@
     if (!picks.traffic) return problem('Please say whether there are roads on it. Riders filter on that, and leaving it blank hides your route from them.');
     if (!picks.routeType) return problem('Please say what kind of route it is. Riders filter on that as well, and a blank there hides your route from them just the same.');
     if (picks.routeType === 'open_ground' && !$('notes').value.trim())
-      return problem('Open ground is the one kind of route where the line on its own is not enough - the tide moves the ground under it and there is no path to pick up. Please say where a rider gets on and off, and what she needs to know about the water.');
+      return problem('Open ground is the one kind of route where the line on its own is not enough - the tide moves the ground under it and there is no path to pick up. Please say where a rider gets on and off, and what they need to know about the water.');
 
     $('send').disabled = true;
     say.textContent = 'Saving...';
@@ -1980,7 +1980,7 @@
     // A beach with nothing said about the tide is the one case where a route is
     // worse than no route at all.
     if (picks.routeType === 'open_ground' && !$('notes').value.trim())
-      return problem('Open ground is the one kind of route where the line on its own is not enough - the tide moves the ground under it and there is no path to pick up. Please say where a rider gets on and off, and what she needs to know about the water.');
+      return problem('Open ground is the one kind of route where the line on its own is not enough - the tide moves the ground under it and there is no path to pick up. Please say where a rider gets on and off, and what they need to know about the water.');
     if (photos.length < MIN_PHOTOS) return problem('Two photographs are needed before a route can be sent.');
     if (!ticked) {
       return problem('Please confirm any rider could follow this route. Permission given to you personally does not pass to the strangers who will ride it on your word - if any part of this needs that, it cannot be shared.');
