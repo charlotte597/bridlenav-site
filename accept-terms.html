@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Contributor Terms — BridleNav</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root{
+    --ground:#F7F4EC; --raised:#FFFFFF; --ink:#17241B; --ink-soft:#4C5A4C;
+    --rule:#DCD6C6; --green:#4A6741; --gold:#C9A96E; --gold-ink:#7E5F22;
+    --deep:#16211A; --deep-ink:#E9E5D9;
+    --display:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --body:'Source Serif 4',Georgia,'Times New Roman',serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#121A14; --raised:#1B261D; --ink:#EBE7DB; --ink-soft:#A8B3A4;
+      --rule:#2C3A2E; --green:#8FAE84; --gold:#C9A96E; --gold-ink:#D8BC85;
+      --deep:#0D140F; --deep-ink:#EBE7DB;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#121A14; --raised:#1B261D; --ink:#EBE7DB; --ink-soft:#A8B3A4;
+    --rule:#2C3A2E; --green:#8FAE84; --gold:#C9A96E; --gold-ink:#D8BC85;
+    --deep:#0D140F; --deep-ink:#EBE7DB;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--body);
+    font-size:17px;line-height:1.62;margin:0;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:40rem;margin:0 auto;padding:28px 20px 72px}
+  h1,h2{font-family:var(--display);font-weight:800;line-height:1.1;
+    letter-spacing:-.022em;margin:0}
+  h1{font-size:clamp(1.9rem,5vw,2.6rem)}
+  h2{font-size:1.05rem;font-weight:700;margin:0 0 8px}
+  p{margin:0 0 14px}
+  .eyebrow{font-family:var(--display);font-size:.7rem;font-weight:700;
+    letter-spacing:.17em;text-transform:uppercase;color:var(--gold-ink);margin:0 0 10px}
+  .card{background:var(--raised);border:1px solid var(--rule);border-radius:14px;
+    padding:18px 18px 16px;margin:18px 0}
+  .route{font-family:var(--display);font-weight:700;font-size:1.1rem}
+  .meta{color:var(--ink-soft);font-size:.92rem}
+  .wording{border-left:3px solid var(--gold);padding-left:14px;margin:0 0 6px}
+  details{margin:18px 0}
+  summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:.92rem;
+    color:var(--gold-ink)}
+  details .body{font-size:.95rem;color:var(--ink-soft);margin-top:12px}
+  details h3{font-family:var(--display);font-size:.92rem;margin:16px 0 4px;color:var(--ink)}
+  button{font-family:var(--display);font-weight:700;font-size:1rem;cursor:pointer;
+    background:var(--green);color:#F7F4EC;border:0;border-radius:999px;
+    padding:14px 28px;letter-spacing:.01em}
+  button[disabled]{opacity:.5;cursor:default}
+  .done{color:var(--green);font-family:var(--display);font-weight:700}
+  .warn{color:var(--gold-ink)}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--rule);
+    color:var(--ink-soft);font-size:.82rem;line-height:1.5}
+  .hide{display:none}
+  #routeList{margin:10px 0 0;padding-left:20px;color:var(--ink-soft);font-size:.92rem}
+  #routeList li{margin:0 0 4px}
+  #routeList .pend{color:var(--gold-ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">BridleNav</p>
+  <h1>Your routes, and the terms</h1>
+
+  <div id="loading" class="card"><p class="meta" style="margin:0">Finding your routes…</p></div>
+
+  <div id="bad" class="card hide">
+    <h2>This link doesn’t match anything</h2>
+    <p class="meta" style="margin:0">It may have been typed out rather than clicked, or it may belong to a different address. Reply to the message that brought you here and Charlotte will send a fresh one.</p>
+  </div>
+
+  <div id="main" class="hide">
+
+    <div class="card">
+      <p class="route" id="whoLine"></p>
+      <ul id="routeList"></ul>
+    </div>
+
+    <p id="intro">You sent these to BridleNav before there was anything written down for contributors to agree to. There is now, and this is the wording — your routes stay yours, and this is the permission that lets BridleNav show them to other riders.</p>
+
+    <div class="card">
+      <p class="wording" id="wording">I have read and accept the BridleNav Contributor Terms. I confirm that this route is entirely on public bridleway, byway, road or path open to everyone on horseback and that nothing in it relies on permission given to me personally. I confirm that the route description, directions and photographs are my own work, or that I have permission to submit them and I grant BridleNav the licence set out in the terms.</p>
+      <p class="meta" style="margin:10px 0 0">This is our solicitor's wording and it is written for one route. Pressing <em>I accept</em> applies it to every route listed above.</p>
+    </div>
+
+    <details>
+      <summary>Read the full Contributor Terms</summary>
+      <div class="body">
+        <h3>1. Who we are and how to contact us</h3>
+        <p>1.1 BridleNav Limited ("BridleNav", "we," "us," or "our") is a company registered in England and Wales (company number 17461028). Our registered office is at the address below. We are responsible for the running of our application ("App") and the review of contributor submissions.</p>
+        <p>1.2 Contact details: BridleNav, Synergy House, 7 Acorn Business Park, Commercial Gate, Mansfield, Nottinghamshire, England, NG18 1EX. Email: hello@bridlenav.com</p>
+        <p>1.3 You must be 13 or over to submit Contributions.</p>
+        <h3>2. Your contributions</h3>
+        <p>2.1 "Contributions" means any routes, GPS tracks, route descriptions, photographs and other content that you (the "Contributor") submit to our App.</p>
+        <p>2.2 "Users" means anyone who uses the App, including Contributors.</p>
+        <h3>3. Licence to use your contributions</h3>
+        <p>3.1 You retain ownership of your Contributions.</p>
+        <p>3.2 You grant us a worldwide, perpetual, royalty-free, non-exclusive licence to store, reproduce, host, edit, resize, crop, display, publish and distribute your Contributions in connection with operating, promoting, improving and developing our App and its services. This includes displaying routes on maps, making routes available for navigation, resizing, cropping or editing photographs and using Contributions in App related promotional materials.</p>
+        <p>3.3 We will not edit your Contributions in a way that harms your reputation.</p>
+        <h3>4. Other users</h3>
+        <p>4.1 Where a route is published, we may allow other App Users to view, save, share and use that route for navigation and other related activities.</p>
+        <p>4.2 This does not transfer ownership of your Contributions or give other Users unrestricted rights to reuse your photographs or other content outside the App.</p>
+        <p>4.3 Only you and BridleNav can enforce this Agreement. Other Users cannot.</p>
+        <h3>5. Your responsibilities</h3>
+        <p>5.1 You confirm that: your Contributions are your own work, or you have permission to share them, and they do not infringe another person's rights or contain unlawful material; you have appropriate permission to submit photographs containing identifiable people and you will not submit material that infringes another person's privacy; you will not submit misleading, unsafe or unlawful routes, or routes that encourage trespass or access to places where access is prohibited — please follow the Countryside Code and respect public rights of way; and you will take reasonable care not to disclose sensitive personal information, private addresses or other information that could put you or another person at risk, including checking that a GPS track does not start or end at your home or reveal your daily routine.</p>
+        <h3>6. Review and moderation</h3>
+        <p>6.1 All Contributions are subject to human review before publication. We may approve, reject, edit, restrict, unpublish or remove any Contribution where we consider it appropriate, including for safety, privacy, legal, quality or operational reasons. Where practicable, we will tell you if we reject or remove a Contribution and give a short reason.</p>
+        <p>6.2 We do not guarantee that any submitted route will be published, remain available or be suitable for a particular User or activity.</p>
+        <p>6.3 If you think a Contribution infringes your rights, or a landowner wishes to report a route, please email hello@bridlenav.com. We will review the report promptly.</p>
+        <h3>7. Safety and accuracy</h3>
+        <p>7.1 You understand that route conditions, access rights, terrain, hazards and other circumstances may change. Although we review Contributions, we cannot guarantee that routes or accompanying information are accurate, current, safe or legally accessible.</p>
+        <p>7.2 Users are responsible for exercising their own judgement, checking relevant conditions and access restrictions and following applicable laws and safety guidance.</p>
+        <p>7.3 We are not responsible for loss or harm caused by inaccurate or out-of-date route information, except where the law does not allow us to exclude responsibility.</p>
+        <h3>8. Payment and attribution</h3>
+        <p>8.1 Unless agreed otherwise in writing, Contributions are provided without payment or royalties. However, Attributions may be made to acknowledge a User's Contributions to the App.</p>
+        <p>8.2 Attributions for Contributions may take the following forms based on a User's preference: Contributions are clearly Attributed to an App User, including their name and any other details that they wish to share; a User requests that their Contribution is Attributed differently, for example under their horse's name; or the Contribution is added to the App anonymously, for a User who wants no credit for their Contribution.</p>
+        <p>8.3 For Contributors who are under 18 all Contributions will be set as anonymous to protect the Contributor's personal data as a child (defined in the UK as an individual under the age of 18).</p>
+        <h3>9. Your personal data</h3>
+        <p>9.1 Contributions and your account details may include personal data (for example, your name, photographs of people, and GPS tracks). BridleNav Limited is the controller of this data. Our <a href="/privacy.html">privacy notice</a> explains what we collect, why, our lawful basis, how long we keep it and who we share it with.</p>
+        <p>9.2 Should you have any questions about our use of your personal data, please contact us at hello@bridlenav.com.</p>
+        <h3>10. Removal and termination</h3>
+        <p>10.1 You may request removal of your Contributions by contacting hello@bridlenav.com. We will remove the relevant Contributions within one month where reasonably practicable, subject to legal obligations, legitimate operational requirements and technical limitations. If we cannot remove something, we will do our best tell you why.</p>
+        <p>10.2 Removal does not invalidate the licence for uses already lawfully made. We may retain limited copies where reasonably necessary for security, legal compliance, dispute resolution or backups, in accordance with our privacy notice.</p>
+        <h3>11. General</h3>
+        <p>11.1 Nothing in this Agreement excludes or limits any liability or rights that cannot lawfully be excluded or limited, including your legal rights as a consumer.</p>
+        <p>11.2 This Agreement is governed by the law of England and Wales, and the courts of England and Wales shall have jurisdiction.</p>
+        <p>11.3 We may update this Agreement from time to time. We will give you reasonable notice of material changes. Any such changes will not apply to Contributions you submitted before the change unless stated otherwise.</p>
+      </div>
+    </details>
+
+    <div id="askBox">
+      <button id="acceptBtn" type="button">I accept</button>
+      <p class="meta" style="margin-top:12px">Nothing is recorded until you press it.</p>
+    </div>
+
+    <div id="doneBox" class="card hide">
+      <p class="done" id="doneLine" style="margin:0 0 6px"></p>
+      <p class="meta" id="doneMeta" style="margin:0"></p>
+    </div>
+
+    <div id="errBox" class="card hide">
+      <p class="warn" style="margin:0 0 6px"><strong>That didn’t save</strong></p>
+      <p class="meta" style="margin:0">Please try once more. If it still won’t go through, reply to the email and Charlotte will record it by hand — nothing is lost.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    BridleNav Limited, registered in England and Wales, company number 17461028.
+    Registered office: Synergy House, 7 Acorn Business Park, Commercial Gate, Mansfield, NG18 1EX.
+    Questions: <a href="mailto:hello@bridlenav.com">hello@bridlenav.com</a>
+  </footer>
+
+</div>
+
+<script>
+// The link carries a 64-character key that belongs to one route. It is the
+// same key BridleNav already uses for "edit the route you sent", so it is not
+// a new secret for anyone to look after.
+//
+// READING happens on load; ACCEPTING happens only when the button is pressed.
+// That split is the whole point. A mail scanner that follows the link will
+// read the route and stop there - it cannot agree to anything on a rider's
+// behalf, which has happened before on this site with an approve link.
+const SB_URL  = 'https://xlvjhktfaiagtbdxaetn.supabase.co';
+const SB_KEY  = 'sb_publishable_OYjxynX2htU7Z5BAC0lcUg_kqqt1mo_';
+// Must match CONTRIBUTOR_TERMS_VERSION in lib/community.ts. Clause 11.3 means
+// a later redraft does not apply to what was accepted under this one, so the
+// row has to remember which wording was on the screen.
+const VERSION = 'V2-2026-11-12';
+
+const token = new URLSearchParams(location.search).get('t') || '';
+const $ = (id) => document.getElementById(id);
+
+function rpc(fn, body) {
+  return fetch(SB_URL + '/rest/v1/rpc/' + fn, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+               'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).then(r => r.ok ? r.json() : Promise.reject(r.status));
+}
+
+function showBad() { $('loading').classList.add('hide'); $('bad').classList.remove('hide'); }
+
+function showAccepted(when) {
+  $('askBox').classList.add('hide');
+  $('doneBox').classList.remove('hide');
+  $('doneLine').textContent = 'Accepted — thank you.';
+  const d = when ? new Date(when) : new Date();
+  $('doneMeta').textContent = 'Recorded ' + d.toLocaleDateString('en-GB',
+    { day: 'numeric', month: 'long', year: 'numeric' }) + '. There is nothing else to do.';
+}
+
+if (!/^[0-9a-f]{64}$/.test(token)) {
+  showBad();
+} else {
+  rpc('get_contributor_invite', { p_token: token }).then((r) => {
+    if (!r) { showBad(); return; }
+    $('loading').classList.add('hide');
+    $('main').classList.remove('hide');
+
+    const routes = Array.isArray(r.routes) ? r.routes : [];
+    $('whoLine').textContent = routes.length === 1
+      ? 'The route you sent'
+      : 'The ' + routes.length + ' routes you sent';
+
+    const ul = $('routeList');
+    routes.forEach(function (rt) {
+      const li = document.createElement('li');
+      li.textContent = rt.name || 'Untitled route';
+      const extra = [];
+      if (rt.area) extra.push(rt.area);
+      if (rt.status && rt.status !== 'approved') extra.push('not published yet');
+      if (extra.length) {
+        const em = document.createElement('span');
+        em.className = rt.status !== 'approved' ? 'pend' : '';
+        em.textContent = ' — ' + extra.join(' · ');
+        li.appendChild(em);
+      }
+      ul.appendChild(li);
+    });
+
+    if (routes.length === 1) {
+      $('intro').textContent = 'You sent this to BridleNav before there was anything written '
+        + 'down for contributors to agree to. There is now, and this is the wording — your '
+        + 'route stays yours, and this is the permission that lets BridleNav show it to other riders.';
+    }
+
+    if (r.accepted_at) showAccepted(r.accepted_at);
+  }).catch(showBad);
+}
+
+$('acceptBtn').addEventListener('click', function () {
+  const btn = $('acceptBtn');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+  $('errBox').classList.add('hide');
+  // p_rights goes with it because the wording on screen contains the rights
+  // confirmation itself. The function only ever fills a blank, so a route that
+  // was already confirmed keeps its original date.
+  rpc('accept_contributor_invite', { p_token: token, p_terms: true, p_rights: true })
+    .then((res) => {
+      if (res && res.ok) { showAccepted(null); return; }
+      throw new Error('unexpected');
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.textContent = 'I accept';
+      $('errBox').classList.remove('hide');
+    });
+});
+</script>
+</body>
+</html>
