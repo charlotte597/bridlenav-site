@@ -837,6 +837,7 @@
   var SAME_PASS = 12;     // points this close together are one pass, not two
   var NEAR_ENOUGH = 45;   // metres - further out than this is not a pass at all
   var lastAdded = -1;     // where the last point landed, so the next can follow on
+  var lastTouched = -1;   // the point she last typed in or changed -- where she is WORKING
   var lastPasses = [];    // the passes behind the most recent nearestIndex call
   var justAdded = -1;     // the pin to flash, so a tap visibly did something
 
@@ -891,9 +892,47 @@
     }
     if (earliest.index < firstMark) return earliest;
 
-    var after = list.filter(function (p) { return p.index > lastAdded; });
+    // FIRST: a pass that has nothing on it yet beats one that already has a
+    // point sitting on it. This is the signal Paul Boyles was describing on
+    // 8 Nov -- "it won't let me add another for the same junction" -- and it
+    // does not depend on guessing the rider's order at all. Where she rides
+    // past the same spot twice and has marked one leg, the tap means the other.
+    var open = list.filter(function (p) {
+      return !marks.some(function (m) {
+        return !m.dropped && Math.abs(m.index - p.index) <= SAME_PASS;
+      });
+    });
+    if (open.length === 1) return open[0];
+    if (open.length) list = open;
+
+    // WHERE SHE IS WORKING, not simply where she last added. Steph Arrowsmith
+    // found this on 22 Nov: she had marked the whole route to 9.9 miles, then
+    // went BACK to 4.2 to add detail around a bridge the line passes several
+    // times. Nothing comes after 9.9, so the old code gave up on riding order
+    // and took whichever pass was nearest in metres -- a coin toss there. Her
+    // points "wouldn't go where I wanted and seemed to attack on top of each
+    // other", and one landed somewhere she could not see, so it arrived as a
+    // bare gate with no words on it.
+    //
+    // Adding detail in the middle is the same act as adding it at the end:
+    // she is working at a spot. So anchor on the point she last typed in if
+    // there is one, and only then on the last one placed.
+    var anchor = lastTouched >= 0 ? lastTouched : lastAdded;
+
+    var after = list.filter(function (p) { return p.index > anchor; });
     if (after.length) return after.reduce(function (x, y) { return y.index < x.index ? y : x; });
-    return list.reduce(function (x, y) { return y.d < x.d ? y : x; });
+
+    // Nothing follows the anchor. Take the pass CLOSEST TO IT IN RIDING ORDER
+    // rather than closest in metres: she is filling in around a point she is
+    // already working on, so the near one in the sequence is the one she means.
+    // Nearest-in-metres cannot tell two passes apart at all when they are a few
+    // yards from each other, which is exactly when it is asked.
+    if (anchor >= 0) {
+      return list.reduce(function (x, y) {
+        return Math.abs(y.index - anchor) < Math.abs(x.index - anchor) ? y : x;
+      });
+    }
+    return earliest;
   }
 
   function nearestIndex(lon, lat) {
@@ -1191,6 +1230,7 @@
     }
     lastPasses = [];
     lastAdded = index;
+    lastTouched = index;
     justAdded = index;
     marks.push({ index: index, kind: 'gate', note: '', dropped: false, alts: alts });
     marks.sort(function (x, y) { return x.index - y.index; });
@@ -1211,8 +1251,8 @@
                       'list above, then tap the map again for the next one.';
     if (alts) {
       say.textContent = 'Added as point ' + place + '. You ride this bit twice, so it has gone on the ' +
-                        'leg that follows on from your last point - the row says so, and you can move it ' +
-                        'to the other one. Tap the same spot again to mark the way home as well.';
+                        'leg that had nothing on it yet - the row says so, and you can move it to the ' +
+                        'other one. Tap the same spot again to mark the way home as well.';
     }
   }
 
@@ -1258,6 +1298,7 @@
         // typed themselves is left alone.
         if (sel.value !== 'turn' && AUTO_WORDS.indexOf((m.note || '').trim()) >= 0) m.note = '';
         m.kind = sel.value;
+        lastTouched = m.index;
         renderTurns();
       });
 
@@ -1270,6 +1311,7 @@
         : 'Anything worth saying (optional)';
       txt.addEventListener('input', function () {
         m.note = txt.value;
+        lastTouched = m.index;
         // Somebody who has bothered to write the words for a point wants that
         // point. Putting it back by hand afterwards is a step nobody would
         // think to take, and the words would go quietly nowhere.
