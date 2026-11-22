@@ -246,6 +246,11 @@
     gets there.
   </p>
   <p class="help">
+    <strong>At least one turn is needed before a route can be sent.</strong> A route with none
+    would draw the line and stay silent at every junction, which is the one place a rider
+    actually needs telling.
+  </p>
+  <p class="help">
     <strong>Which places need words?</strong> Imagine riding it with a friend who has never been. Wherever they
     would slow down and look at you is where BridleNav needs to say something. A bend in a single
     track with nowhere else to go needs nothing at all. A fork, a gate, a road crossing, or a spot
@@ -406,10 +411,12 @@
 <!-- ------------------------------------------------------------------ 6 -->
 <div class="step" id="s6" hidden>
   <span class="num">Step six</span>
-  <h2>Two or three photographs</h2>
+  <h2>A photograph or three</h2>
   <p class="help">
-    Two is the minimum. They are what makes another rider pick your route over somebody else's,
-    so a view, the going underfoot and the parking are worth more than three of the same gate.
+    One is the minimum, three the most. They are what makes another rider pick your route over
+    somebody else's, so a view, the going underfoot and the parking are worth more than three of
+    the same gate. If this was a ride from months back and you have none of the junctions, send
+    what you have &mdash; one is enough.
   </p>
   <p class="help">
     They are shrunk here in your browser before they are sent, which also strips the location
@@ -545,7 +552,7 @@
   var KEY = 'sb_publishable_OYjxynX2htU7Z5BAC0lcUg_kqqt1mo_';
   var BUCKET = 'route-photos';
   var TARGET_POINTS = 150;   // same as the app: lib/simplifyLine.ts
-  var MIN_PHOTOS = 2, MAX_PHOTOS = 3, MAX_EDGE = 1600, QUALITY = 0.72;
+  var MIN_PHOTOS = 1, MAX_PHOTOS = 3, MAX_EDGE = 1600, QUALITY = 0.72;
 
   var $ = function (id) { return document.getElementById(id); };
 
@@ -1452,9 +1459,7 @@
     var say = $('picsay');
     say.className = 'say';
     if (photos.length < MIN_PHOTOS) {
-      say.textContent = photos.length === 0
-        ? 'Two photographs are needed before a route can be sent.'
-        : 'One more needed.';
+      say.textContent = 'One photograph is needed before a route can be sent.';
     } else {
       say.textContent = photos.length + ' ready.';
     }
@@ -1981,7 +1986,15 @@
     // worse than no route at all.
     if (picks.routeType === 'open_ground' && !$('notes').value.trim())
       return problem('Open ground is the one kind of route where the line on its own is not enough - the tide moves the ground under it and there is no path to pick up. Please say where a rider gets on and off, and what they need to know about the water.');
-    if (photos.length < MIN_PHOTOS) return problem('Two photographs are needed before a route can be sent.');
+    // Turn-by-turn was decided to be mandatory back in October and was never
+    // actually enforced here, so a ten-mile line with nothing marked on it
+    // could be sent -- and one was, on 19 November, by a first-timer who had
+    // simply not realised that is what the form wanted. The voice IS the app.
+    // A route with no turns is a line that stays silent at every junction,
+    // which is exactly where a rider goes wrong.
+    if (!collectPoints().some(function (p) { return p.kind === 'turn'; })) {
+      return problem('This route has no turns marked on it yet, so BridleNav would draw the line and stay silent at every junction. Go back up to step three and mark the places where a rider has to decide which way to go. Even a few makes the difference between a line on a map and a route somebody can follow.');
+    }
     if (!ticked) {
       return problem('Please confirm any rider could follow this route. Permission given to you personally does not pass to the strangers who will ride it on your word - if any part of this needs that, it cannot be shared.');
     }
@@ -1992,14 +2005,13 @@
     // A silent route still works - the app draws the line and says nothing,
     // and a plain track is worth having. But almost nobody means to send one,
     // so ask once and then get out of the way.
+    // A route with no turns at all is now refused outright above, so the only
+    // thing left to nudge about is bare direction words with no landmark.
     if (!warnedNoWords) {
-      var live = collectPoints().length, mine = ownWords();
-      if (!live || !mine) {
+      if (!ownWords()) {
         warnedNoWords = true;
         say.className = 'say bad';
-        say.textContent = !live
-          ? 'Nothing is going with the route, so BridleNav would draw the line and stay silent the whole way round. Go back up to step three and mark even a few of the places a rider has to make a decision \u2014 or press again and it will go as a plain track.'
-          : 'None of your points is in your own words yet, so BridleNav would say a bare \u201cleft\u201d or \u201cright\u201d with nothing about what the rider is looking at. Go back up and write even a handful \u2014 or press again and it will go as it stands.';
+        say.textContent = 'None of your points is in your own words yet, so BridleNav would say a bare \u201cleft\u201d or \u201cright\u201d with nothing about what the rider is looking at. Go back up and write even a handful \u2014 or press again and it will go as it stands.';
         $('send').textContent = 'Send it anyway';
         say.scrollIntoView({ block: 'center', behavior: 'smooth' });
         return false;
